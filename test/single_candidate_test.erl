@@ -3,8 +3,6 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
-% SINGLE_CANDIDATE
-
 single_candidate_setup()     -> ok.
 single_candidate_teardown(_) -> ok.
 
