@@ -22,10 +22,10 @@ double_candidate_single_voter_case() ->
     ?assertEqual(a, Winner).
 
 double_candidate_majority_case() ->
-    Ballot1 = schulze_vote:make_ballot([a, b]),
+    Ballot1 = schulze_vote:make_ballot([b, a]),
     Ballot2 = schulze_vote:make_ballot([a, b]),
     Ballot3 = schulze_vote:make_ballot([a, b]),
-    Ballot4 = schulze_vote:make_ballot([b, a]),
+    Ballot4 = schulze_vote:make_ballot([a, b]),
     Ballots = [Ballot1, Ballot2, Ballot3, Ballot4],
     Winner  = schulze_vote:winner(Ballots),
     ?assertEqual(a, Winner).
