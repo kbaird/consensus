@@ -9,7 +9,7 @@
 %% API functions
 %%====================================================================
 -spec winner([candidate(), ...]) -> candidate().
-winner([Candidate]) -> Candidate.
+winner([Candidate | _]) -> Candidate.
 
 %%====================================================================
 %% Internal functions
