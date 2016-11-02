@@ -9,3 +9,7 @@ An OTP library implementing the Schulze voting system
 ## Eunit
 
     $ rebar3 eunit
+
+## Dialyzer
+
+    $ rebar3 dialyzer
