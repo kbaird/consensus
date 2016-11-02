@@ -8,8 +8,8 @@
 %%====================================================================
 %% API functions
 %%====================================================================
--spec winner([candidate(), ...]) -> candidate().
-winner([Candidate | _]) -> Candidate.
+-spec winner([ballot(), ...]) -> candidate().
+winner([Candidate | _]) -> hd(Candidate).
 
 %%====================================================================
 %% Internal functions

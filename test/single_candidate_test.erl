@@ -18,11 +18,11 @@ single_candidate_test_() ->
     }.
 
 single_candidate_single_voter_case() ->
-    Winner = schulze_vote:winner([a]),
+    Winner = schulze_vote:winner([[a]]),
     ?assertEqual(a, Winner).
 
 single_candidate_multiple_voter_case() ->
-    Winner = schulze_vote:winner([a, a, a, a]),
+    Winner = schulze_vote:winner([[a], [a], [a], [a]]),
     ?assertEqual(a, Winner).
 
 %%% PRIVATE FUNCTIONS
