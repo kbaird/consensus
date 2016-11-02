@@ -1,4 +1,4 @@
--module(schulze-vote-erlang).
+-module(schulze_vote_erlang).
 
 %% API exports
 -export([]).
