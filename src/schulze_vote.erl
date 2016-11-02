@@ -24,8 +24,9 @@ winner([Ballot | Bs], Acc) ->
     Candidate = hd(Ballot),
     Count     = maps:get(Candidate, Acc, 0),
     winner(Bs, maps:put(Candidate, Count+1, Acc));
+winner([],            Acc) when is_map(Acc) ->
+    winner([], maps:to_list(Acc));
 winner([],            Acc) ->
-    L = maps:to_list(Acc),
-    Most = fun({X, Xcnt}, {Y, Ycnt}) -> Xcnt >= Ycnt end,
-    {Candidate, Count} = hd(lists:sort(Most, L)),
+    Most = fun({_, Xcnt}, {_, Ycnt}) -> Xcnt >= Ycnt end,
+    {Candidate, _} = hd(lists:sort(Most, Acc)),
     Candidate.
