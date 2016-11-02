@@ -15,16 +15,17 @@
 make_ballot(Ballot) -> Ballot.
 
 -spec winner([ballot(), ...]) -> candidate().
-winner(Ballots) -> winner(Ballots, #{}).
+winner(Ballots) ->
+    {Candidate, _} = winner(Ballots, #{}),
+    Candidate.
 
 %%====================================================================
 %% Internal functions
 %%====================================================================
+most({_, Xcnt}, {_, Ycnt}) -> Xcnt >= Ycnt.
+
 winner([], Acc) when is_map(Acc) -> winner([], maps:to_list(Acc));
-winner([], Acc) ->
-    Most = fun({_, Xcnt}, {_, Ycnt}) -> Xcnt >= Ycnt end,
-    {Candidate, _} = hd(lists:sort(Most, Acc)),
-    Candidate;
+winner([], Acc)                  -> hd(lists:sort(fun most/2, Acc));
 winner([Ballot | Bs], Acc) ->
     Candidate = hd(Ballot),
     Count     = maps:get(Candidate, Acc, 0),
