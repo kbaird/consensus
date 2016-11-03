@@ -6,7 +6,7 @@
 two_candidates_setup()     -> ok.
 two_candidates_teardown(_) -> ok.
 
-two_candidate_tests_() ->
+two_candidates_test_() ->
     {setup, fun two_candidates_setup/0,
             fun two_candidates_teardown/1,
             [
