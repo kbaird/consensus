@@ -2,7 +2,6 @@
 
 %% API exports
 -export([
-    make_ballot/1,
     rankings/1,
     winner/1
 ]).
@@ -12,11 +11,6 @@
 %%====================================================================
 %% API functions
 %%====================================================================
--spec make_ballot([name(), ...]) -> ballot().
-make_ballot(CandidateNames) ->
-    Candidates = [ schulze_candidate:make(Name) || Name <- CandidateNames ],
-    #ballot{candidates = Candidates}.
-
 -spec rankings([ballot(), ...]) -> [name(), ...].
 rankings(Ballots) ->
     Prefs      = preferences(Ballots, #{}),

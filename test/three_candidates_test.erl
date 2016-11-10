@@ -18,24 +18,24 @@ three_candidates_test_() ->
     }.
 
 three_candidates_one_voter_case() ->
-    Ballot = schulze_vote:make_ballot([a, b, c]),
+    Ballot = schulze_ballot:make([a, b, c]),
     Winner = schulze_vote:winner([Ballot]),
     ?assertEqual(a, Winner).
 
 three_candidates_majority_case() ->
-    Ballot1 = schulze_vote:make_ballot([b, c, a]),
-    Ballot2 = schulze_vote:make_ballot([a, b, c]),
-    Ballot3 = schulze_vote:make_ballot([a, b, c]),
-    Ballot4 = schulze_vote:make_ballot([a, b, c]),
+    Ballot1 = schulze_ballot:make([b, c, a]),
+    Ballot2 = schulze_ballot:make([a, b, c]),
+    Ballot3 = schulze_ballot:make([a, b, c]),
+    Ballot4 = schulze_ballot:make([a, b, c]),
     Ballots = [Ballot1, Ballot2, Ballot3, Ballot4],
     Winner  = schulze_vote:winner(Ballots),
     ?assertEqual(a, Winner).
 
 three_candidates_unanimous_case() ->
-    Ballot1 = schulze_vote:make_ballot([a, b, c]),
-    Ballot2 = schulze_vote:make_ballot([a, b, c]),
-    Ballot3 = schulze_vote:make_ballot([a, b, c]),
-    Ballot4 = schulze_vote:make_ballot([a, b, c]),
+    Ballot1 = schulze_ballot:make([a, b, c]),
+    Ballot2 = schulze_ballot:make([a, b, c]),
+    Ballot3 = schulze_ballot:make([a, b, c]),
+    Ballot4 = schulze_ballot:make([a, b, c]),
     Ballots = [Ballot1, Ballot2, Ballot3, Ballot4],
     Winner  = schulze_vote:winner(Ballots),
     ?assertEqual(a, Winner).

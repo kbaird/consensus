@@ -17,15 +17,15 @@ one_candidate_test_() ->
     }.
 
 one_candidate_one_voter_case() ->
-    Ballot = schulze_vote:make_ballot([a]),
+    Ballot = schulze_ballot:make([a]),
     Winner = schulze_vote:winner([Ballot]),
     ?assertEqual(a, Winner).
 
 one_candidate_multiple_voter_case() ->
-    Ballot1 = schulze_vote:make_ballot([a]),
-    Ballot2 = schulze_vote:make_ballot([a]),
-    Ballot3 = schulze_vote:make_ballot([a]),
-    Ballot4 = schulze_vote:make_ballot([a]),
+    Ballot1 = schulze_ballot:make([a]),
+    Ballot2 = schulze_ballot:make([a]),
+    Ballot3 = schulze_ballot:make([a]),
+    Ballot4 = schulze_ballot:make([a]),
     Ballots = [Ballot1, Ballot2, Ballot3, Ballot4],
     Winner  = schulze_vote:winner(Ballots),
     ?assertEqual(a, Winner).
