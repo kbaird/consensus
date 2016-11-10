@@ -1,5 +1,15 @@
--opaque candidate() :: atom().
--opaque ballot()    :: [candidate(), ...].
+-record(candidate,
+    {
+        name :: atom()
+    }).
+
+-record(ballot,
+    {
+        candidates :: [candidate(), ...]
+    }).
+
+-opaque candidate() :: #candidate{}.
+-opaque ballot()    :: #ballot{}.
 
 -export_type([
     ballot/0,

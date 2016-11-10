@@ -2,6 +2,7 @@
 -author('Kevin C. Baird').
 
 -include_lib("eunit/include/eunit.hrl").
+-include_lib("schulze.hrl").
 
 two_candidates_setup()     -> ok.
 two_candidates_teardown(_) -> ok.
@@ -19,7 +20,7 @@ two_candidates_test_() ->
 two_candidates_one_voter_case() ->
     Ballot = schulze_vote:make_ballot([a, b]),
     Winner = schulze_vote:winner([Ballot]),
-    ?assertEqual(a, Winner).
+    ?assertEqual(a, Winner#candidate.name).
 
 two_candidates_majority_case() ->
     Ballot1 = schulze_vote:make_ballot([b, a]),
@@ -28,7 +29,7 @@ two_candidates_majority_case() ->
     Ballot4 = schulze_vote:make_ballot([a, b]),
     Ballots = [Ballot1, Ballot2, Ballot3, Ballot4],
     Winner  = schulze_vote:winner(Ballots),
-    ?assertEqual(a, Winner).
+    ?assertEqual(a, Winner#candidate.name).
 
 two_candidates_unanimous_case() ->
     Ballot1 = schulze_vote:make_ballot([a, b]),
@@ -37,7 +38,7 @@ two_candidates_unanimous_case() ->
     Ballot4 = schulze_vote:make_ballot([a, b]),
     Ballots = [Ballot1, Ballot2, Ballot3, Ballot4],
     Winner  = schulze_vote:winner(Ballots),
-    ?assertEqual(a, Winner).
+    ?assertEqual(a, Winner#candidate.name).
 
 %%% PRIVATE FUNCTIONS
 

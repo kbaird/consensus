@@ -12,7 +12,9 @@
 %% API functions
 %%====================================================================
 -spec make_ballot([candidate(), ...]) -> ballot().
-make_ballot(Ballot) -> Ballot.
+make_ballot(CandidateNames) ->
+    Candidates = [ make_candidate(Name) || Name <- CandidateNames ],
+    #ballot{candidates = Candidates}.
 
 -spec winner([ballot(), ...]) -> candidate().
 winner(Ballots) ->
@@ -22,11 +24,14 @@ winner(Ballots) ->
 %%====================================================================
 %% Internal functions
 %%====================================================================
+-spec make_candidate(atom()) -> candidate().
+make_candidate(Name) -> #candidate{name = Name}.
+
 most_votes({_, Xcnt}, {_, Ycnt}) -> Xcnt >= Ycnt.
 
 winner([], Acc) when is_map(Acc) -> winner([], maps:to_list(Acc));
 winner([], Acc)                  -> hd(lists:sort(fun most_votes/2, Acc));
 winner([Ballot | Bs], Acc) ->
-    Candidate = hd(Ballot),
+    Candidate = hd(Ballot#ballot.candidates),
     Count     = maps:get(Candidate, Acc, 0),
     winner(Bs, maps:put(Candidate, Count+1, Acc)).
