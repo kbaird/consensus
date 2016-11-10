@@ -58,6 +58,7 @@ increment_vote_count(Cand, Next, PrefsIn) ->
 -spec make_candidate(name()) -> candidate().
 make_candidate(Name) -> #candidate{name = Name}.
 
+-spec preferences(list(), map()) -> map().
 preferences([], Acc)              -> Acc;
 preferences([Ballot | Bs], AccIn) ->
     [ Cand | Rest ] = Ballot#ballot.candidates,
@@ -67,6 +68,7 @@ preferences([Ballot | Bs], AccIn) ->
               preferences(Bs, Acc)
     end.
 
+-spec select_winner(list(), map()) -> candidate().
 select_winner([ Cand ], _) -> Cand;
 select_winner(Candidates, Prefs) ->
     ByMostVotes = fun(C1,C2) ->
