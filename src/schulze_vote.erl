@@ -71,7 +71,7 @@ preferences([Ballot | Bs], AccIn) ->
 -spec select_winner(list(), map()) -> candidate().
 select_winner([ Cand ], _) -> Cand;
 select_winner(Candidates, Prefs) ->
-    ByMostVotes = fun(C1,C2) ->
+    ByMostVotes = fun(C1, C2) ->
         maps:get(C1, maps:get(C2, Prefs), 0) <
         maps:get(C2, maps:get(C1, Prefs), 0)
     end,
