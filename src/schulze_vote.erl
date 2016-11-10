@@ -3,6 +3,7 @@
 %% API exports
 -export([
     make_ballot/1,
+    rankings/1,
     winner/1
 ]).
 
@@ -16,12 +17,15 @@ make_ballot(CandidateNames) ->
     Candidates = [ make_candidate(Name) || Name <- CandidateNames ],
     #ballot{candidates = Candidates}.
 
--spec winner([ballot(), ...]) -> name().
-winner(Ballots) ->
+-spec rankings([ballot(), ...]) -> [candidate(), ...].
+rankings(Ballots) ->
     Prefs      = preferences(Ballots, #{}),
     Candidates = maps:keys(Prefs),
-    Winner     = select_winner(Candidates, Prefs),
-    Winner#candidate.name.
+    Ranked     = rank_candidates(Candidates, Prefs),
+    [ C#candidate.name || C <- Ranked ].
+
+-spec winner([ballot(), ...]) -> name().
+winner(Ballots) -> hd(rankings(Ballots)).
 
 %%====================================================================
 %% Internal functions
@@ -52,14 +56,12 @@ preferences([Ballot | Bs], AccIn) ->
               preferences(Bs, Acc)
     end.
 
--spec select_winner(list(), map()) -> candidate().
-select_winner([ Cand ], _) -> Cand;
-select_winner(Candidates, Prefs) ->
+-spec rank_candidates(list(), map()) -> [candidate(), ...].
+rank_candidates(Candidates, Prefs) ->
     ByLeastVotes = fun(C1, C2) ->
         maps:get(C1, maps:get(C2, Prefs), 0) <
         maps:get(C2, maps:get(C1, Prefs), 0)
     end,
     % sort by least votes, so the lowest magnitude for "least votes"
     % (i.e., the winner, with the highest number of votes) is at the front.
-    Sorted = lists:sort(ByLeastVotes, Candidates),
-    hd(Sorted).
+    lists:sort(ByLeastVotes, Candidates).
