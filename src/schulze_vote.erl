@@ -43,14 +43,12 @@ winner(Ballots) ->
 %             if (i ≠ k and j ≠ k) then
 %                p[j,k] := max ( p[j,k], min ( p[j,i], p[i,k] ) )
 
--spec add_preferences(candidate(), [], map()) -> map().
 add_preferences(_Cand, [], Acc) -> Acc;
 add_preferences(Cand,  [ Next | Rest ], AccIn) ->
     Acc1 = increment_vote_count(Cand, Next, AccIn),
     Acc2 = add_preferences(Cand, Rest, Acc1),
     add_preferences(Next, Rest, Acc2).
 
--spec increment_vote_count(candidate(), [candidate()], map()) -> map().
 increment_vote_count(Cand, Next, PrefsIn) ->
     WithCount   = maps:get(Cand, PrefsIn, maps:new()),
     Count       = maps:get(Next, WithCount, 0),
