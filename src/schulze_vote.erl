@@ -18,17 +18,9 @@ make_ballot(CandidateNames) ->
 
 -spec winner([ballot(), ...]) -> candidate().
 winner(Ballots) ->
-    Prefs       = winner(Ballots, #{}),
-    Candidates1 = maps:keys(Prefs),
-    case Candidates1 of
-        [ Cand ] -> Cand;
-        _        -> ByMostVotes = fun(C1,C2) ->
-                        maps:get(C1, maps:get(C2, Prefs), 0) <
-                        maps:get(C2, maps:get(C1, Prefs), 0)
-                    end,
-                    Candidates = lists:sort(ByMostVotes, maps:keys(Prefs)),
-                    hd(Candidates)
-    end.
+    Prefs      = preferences(Ballots, #{}),
+    Candidates = maps:keys(Prefs),
+    select_winner(Candidates, Prefs).
 
 %%====================================================================
 %% Internal functions
@@ -68,12 +60,20 @@ increment_vote_count(Cand, Next, PrefsIn) ->
 -spec make_candidate(name()) -> candidate().
 make_candidate(Name) -> #candidate{name = Name}.
 
-winner([], Acc)              -> Acc;
-winner([Ballot | Bs], AccIn) ->
+preferences([], Acc)              -> Acc;
+preferences([Ballot | Bs], AccIn) ->
     [ Cand | Rest ] = Ballot#ballot.candidates,
     case Rest of
         [] -> maps:put(Cand, winner, maps:new());
         _  -> Acc = add_preferences(Cand, Rest, AccIn),
-              winner(Bs, Acc)
+              preferences(Bs, Acc)
     end.
 
+select_winner([ Cand ], _) -> Cand;
+select_winner(Candidates, Prefs) ->
+    ByMostVotes = fun(C1,C2) ->
+        maps:get(C1, maps:get(C2, Prefs), 0) <
+        maps:get(C2, maps:get(C1, Prefs), 0)
+    end,
+    Sorted = lists:sort(ByMostVotes, Candidates),
+    hd(Sorted).
