@@ -24,7 +24,7 @@ tn_capital_winner_case() ->
 
 tn_capital_rankings_case() ->
     Rankings = schulze_vote:rankings(tn_ballots()),
-    ?assertEqual([nashville chattanooga, knoxville, memphis], Rankings).
+    ?assertEqual([nashville, chattanooga, knoxville, memphis], Rankings).
 
 %%% PRIVATE FUNCTIONS
 
