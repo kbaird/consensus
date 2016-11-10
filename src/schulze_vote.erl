@@ -26,23 +26,6 @@ winner(Ballots) ->
 %%====================================================================
 %% Internal functions
 %%====================================================================
-% Input: d[i,j], the number of voters who prefer candidate i to candidate j.
-% Output: p[i,j], the strength of the strongest path from candidate i to candidate j.
-
-% for i from 1 to C
-%    for j from 1 to C
-%       if (i ≠ j) then
-%          if (d[i,j] > d[j,i]) then
-%             p[i,j] := d[i,j]
-%          else
-%             p[i,j] := 0
-%
-% for i from 1 to C
-%    for j from 1 to C
-%       if (i ≠ j) then
-%          for k from 1 to C
-%             if (i ≠ k and j ≠ k) then
-%                p[j,k] := max ( p[j,k], min ( p[j,i], p[i,k] ) )
 
 add_preferences(_Cand, [], Acc) -> Acc;
 add_preferences(Cand,  [ Next | Rest ], AccIn) ->
@@ -72,9 +55,11 @@ preferences([Ballot | Bs], AccIn) ->
 -spec select_winner(list(), map()) -> candidate().
 select_winner([ Cand ], _) -> Cand;
 select_winner(Candidates, Prefs) ->
-    ByMostVotes = fun(C1, C2) ->
+    ByLeastVotes = fun(C1, C2) ->
         maps:get(C1, maps:get(C2, Prefs), 0) <
         maps:get(C2, maps:get(C1, Prefs), 0)
     end,
-    Sorted = lists:sort(ByMostVotes, Candidates),
+    % sort by least votes, so the lowest magnitude for "least votes"
+    % (i.e., the winner, with the highest number of votes) is at the front.
+    Sorted = lists:sort(ByLeastVotes, Candidates),
     hd(Sorted).
