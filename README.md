@@ -13,3 +13,9 @@ An OTP library implementing the Schulze voting system
 ## Dialyzer
 
     $ rebar3 dialyzer
+
+## Elvis
+
+Download [elvis](https://github.com/inaka/elvis), then
+
+    $ elvis rock
