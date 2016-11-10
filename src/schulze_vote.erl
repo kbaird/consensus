@@ -29,6 +29,7 @@ make_candidate(Name) -> #candidate{name = Name}.
 
 most_votes({_, Xcnt}, {_, Ycnt}) -> Xcnt >= Ycnt.
 
+% TODO: implement https://en.wikipedia.org/wiki/Schulze_method#Computation instead
 winner([], Acc) when is_map(Acc) -> winner([], maps:to_list(Acc));
 winner([], Acc)                  -> hd(lists:sort(fun most_votes/2, Acc));
 winner([Ballot | Bs], Acc) ->
