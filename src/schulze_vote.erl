@@ -16,11 +16,12 @@ make_ballot(CandidateNames) ->
     Candidates = [ make_candidate(Name) || Name <- CandidateNames ],
     #ballot{candidates = Candidates}.
 
--spec winner([ballot(), ...]) -> candidate().
+-spec winner([ballot(), ...]) -> name().
 winner(Ballots) ->
     Prefs      = preferences(Ballots, #{}),
     Candidates = maps:keys(Prefs),
-    select_winner(Candidates, Prefs).
+    Winner     = select_winner(Candidates, Prefs),
+    Winner#candidate.name.
 
 %%====================================================================
 %% Internal functions

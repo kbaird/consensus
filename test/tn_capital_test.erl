@@ -31,7 +31,7 @@ tn_capital_case() ->
         lists:duplicate(17, BallotK)
     ]),
     Winner = schulze_vote:winner(Ballots),
-    ?assertEqual(nashville, Winner#candidate.name).
+    ?assertEqual(nashville, Winner).
 
 %%% PRIVATE FUNCTIONS
 

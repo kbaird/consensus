@@ -20,7 +20,7 @@ three_candidates_test_() ->
 three_candidates_one_voter_case() ->
     Ballot = schulze_vote:make_ballot([a, b, c]),
     Winner = schulze_vote:winner([Ballot]),
-    ?assertEqual(a, Winner#candidate.name).
+    ?assertEqual(a, Winner).
 
 three_candidates_majority_case() ->
     Ballot1 = schulze_vote:make_ballot([b, c, a]),
@@ -29,7 +29,7 @@ three_candidates_majority_case() ->
     Ballot4 = schulze_vote:make_ballot([a, b, c]),
     Ballots = [Ballot1, Ballot2, Ballot3, Ballot4],
     Winner  = schulze_vote:winner(Ballots),
-    ?assertEqual(a, Winner#candidate.name).
+    ?assertEqual(a, Winner).
 
 three_candidates_unanimous_case() ->
     Ballot1 = schulze_vote:make_ballot([a, b, c]),
@@ -38,7 +38,7 @@ three_candidates_unanimous_case() ->
     Ballot4 = schulze_vote:make_ballot([a, b, c]),
     Ballots = [Ballot1, Ballot2, Ballot3, Ballot4],
     Winner  = schulze_vote:winner(Ballots),
-    ?assertEqual(a, Winner#candidate.name).
+    ?assertEqual(a, Winner).
 
 %%% PRIVATE FUNCTIONS
 

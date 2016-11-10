@@ -19,7 +19,7 @@ one_candidate_test_() ->
 one_candidate_one_voter_case() ->
     Ballot = schulze_vote:make_ballot([a]),
     Winner = schulze_vote:winner([Ballot]),
-    ?assertEqual(a, Winner#candidate.name).
+    ?assertEqual(a, Winner).
 
 one_candidate_multiple_voter_case() ->
     Ballot1 = schulze_vote:make_ballot([a]),
@@ -28,7 +28,7 @@ one_candidate_multiple_voter_case() ->
     Ballot4 = schulze_vote:make_ballot([a]),
     Ballots = [Ballot1, Ballot2, Ballot3, Ballot4],
     Winner  = schulze_vote:winner(Ballots),
-    ?assertEqual(a, Winner#candidate.name).
+    ?assertEqual(a, Winner).
 
 %%% PRIVATE FUNCTIONS
 
