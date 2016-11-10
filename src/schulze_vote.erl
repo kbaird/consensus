@@ -11,7 +11,7 @@
 %%====================================================================
 %% API functions
 %%====================================================================
--spec make_ballot([candidate(), ...]) -> ballot().
+-spec make_ballot([name(), ...]) -> ballot().
 make_ballot(CandidateNames) ->
     Candidates = [ make_candidate(Name) || Name <- CandidateNames ],
     #ballot{candidates = Candidates}.
@@ -24,7 +24,7 @@ winner(Ballots) ->
 %%====================================================================
 %% Internal functions
 %%====================================================================
--spec make_candidate(atom()) -> candidate().
+-spec make_candidate(name()) -> candidate().
 make_candidate(Name) -> #candidate{name = Name}.
 
 most_votes({_, Xcnt}, {_, Ycnt}) -> Xcnt >= Ycnt.

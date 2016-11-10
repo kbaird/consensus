@@ -1,6 +1,8 @@
+-opaque name()      :: atom().
+
 -record(candidate,
     {
-        name :: atom()
+        name :: name()
     }).
 
 -record(ballot,
@@ -13,5 +15,6 @@
 
 -export_type([
     ballot/0,
-    candidate/0
+    candidate/0,
+    name/0
 ]).
