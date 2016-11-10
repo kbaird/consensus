@@ -18,14 +18,21 @@ make_ballot(CandidateNames) ->
 
 -spec winner([ballot(), ...]) -> candidate().
 winner(Ballots) ->
-    {Candidate, _} = winner(Ballots, #{}),
-    Candidate.
+    Prefs       = winner(Ballots, #{}),
+    Candidates1 = maps:keys(Prefs),
+    case Candidates1 of
+        [ Cand ] -> Cand;
+        _        -> ByMostVotes = fun(C1,C2) ->
+                        maps:get(C1, maps:get(C2, Prefs), 0) <
+                        maps:get(C2, maps:get(C1, Prefs), 0)
+                    end,
+                    Candidates = lists:sort(ByMostVotes, maps:keys(Prefs)),
+                    hd(Candidates)
+    end.
 
 %%====================================================================
 %% Internal functions
 %%====================================================================
--spec make_preferences([ballot(), ...]) -> map().
-make_preferences(Ballots) ->
 % Input: d[i,j], the number of voters who prefer candidate i to candidate j.
 % Output: p[i,j], the strength of the strongest path from candidate i to candidate j.
 
@@ -43,17 +50,30 @@ make_preferences(Ballots) ->
 %          for k from 1 to C
 %             if (i ≠ k and j ≠ k) then
 %                p[j,k] := max ( p[j,k], min ( p[j,i], p[i,k] ) )
-    #{}.
+
+-spec add_preferences(candidate(), [], map()) -> map().
+add_preferences(_Cand, [], Acc) -> Acc;
+add_preferences(Cand,  [ Next | Rest ], AccIn) ->
+    Acc1 = increment_vote_count(Cand, Next, AccIn),
+    Acc2 = add_preferences(Cand, Rest, Acc1),
+    add_preferences(Next, Rest, Acc2).
+
+-spec increment_vote_count(candidate(), [candidate()], map()) -> map().
+increment_vote_count(Cand, Next, PrefsIn) ->
+    WithCount   = maps:get(Cand, PrefsIn, maps:new()),
+    Count       = maps:get(Next, WithCount, 0),
+    Incremented = maps:put(Next, Count+1, WithCount),
+    maps:put(Cand, Incremented, PrefsIn).
 
 -spec make_candidate(name()) -> candidate().
 make_candidate(Name) -> #candidate{name = Name}.
 
-most_votes({_, Xcnt}, {_, Ycnt}) -> Xcnt >= Ycnt.
+winner([], Acc)              -> Acc;
+winner([Ballot | Bs], AccIn) ->
+    [ Cand | Rest ] = Ballot#ballot.candidates,
+    case Rest of
+        [] -> maps:put(Cand, winner, maps:new());
+        _  -> Acc = add_preferences(Cand, Rest, AccIn),
+              winner(Bs, Acc)
+    end.
 
-% TODO: implement https://en.wikipedia.org/wiki/Schulze_method#Computation instead
-winner([], Acc) when is_map(Acc) -> winner([], maps:to_list(Acc));
-winner([], Acc)                  -> hd(lists:sort(fun most_votes/2, Acc));
-winner([Ballot | Bs], Acc) ->
-    Candidate = hd(Ballot#ballot.candidates),
-    Count     = maps:get(Candidate, Acc, 0),
-    winner(Bs, maps:put(Candidate, Count+1, Acc)).
