@@ -17,7 +17,7 @@ make_ballot(CandidateNames) ->
     Candidates = [ make_candidate(Name) || Name <- CandidateNames ],
     #ballot{candidates = Candidates}.
 
--spec rankings([ballot(), ...]) -> [candidate(), ...].
+-spec rankings([ballot(), ...]) -> [name(), ...].
 rankings(Ballots) ->
     Prefs      = preferences(Ballots, #{}),
     Candidates = maps:keys(Prefs),
