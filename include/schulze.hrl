@@ -4,12 +4,11 @@
     {
         name :: name()
     }).
+-type candidate() :: #candidate{}.
 
 -record(ballot,
     {
         candidates :: [candidate(), ...]
     }).
-
--type candidate() :: #candidate{}.
--type ballot()    :: #ballot{}.
+-type ballot() :: #ballot{}.
 
