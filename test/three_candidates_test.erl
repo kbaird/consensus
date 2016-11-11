@@ -23,13 +23,16 @@ three_candidates_one_voter_case() ->
     ?assertEqual(a, Winner).
 
 three_candidates_majority_case() ->
-    Ballot1 = schulze_ballot:make([b, c, a]),
-    Ballot2 = schulze_ballot:make([a, b, c]),
-    Ballot3 = schulze_ballot:make([a, b, c]),
-    Ballot4 = schulze_ballot:make([a, b, c]),
-    Ballots = [Ballot1, Ballot2, Ballot3, Ballot4],
-    Winner  = schulze_vote:winner(Ballots),
-    ?assertEqual(a, Winner).
+    Ballot1  = schulze_ballot:make([c, b, a]),
+    Ballot2  = schulze_ballot:make([a, b, c]),
+    Ballot3  = schulze_ballot:make([a, c, b]),
+    Ballot4  = schulze_ballot:make([b, a, c]),
+    Ballot5  = schulze_ballot:make([a, c, b]),
+    Ballots  = [Ballot1, Ballot2, Ballot3, Ballot4, Ballot5],
+    Winner   = schulze_vote:winner(Ballots),
+    ?assertEqual(a, Winner),
+    Rankings = schulze_vote:rankings(Ballots),
+    ?assertEqual([a, c, b], Rankings).
 
 three_candidates_unanimous_case() ->
     Ballot1 = schulze_ballot:make([a, b, c]),
