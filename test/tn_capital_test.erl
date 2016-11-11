@@ -31,10 +31,10 @@ tn_capital_rankings_case() ->
 tn_ballots() ->
     % https://en.wikipedia.org/wiki/Condorcet_method
     %   #Example:_Voting_on_the_location_of_Tennessee.27s_capital
-    BallotM = schulze_vote:make_ballot([memphis, nashville, chattanooga, knoxville]),
-    BallotN = schulze_vote:make_ballot([nashville, chattanooga, knoxville, memphis]),
-    BallotC = schulze_vote:make_ballot([chattanooga, knoxville, nashville, memphis]),
-    BallotK = schulze_vote:make_ballot([knoxville, chattanooga, nashville, memphis]),
+    BallotM = schulze_ballot:make([memphis, nashville, chattanooga, knoxville]),
+    BallotN = schulze_ballot:make([nashville, chattanooga, knoxville, memphis]),
+    BallotC = schulze_ballot:make([chattanooga, knoxville, nashville, memphis]),
+    BallotK = schulze_ballot:make([knoxville, chattanooga, nashville, memphis]),
     lists:flatten([
         lists:duplicate(42, BallotM),
         lists:duplicate(26, BallotN),

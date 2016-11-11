@@ -1,4 +1,4 @@
--opaque name()      :: atom().
+-type name() :: atom().
 
 -record(candidate,
     {
@@ -10,11 +10,6 @@
         candidates :: [candidate(), ...]
     }).
 
--opaque candidate() :: #candidate{}.
--opaque ballot()    :: #ballot{}.
+-type candidate() :: #candidate{}.
+-type ballot()    :: #ballot{}.
 
--export_type([
-    ballot/0,
-    candidate/0,
-    name/0
-]).
