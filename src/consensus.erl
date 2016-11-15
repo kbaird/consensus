@@ -2,15 +2,28 @@
 
 %% API exports
 -export([
+    effective_num_parties/1,
     schulze_rankings/1,
     schulze_winner/1
 ]).
 
 -include("schulze.hrl").
+-type seat_share() :: number().
 
 %%====================================================================
 %% API functions
 %%====================================================================
+
+% Implement Markku Laakso and Rein Taagepera's index as described in
+% Arend Lijphart's Patterns of Democracy (1999), pp67-68.
+
+% Laakso, Markku and Rein Taagepera. 1979.
+% "'Effective' Number of Parties: A Measure with Application West Europe."
+% _Comparative Political Studies_ 12, no. 1 (April): 3-27.
+-spec effective_num_parties([{name(), seat_share()}, ...]) -> number().
+effective_num_parties(PartyShares) ->
+    1 / lists:foldl(fun({_, Share}, Sum) -> (Share * Share) + Sum end, 0, PartyShares).
+
 -spec schulze_rankings([ballot(), ...]) -> [name(), ...].
 schulze_rankings(Ballots) ->
     Prefs      = preferences(Ballots, #{}),
@@ -46,4 +59,3 @@ preferences([Ballot | Bs], AccIn) ->
         _  -> Acc = add_preferences(Cand, Rest, AccIn),
               preferences(Bs, Acc)
     end.
-
