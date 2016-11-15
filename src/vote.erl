@@ -1,9 +1,9 @@
--module(schulze_vote).
+-module(vote).
 
 %% API exports
 -export([
-    rankings/1,
-    winner/1
+    schulze_rankings/1,
+    schulze_winner/1
 ]).
 
 -include("schulze.hrl").
@@ -11,15 +11,15 @@
 %%====================================================================
 %% API functions
 %%====================================================================
--spec rankings([ballot(), ...]) -> [name(), ...].
-rankings(Ballots) ->
+-spec schulze_rankings([ballot(), ...]) -> [name(), ...].
+schulze_rankings(Ballots) ->
     Prefs      = preferences(Ballots, #{}),
     Candidates = maps:keys(Prefs),
     Ranked     = schulze_candidate:rank(Candidates, Prefs),
     [ C#candidate.name || C <- Ranked ].
 
--spec winner([ballot(), ...]) -> name().
-winner(Ballots) -> hd(rankings(Ballots)).
+-spec schulze_winner([ballot(), ...]) -> name().
+schulze_winner(Ballots) -> hd(schulze_rankings(Ballots)).
 
 %%====================================================================
 %% Internal functions
