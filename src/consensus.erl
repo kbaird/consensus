@@ -1,4 +1,4 @@
--module(vote).
+-module(consensus).
 
 %% API exports
 -export([
