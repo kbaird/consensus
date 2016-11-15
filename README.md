@@ -9,6 +9,8 @@ uses the [TN Capital
 example](https://en.wikipedia.org/wiki/Condorcet_method#Example:_Voting_on_the_location_of_Tennessee.27s_capital)
 from Wikipedia.
 
+I'm also adding other consensus-oriented ideas not directly related to Schulze voting. It made lead to a name change.
+
 ## Build
 
     $ rebar3 compile

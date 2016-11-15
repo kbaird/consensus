@@ -19,11 +19,11 @@ tn_capital_test_() ->
     }.
 
 tn_capital_winner_case() ->
-    Winner = schulze_vote:winner(tn_ballots()),
+    Winner = consensus:schulze_winner(tn_ballots()),
     ?assertEqual(nashville, Winner).
 
 tn_capital_rankings_case() ->
-    Rankings = schulze_vote:rankings(tn_ballots()),
+    Rankings = consensus:schulze_rankings(tn_ballots()),
     ?assertEqual([nashville, chattanooga, knoxville, memphis], Rankings).
 
 %%% PRIVATE FUNCTIONS
