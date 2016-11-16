@@ -21,8 +21,7 @@
 % "'Effective' Number of Parties: A Measure with Application West Europe."
 % _Comparative Political Studies_ 12, no. 1 (April): 3-27.
 -spec effective_num_parties([{party_name(), seat_share()}, ...]) -> number().
-effective_num_parties(PartyShares) ->
-    1 / lists:foldl(fun sum_shares/2, 0, PartyShares).
+effective_num_parties(PartyShares) -> 1 / sum_for(PartyShares).
 
 -spec schulze_rankings([ballot(), ...]) -> [name(), ...].
 schulze_rankings(Ballots) ->
@@ -60,4 +59,7 @@ preferences([Ballot | Bs], AccIn) ->
               preferences(Bs, Acc)
     end.
 
-sum_shares({_, Share}, Sum) -> (Share * Share) + Sum.
+sum_for(PartyShares) ->
+    lists:foldl(fun sum_share_squares/2, 0, PartyShares).
+
+sum_share_squares({_, Share}, Sum) -> (Share * Share) + Sum.
