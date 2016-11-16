@@ -18,7 +18,41 @@
 % Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg93.
 -spec cabinet_composition(atom(), [{party_name(), seat_share()}, ...]) ->
     [party_name(), ...].
-cabinet_composition(_Label, SeatShares) ->
+cabinet_composition(bargaining_proposition, SeatShares) ->
+    cabinet_composition(bp, SeatShares);
+cabinet_composition(bp, _SeatShares) ->
+    [];
+cabinet_composition(minimal_connected_winning, SeatShares) ->
+    cabinet_composition(mcw, SeatShares);
+cabinet_composition(minimum_connected_winning, SeatShares) ->
+    cabinet_composition(mcw, SeatShares);
+cabinet_composition(mcw, _SeatShares) ->
+    [];
+cabinet_composition(minimal_range, SeatShares) ->
+    cabinet_composition(mr, SeatShares);
+cabinet_composition(minimum_range, SeatShares) ->
+    cabinet_composition(mr, SeatShares);
+cabinet_composition(mr, _SeatShares) ->
+    [];
+cabinet_composition(minimal_winning_coalition, SeatShares) ->
+    cabinet_composition(mwc, SeatShares);
+cabinet_composition(minimum_winning_coalition, SeatShares) ->
+    cabinet_composition(mwc, SeatShares);
+cabinet_composition(mwc, _SeatShares) ->
+    [[]];
+cabinet_composition(minimal_size, SeatShares) ->
+    cabinet_composition(ms, SeatShares);
+cabinet_composition(minimum_size, SeatShares) ->
+    cabinet_composition(ms, SeatShares);
+cabinet_composition(ms, SeatShares) ->
+    Cabs    = cabinet_composition(mwc, SeatShares),
+    Sizes   = [ length(C) || C <- Cabs ],
+    [ MinSize | _ ] = lists:sort(Sizes),
+    [ SmallestCab || SmallestCab <- Cabs,
+                     length(SmallestCab) =:= MinSize ];
+cabinet_composition(policy_viable_coalition, SeatShares) ->
+    cabinet_composition(pvc, SeatShares);
+cabinet_composition(pvc, _SeatShares) ->
     [].
 
 % Implement Markku Laakso and Rein Taagepera's index as described in
