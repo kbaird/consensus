@@ -1,5 +1,7 @@
 # schulze-vote-erlang
 
+[![Build Status](https://semaphoreci.com/api/v1/kbaird/schulze-vote-erlang/branches/master/badge.svg)](https://semaphoreci.com/kbaird/schulze-vote-erlang)
+
 An OTP library implementing the [Schulze voting
 system](https://en.wikipedia.org/wiki/Schulze_method)
 
