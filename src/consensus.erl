@@ -18,8 +18,9 @@
 % Arend Lijphart's Patterns of Democracy (1999), pp67-68.
 
 % Laakso, Markku and Rein Taagepera. 1979.
-% "'Effective' Number of Parties: A Measure with Application West Europe."
+% "'Effective' Number of Parties: A Measure with Application to West Europe."
 % _Comparative Political Studies_ 12, no. 1 (April): 3-27.
+% http://cps.sagepub.com/content/12/1/3.extract
 -spec effective_num_parties([{party_name(), seat_share()}, ...]) -> number().
 effective_num_parties(PartyShares) -> 1 / sum_for(PartyShares).
 
