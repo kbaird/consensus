@@ -2,6 +2,7 @@
 
 %% API exports
 -export([
+    cabinet_composition/2,
     effective_num_parties/1,
     schulze_rankings/1,
     schulze_winner/1
@@ -13,6 +14,12 @@
 %%====================================================================
 %% API functions
 %%====================================================================
+
+% Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg93.
+-spec cabinet_composition(atom(), [{party_name(), seat_share()}, ...]) ->
+    [party_name(), ...].
+cabinet_composition(_Label, SeatShares) ->
+    [].
 
 % Implement Markku Laakso and Rein Taagepera's index as described in
 % Arend Lijphart's Patterns of Democracy (1999), pp67-68.
