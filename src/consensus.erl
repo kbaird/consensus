@@ -7,8 +7,8 @@
     schulze_winner/1
 ]).
 
+-include("parties.hrl").
 -include("schulze.hrl").
--type seat_share() :: number().
 
 %%====================================================================
 %% API functions
@@ -20,7 +20,7 @@
 % Laakso, Markku and Rein Taagepera. 1979.
 % "'Effective' Number of Parties: A Measure with Application West Europe."
 % _Comparative Political Studies_ 12, no. 1 (April): 3-27.
--spec effective_num_parties([{name(), seat_share()}, ...]) -> number().
+-spec effective_num_parties([{party_name(), seat_share()}, ...]) -> number().
 effective_num_parties(PartyShares) ->
     1 / lists:foldl(fun({_, Share}, Sum) -> (Share * Share) + Sum end, 0, PartyShares).
 
