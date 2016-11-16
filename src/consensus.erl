@@ -22,7 +22,7 @@
 % _Comparative Political Studies_ 12, no. 1 (April): 3-27.
 -spec effective_num_parties([{party_name(), seat_share()}, ...]) -> number().
 effective_num_parties(PartyShares) ->
-    1 / lists:foldl(fun({_, Share}, Sum) -> (Share * Share) + Sum end, 0, PartyShares).
+    1 / lists:foldl(fun sum_shares/2, 0, PartyShares).
 
 -spec schulze_rankings([ballot(), ...]) -> [name(), ...].
 schulze_rankings(Ballots) ->
@@ -59,3 +59,5 @@ preferences([Ballot | Bs], AccIn) ->
         _  -> Acc = add_preferences(Cand, Rest, AccIn),
               preferences(Bs, Acc)
     end.
+
+sum_shares({_, Share}, Sum) -> (Share * Share) + Sum.
