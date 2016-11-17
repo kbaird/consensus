@@ -44,11 +44,10 @@ compose(ms, SeatShares) ->
 compose(minimal_winning_coalition, SeatShares) -> compose(mwc, SeatShares);
 compose(minimum_winning_coalition, SeatShares) -> compose(mwc, SeatShares);
 compose(mwc, SeatShares) ->
-    PartyNames = [ Name || {Name, _Cnt} <- SeatShares ],
-    SeatCounts = [ Cnt  || {_Name, Cnt} <- SeatShares ],
-    TotalSeats = lists:foldl(fun(Cnt, Sum) -> Cnt + Sum end, 0, SeatCounts),
-    trim_mwc(PartyNames, TotalSeats, SeatCounts, []);
-
+    Perms       = permutations(SeatShares),
+    Coalitions  = lists:filter(fun is_coalition/1, Perms),
+    Winners     = lists:filter(fun(C) -> is_winner(C, SeatShares) end, Coalitions),
+    lists:filter(fun(C) -> not too_large(C, Perms) end, Winners).
 
 compose(policy_viable_coalition, SeatShares) -> compose(pvc, SeatShares);
 compose(pvc, _SeatShares) ->
@@ -57,6 +56,21 @@ compose(pvc, _SeatShares) ->
 %%====================================================================
 %% Internal functions
 %%====================================================================
-trim_mwc([], _TotalSeats, _SeatShares, Acc) -> Acc;
-trim_mwc([ PartyName | PartyNames ], TotalSeats, SeatShares, Acc) ->
-    []. % TODO
+is_coalition(Cand) -> length(Cand) > 1.
+
+is_winner(Coalition, SeatShares) ->
+    share(Coalition) > share(SeatShares) / 2.0.
+
+permutations([]) -> [[]];
+permutations(L)  ->
+    [[H|T] || H <- L, T <- permutations(L--[H])].
+
+share(L) ->
+    lists:foldl(fun({_N, Cnt}, Sum) -> Cnt + Sum end, 0, L).
+
+too_large(C, Perms) ->
+    InC = fun(Party) -> lists:member(Party, C) end,
+    lists:any([ Perm || Perm    <- Perms,
+                        Parties <- Perm,
+                        length(Parties) < length(C),
+                        lists:all(InC, Parties) ]).
