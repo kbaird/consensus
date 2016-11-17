@@ -15,10 +15,7 @@
 -spec compose(atom(), [{party_name(), number()}]) -> [any()].
 compose(bargaining_proposition, SeatShares) -> compose(bp, SeatShares);
 compose(bp, SeatShares) ->
-    JustParties = compose(mwc, SeatShares),
-    NumParties  = [ length(Ps) || Ps <- JustParties ],
-    Min         = lists:min(NumParties),
-    [ Cab || Cab <- JustParties, length(Cab) =:= Min ];
+    min_by(fun length/1, SeatShares);
 
 
 compose(minimal_connected_winning, SeatShares) -> compose(mcw, SeatShares);
