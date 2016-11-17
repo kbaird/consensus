@@ -35,21 +35,13 @@ compose(mcw, SeatShares) ->
 compose(minimal_range, SeatShares) -> compose(mr, SeatShares);
 compose(minimum_range, SeatShares) -> compose(mr, SeatShares);
 compose(mr, SeatShares) ->
-    Cabs        = mwc_with_seats(SeatShares),
-    Ranges      = [ range(C) || C <- Cabs ],
-    MinRange    = lists:min(Ranges),
-    WithinRange = [ Cab || Cab <- Cabs, range(Cab) =:= MinRange ],
-    just_party_names(WithinRange);
+    min_by(fun range/1, SeatShares);
 
 
 compose(minimal_size, SeatShares) -> compose(ms, SeatShares);
 compose(minimum_size, SeatShares) -> compose(ms, SeatShares);
 compose(ms, SeatShares) ->
-    Cabs      = mwc_with_seats(SeatShares),
-    Shares    = [ share(C) || C <- Cabs ],
-    MinSize   = lists:min(Shares),
-    WithSeats = [ Cab || Cab <- Cabs, share(Cab) =:= MinSize ],
-    just_party_names(WithSeats);
+    min_by(fun share/1, SeatShares);
 
 
 compose(minimal_winning_coalition, SeatShares) -> compose(mwc, SeatShares);
@@ -97,6 +89,13 @@ is_winner(Coalition, SeatShares) ->
 
 just_party_names(Ls) ->
     [ lists:map(fun({Name, _Cnt}) -> Name end, L) || L <- Ls ].
+
+min_by(Fun, SeatShares) ->
+    Cabs    = mwc_with_seats(SeatShares),
+    Vals    = [ Fun(C) || C <- Cabs ],
+    MinVal  = lists:min(Vals),
+    WithSeats = [ Cab || Cab <- Cabs, Fun(Cab) =:= MinVal ],
+    just_party_names(WithSeats).
 
 mwc_with_seats(SeatShares) ->
     Winners = winning_coalitions(SeatShares),
