@@ -12,8 +12,6 @@
 %%====================================================================
 
 % Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg93.
--spec compose(atom(), [{party_name(), seat_share()}, ...]) ->
-    [party_name(), ...].
 compose(bargaining_proposition, SeatShares) -> compose(bp, SeatShares);
 compose(bp, SeatShares) ->
     JustParties = compose(mwc, SeatShares),
@@ -90,7 +88,7 @@ contiguous(Cabinet) ->
                 lists:member(PartyVal, PartyVals)
               end, AllParties).
 
-is_coalition([{_,_}]) -> false;
+is_coalition([{_, _}]) -> false;
 is_coalition(_)       -> true.
 
 is_winner(Coalition, SeatShares) ->
@@ -145,7 +143,7 @@ uniqueify(Ls) ->
     lists:usort([ lists:usort(L) || L <- Ls ]).
 
 winning_coalitions(SeatShares) ->
-    PSet       	= powerset(SeatShares),
+    PSet        = powerset(SeatShares),
     Unique      = uniqueify(PSet),
     Coalitions  = lists:filter(fun is_coalition/1, Unique),
     lists:filter(fun(C) -> is_winner(C, SeatShares) end, Coalitions).

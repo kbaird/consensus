@@ -16,8 +16,6 @@
 %%====================================================================
 
 % Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg93.
--spec cabinet_composition(atom(), [{party_name(), seat_share()}, ...]) ->
-    [party_name(), ...].
 cabinet_composition(Label, SeatShares) ->
     consensus_cabinet:compose(Label, SeatShares).
 
