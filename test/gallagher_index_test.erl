@@ -28,6 +28,6 @@ gallagher_index_us2016potus_case() ->
 
 %%% PRIVATE FUNCTIONS
 
-uk2015parl()  -> [  {con, 330, 36.1}, {lab, 232, 29.0},
-                    {snp, 56,   1.7}, {lib,   8, 23.0} ].
-us2016potus() -> [ {trump, 306, 46.72}, {clinton, 232, 47.73} ].
+uk2015parl()  -> [  {con, 330, 36.9}, {lab, 232, 30.4},
+                    {snp, 56,   4.7}, {lib,   8,  7.9} ].
+us2016potus() -> [ {gop, 306, 46.72}, {dem, 232, 47.73} ].

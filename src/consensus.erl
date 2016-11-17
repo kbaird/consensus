@@ -31,7 +31,9 @@ cabinet_composition(Label, SeatShares) ->
 effective_num_parties(PartyShares) -> 1 / sum_for(PartyShares).
 
 -spec gallagher_index([{party_name(), seat_share(), vote_share()}, ...]) -> number().
-gallagher_index(ElectionResults) ->
+gallagher_index(_ElectionResults) ->
+    % TODO: convert seat totals into seat_pcs
+    % G = sqrt(1/2 * sum( (vote_pc - seat_pc) ** 2 ))
     1.
 
 -spec schulze_rankings([ballot(), ...]) -> [name(), ...].
