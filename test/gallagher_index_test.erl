@@ -20,11 +20,13 @@ gallagher_index_test_() ->
 
 gallagher_index_uk2015parl_case() ->
     GIdx = consensus:gallagher_index(uk2015parl()),
-    ?assertEqual(foo, GIdx).
+    ?assert(GIdx > 35.15),
+    ?assert(GIdx < 35.20).
 
 gallagher_index_us2016potus_case() ->
     GIdx = consensus:gallagher_index(us2016potus()),
-    ?assertEqual(foo, GIdx).
+    ?assert(GIdx > 46.70),
+    ?assert(GIdx < 46.75).
 
 %%% PRIVATE FUNCTIONS
 
