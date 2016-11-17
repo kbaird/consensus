@@ -30,8 +30,12 @@ compose(mcw, _SeatShares) ->
 
 compose(minimal_range, SeatShares) -> compose(mr, SeatShares);
 compose(minimum_range, SeatShares) -> compose(mr, SeatShares);
-compose(mr, _SeatShares) ->
-    [];
+compose(mr, SeatShares) ->
+    Cabs        = mwc_with_seats(SeatShares),
+    Ranges      = [ range(C) || C <- Cabs ],
+    MinRange    = lists:min(Ranges),
+    WithinRange = [ Cab || Cab <- Cabs, range(Cab) =:= MinRange ],
+    just_party_names(WithinRange);
 
 
 compose(minimal_size, SeatShares) -> compose(ms, SeatShares);
@@ -78,6 +82,13 @@ powerset([H|T]) ->
 powerset(_, [],    Acc) -> Acc;
 powerset(X, [H|T], Acc) ->
     powerset(X, T, [[X|H]|Acc]).
+
+range(Cabinet) ->
+    PartyNames  = [ PartyName || {PartyName, _} <- Cabinet ],
+    SortedNames = lists:sort(PartyNames),
+    [ Hi | _ ]  = lists:reverse(SortedNames),
+    [ Lo | _ ]  = SortedNames,
+    hd(atom_to_list(Hi)) - hd(atom_to_list(Lo)).
 
 share({_Name, Cnt}) -> Cnt;
 share(L) ->
