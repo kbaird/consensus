@@ -48,7 +48,7 @@ compose(mwc, SeatShares) ->
     Unique      = uniqueify(PSet),
     Coalitions  = lists:filter(fun is_coalition/1, Unique),
     Winners     = lists:filter(fun(C) -> is_winner(C, SeatShares) end, Coalitions),
-    WithSeats   = lists:filter(fun(C) -> not too_large(C, PSet) end, Winners),
+    WithSeats   = lists:filter(fun(C) -> not too_large(C, Winners) end, Winners),
     [ lists:map(fun({Name, _Cnt}) -> Name end, WithSeat) || WithSeat <- WithSeats ];
 
 compose(policy_viable_coalition, SeatShares) -> compose(pvc, SeatShares);
@@ -77,13 +77,14 @@ share({_Name, Cnt}) -> Cnt;
 share(L) ->
     lists:foldl(fun({_N, Cnt}, Sum) -> Cnt + Sum end, 0, L).
 
-too_large(C, _Perms) ->
-    length(C) > 3.
-    %InC = fun(Party) -> lists:member(Party, C) end,
-    %lists:any([ Perm || Perm    <- Perms,
-    %                    Parties <- Perm,
-    %                    length(Parties) < length(C),
-    %                    lists:all(InC, Parties) ]).
+smallers(C, Coalitions) ->
+    [ Coalition ||  Coalition  <- Coalitions,
+                    length(Coalition) < length(C),
+                    lists:all(fun(Party) -> lists:member(Party, C) end, Coalition) ].
+
+too_large(C, Coalitions) ->
+    Smallers = smallers(C, Coalitions),
+    length(Smallers) > 0.
 
 uniqueify(Ls) ->
     lists:usort([ lists:usort(L) || L <- Ls ]).
