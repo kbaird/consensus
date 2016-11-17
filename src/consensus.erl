@@ -3,6 +3,7 @@
 %% API exports
 -export([
     cabinet_composition/2,
+    gallagher_index/1,
     effective_num_parties/1,
     schulze_rankings/1,
     schulze_winner/1
@@ -28,6 +29,10 @@ cabinet_composition(Label, SeatShares) ->
 % http://cps.sagepub.com/content/12/1/3.extract
 -spec effective_num_parties([{party_name(), seat_share()}, ...]) -> number().
 effective_num_parties(PartyShares) -> 1 / sum_for(PartyShares).
+
+-spec gallagher_index([{party_name(), seat_share(), vote_share()}, ...]) -> number().
+gallagher_index(ElectionResults) ->
+    1.
 
 -spec schulze_rankings([ballot(), ...]) -> [name(), ...].
 schulze_rankings(Ballots) ->

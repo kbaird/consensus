@@ -1,2 +1,3 @@
 -type party_name() :: atom().
 -type seat_share() :: number().
+-type vote_share() :: number().
