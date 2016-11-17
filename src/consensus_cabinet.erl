@@ -12,6 +12,7 @@
 %%====================================================================
 
 % Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg93.
+-spec compose(atom(), [{party_name(), number()}]) -> [any()].
 compose(bargaining_proposition, SeatShares) -> compose(bp, SeatShares);
 compose(bp, SeatShares) ->
     JustParties = compose(mwc, SeatShares),
