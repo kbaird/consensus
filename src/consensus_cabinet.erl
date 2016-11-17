@@ -15,7 +15,7 @@
 -spec compose(atom(), [{party_name(), number()}]) -> [any()].
 compose(bargaining_proposition, SeatShares) -> compose(bp, SeatShares);
 compose(bp, SeatShares) ->
-    min_by(fun length/1, SeatShares);
+    party_names_min_by(fun length/1, SeatShares);
 
 
 compose(minimal_connected_winning, SeatShares) -> compose(mcw, SeatShares);
@@ -32,13 +32,13 @@ compose(mcw, SeatShares) ->
 compose(minimal_range, SeatShares) -> compose(mr, SeatShares);
 compose(minimum_range, SeatShares) -> compose(mr, SeatShares);
 compose(mr, SeatShares) ->
-    min_by(fun range/1, SeatShares);
+    party_names_min_by(fun range/1, SeatShares);
 
 
 compose(minimal_size, SeatShares) -> compose(ms, SeatShares);
 compose(minimum_size, SeatShares) -> compose(ms, SeatShares);
 compose(ms, SeatShares) ->
-    min_by(fun share/1, SeatShares);
+    party_names_min_by(fun share/1, SeatShares);
 
 
 compose(minimal_winning_coalition, SeatShares) -> compose(mwc, SeatShares);
@@ -69,6 +69,7 @@ centrist_party(Parties) ->
     Sub = lists:sublist(Parties, Mod+1, Mod),
     centrist_party(Sub).
 
+% Does this coalition avoid gaps between parties?
 contiguous(Cabinet) ->
     PartyNames  = party_names(Cabinet),
     PartyVals   = [ atom_to_ascii(Name) || Name <- PartyNames ],
@@ -81,13 +82,14 @@ contiguous(Cabinet) ->
 is_coalition([{_, _}]) -> false;
 is_coalition(_)       -> true.
 
+% Does this coalition command a majority of seats?
 is_winner(Coalition, SeatShares) ->
     share(Coalition) > share(SeatShares) / 2.0.
 
 just_party_names(Ls) ->
     [ lists:map(fun({Name, _Cnt}) -> Name end, L) || L <- Ls ].
 
-min_by(Fun, SeatShares) ->
+party_names_min_by(Fun, SeatShares) ->
     Cabs    = mwc_with_seats(SeatShares),
     Vals    = [ Fun(C) || C <- Cabs ],
     MinVal  = lists:min(Vals),
@@ -117,10 +119,12 @@ powerset(_, [],    Acc) -> Acc;
 powerset(X, [H|T], Acc) ->
     powerset(X, T, [[X|H]|Acc]).
 
+% How many steps between the :leftmost" partner and the "rightmost" partner?
 range(Cabinet) ->
     {Lo, Hi} = party_endpoints(Cabinet),
     atom_to_ascii(Hi) - atom_to_ascii(Lo).
 
+% How many seats does this coalition fill?
 share({_Name, Cnt}) -> Cnt;
 share(L) ->
     lists:foldl(fun({_N, Cnt}, Sum) -> Cnt + Sum end, 0, L).
@@ -132,6 +136,7 @@ smallers(Cabinet, Coalitions) ->
                         lists:member(Party, Cabinet)
                     end, Coalition) ].
 
+% Are any elements in arg2 subsets of arg1?
 too_large(C, Coalitions) ->
     Smallers = smallers(C, Coalitions),
     length(Smallers) > 0.
