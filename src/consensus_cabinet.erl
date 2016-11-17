@@ -60,13 +60,26 @@ compose(mwc, SeatShares) ->
     just_party_names(WithSeats);
 
 compose(policy_viable_coalition, SeatShares) -> compose(pvc, SeatShares);
-compose(pvc, _SeatShares) ->
-    [].
+compose(pvc, SeatShares) ->
+    Cabinets    = mwc_with_seats(SeatShares),
+    PartyNames  = party_names(SeatShares),
+    CenterPty   = centrist_party(PartyNames),
+    WithCtrPty  = [ Cab ||  Cab <- Cabinets,
+                            lists:member(CenterPty, party_names(Cab)) ],
+    just_party_names(WithCtrPty).
 
 %%====================================================================
 %% Internal functions
 %%====================================================================
 atom_to_ascii(Atom) -> hd(atom_to_list(Atom)).
+
+centrist_party([Name])    -> Name;
+centrist_party([Name, _]) -> Name;
+centrist_party(Parties) ->
+    Len = length(Parties),
+    Mod = trunc(Len / 2),
+    Sub = lists:sublist(Parties, Mod+1, Mod),
+    centrist_party(Sub).
 
 contiguous(Cabinet) ->
     PartyNames  = party_names(Cabinet),
