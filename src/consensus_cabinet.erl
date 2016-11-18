@@ -12,7 +12,7 @@
 %%====================================================================
 
 % Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg93.
--spec compose(atom(), [party_result()]) -> [[party_name()]].
+-spec compose(atom(), [party_result()]) -> cabinet().
 compose(bargaining_proposition, SeatShares) -> compose(bp, SeatShares);
 compose(bp, SeatShares) ->
     party_names_min_by(fun length/1, SeatShares);
@@ -60,6 +60,7 @@ all_in(Inner, All) ->
 
 atom_to_ascii(Atom) -> hd(atom_to_list(Atom)).
 
+-spec centrist_party([party_name()]) -> party_name().
 centrist_party([Name])    -> Name;
 centrist_party([Name, _]) -> Name;
 centrist_party(Parties) ->
@@ -68,6 +69,7 @@ centrist_party(Parties) ->
     centrist_party(Sub).
 
 % Does this coalition avoid gaps between parties?
+-spec contiguous([cabinet()]) -> boolean().
 contiguous(Cabinet) ->
     PartyNames  = party_names(Cabinet),
     PartyVals   = [ atom_to_ascii(Name) || Name <- PartyNames ],
