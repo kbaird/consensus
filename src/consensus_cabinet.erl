@@ -114,7 +114,7 @@ powerset([H|T]) ->
 powerset(_, [],    Acc) -> Acc;
 powerset(X, [H|T], Acc) -> powerset(X, T, [[X|H]|Acc]).
 
-% How many steps between the :leftmost" partner and the "rightmost" partner?
+% How many steps between the "leftmost" partner and the "rightmost" partner?
 range(Cabinet) ->
     {Lo, Hi} = party_endpoints(Cabinet),
     atom_to_ascii(Hi) - atom_to_ascii(Lo).
