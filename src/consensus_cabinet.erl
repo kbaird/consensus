@@ -12,7 +12,7 @@
 %%====================================================================
 
 % Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg93.
--spec compose(atom(), [{party_name(), seat_share()}]) -> [any()].
+-spec compose(atom(), [any()]) -> [any()].
 compose(bargaining_proposition, SeatShares) -> compose(bp, SeatShares);
 compose(bp, SeatShares) ->
     party_names_min_by(fun length/1, SeatShares);
@@ -75,15 +75,15 @@ contiguous(Cabinet) ->
     AllParties  = lists:seq(atom_to_ascii(Lo), atom_to_ascii(Hi)),
     all_in(PartyVals, AllParties).
 
-is_coalition([{_, _}]) -> false;
-is_coalition(_)        -> true.
+is_coalition([ _ ]) -> false;
+is_coalition(_)     -> true.
 
 % Does this coalition command a majority of seats?
 is_winner(Coalition, SeatShares) ->
     share(Coalition) > share(SeatShares) / 2.0.
 
 just_party_names(Ls) ->
-    [ lists:map(fun({Name, _Cnt}) -> Name end, L) || L <- Ls ].
+    [ lists:map(fun(Res) -> Res#party_result.name end, L) || L <- Ls ].
 
 party_names_min_by(Fun, SeatShares) ->
     Cabs    = mwc_with_seats(SeatShares),
@@ -104,7 +104,7 @@ party_endpoints(Cabinet) ->
     {Lo, Hi}.
 
 party_names(Cabinet) ->
-    [ PartyName || {PartyName, _} <- Cabinet ].
+    [ Res#party_result.name || Res <- Cabinet ].
 
 powerset([]) -> [[]];
 powerset([H|T]) ->
@@ -120,9 +120,9 @@ range(Cabinet) ->
     atom_to_ascii(Hi) - atom_to_ascii(Lo).
 
 % How many seats does this coalition fill?
-share({_Name, Cnt}) -> Cnt;
+share(#party_result{seat_share = Share}) -> Share;
 share(L) ->
-    lists:foldl(fun({_N, Cnt}, Sum) -> Cnt + Sum end, 0, L).
+    lists:foldl(fun(#party_result{seat_share = Share}, Sum) -> Share + Sum end, 0, L).
 
 smallers(Cabinet, Coalitions) ->
     [ Coalition ||  Coalition  <- Coalitions,

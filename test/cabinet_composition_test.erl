@@ -3,6 +3,8 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
+-include("parties.hrl").
+
 % cabinet_composition
 
 cabinet_composition_setup()     -> ok.
@@ -58,4 +60,10 @@ cabinet_composition_pvc_case() ->
 
 %%% PRIVATE FUNCTIONS
 
-parliament() -> [ {a, 8}, {b, 21}, {c, 26}, {d, 12}, {e, 33} ].
+parliament() -> [
+    #party_result{name = a, seat_share = 8},
+    #party_result{name = b, seat_share = 21},
+    #party_result{name = c, seat_share = 26},
+    #party_result{name = d, seat_share = 12},
+    #party_result{name = e, seat_share = 33}
+].
