@@ -82,8 +82,8 @@ is_coalition(_)     -> true.
 is_winner(Coalition, SeatShares) ->
     share(Coalition) > share(SeatShares) / 2.0.
 
-just_party_names(Ls) ->
-    [ party_names(Cab) || Cab <- Ls ].
+just_party_names(Cabs) ->
+    [ party_names(Cab) || Cab <- Cabs ].
 
 party_names_min_by(Fun, SeatShares) ->
     Cabs    = mwc_with_seats(SeatShares),
