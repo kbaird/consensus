@@ -1,9 +1,9 @@
-# schulze-vote-erlang
+# consensus
 
 [![Build Status](https://semaphoreci.com/api/v1/kbaird/schulze-vote-erlang/branches/master/badge.svg)](https://semaphoreci.com/kbaird/schulze-vote-erlang)
 
-An OTP library implementing consensus-oriented political functions, mainly the [Schulze voting
-system](https://en.wikipedia.org/wiki/Schulze_method)
+An OTP library implementing consensus-oriented political functions, including the
+[Schulze voting method](https://en.wikipedia.org/wiki/Schulze_method)
 
 The [main non-trivial test
 file](https://github.com/kbaird/schulze-vote-erlang/blob/master/test/tn_capital_test.erl)

@@ -1,5 +1,6 @@
 {application, consensus,
- [{description, "An OTP library"},
+ [{description, "An OTP library implementing consensus-oriented political functions, including
+ the Sculze voting method"},
   {vsn, "0.1.0"},
   {registered, []},
   {applications,
