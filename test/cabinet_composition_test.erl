@@ -61,9 +61,9 @@ cabinet_composition_pvc_case() ->
 %%% PRIVATE FUNCTIONS
 
 parliament() -> [
-    #party_result{name = a, seat_share = 8},
-    #party_result{name = b, seat_share = 21},
-    #party_result{name = c, seat_share = 26},
-    #party_result{name = d, seat_share = 12},
-    #party_result{name = e, seat_share = 33}
+    consensus_party:make(a, 8),
+    consensus_party:make(b, 21),
+    consensus_party:make(c, 26),
+    consensus_party:make(d, 12),
+    consensus_party:make(e, 33)
 ].
