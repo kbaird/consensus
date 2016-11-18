@@ -76,7 +76,7 @@ contiguous(Cabinet) ->
     all_in(PartyVals, AllParties).
 
 is_coalition([{_, _}]) -> false;
-is_coalition(_)       -> true.
+is_coalition(_)        -> true.
 
 % Does this coalition command a majority of seats?
 is_winner(Coalition, SeatShares) ->
