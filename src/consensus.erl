@@ -27,10 +27,10 @@ cabinet_composition(Label, SeatShares) ->
 % "'Effective' Number of Parties: A Measure with Application to West Europe."
 % _Comparative Political Studies_ 12, no. 1 (April): 3-27.
 % http://cps.sagepub.com/content/12/1/3.extract
--spec effective_num_parties([{party_name(), seat_share()}, ...]) -> number().
+-spec effective_num_parties([party_result(), ...]) -> number().
 effective_num_parties(PartyShares) -> 1 / sum_for(PartyShares).
 
--spec gallagher_index([{party_name(), seat_share(), vote_share()}, ...]) -> number().
+-spec gallagher_index([party_result(), ...]) -> number().
 gallagher_index(ElectionResults) ->
     consensus_index:gallagher(ElectionResults).
 
@@ -49,5 +49,6 @@ schulze_winner(Ballots) ->
 sum_for(PartyShares) ->
     lists:foldl(fun sum_share_squares/2, 0, PartyShares).
 
-sum_share_squares({_, Share}, Sum) -> (Share * Share) + Sum.
+sum_share_squares(#party_result{seat_share = Share}, Sum) ->
+    (Share * Share) + Sum.
 

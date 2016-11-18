@@ -12,7 +12,7 @@
 %% API functions
 %%====================================================================
 
--spec gallagher([{party_name(), seat_share(), vote_share()}, ...]) -> number().
+-spec gallagher([party_result(), ...]) -> number().
 gallagher(ElectionResults) ->
     PCs = seat_totals_to_percentages(ElectionResults),
     Sum = sum_squares_of_pc_diffs(PCs),
@@ -25,12 +25,16 @@ gallagher(ElectionResults) ->
 
 seat_totals_to_percentages(SeatTotals) ->
     TotalSeats = lists:foldl(fun sum_seats/2, 0, SeatTotals),
-    [ {Name, Seats/TotalSeats, V} || {Name, Seats, V} <- SeatTotals ].
+    [ consensus_party:make(Name, Seats/TotalSeats, V) ||
+        #party_result{name       = Name,
+                      seat_share = Seats,
+                      vote_share = V} <- SeatTotals ].
 
-sum_diff_squares({_, SeatPC, VotePC}, Sum) ->
+sum_diff_squares(#party_result{seat_share = SeatPC,
+                               vote_share = VotePC}, Sum) ->
     ((VotePC - SeatPC) * (VotePC - SeatPC)) + Sum.
 
-sum_seats({_, Seats, _}, Sum) -> Seats + Sum.
+sum_seats(#party_result{seat_share = Seats}, Sum) -> Seats + Sum.
 
 sum_squares_of_pc_diffs(ElectionResults) ->
     lists:foldl(fun sum_diff_squares/2, 0, ElectionResults).
