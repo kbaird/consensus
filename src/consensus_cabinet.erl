@@ -12,7 +12,7 @@
 %%====================================================================
 
 % Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg93.
--spec compose(atom(), [{party_name(), number()}]) -> [any()].
+-spec compose(atom(), [{party_name(), seat_share()}]) -> [any()].
 compose(bargaining_proposition, SeatShares) -> compose(bp, SeatShares);
 compose(bp, SeatShares) ->
     party_names_min_by(fun length/1, SeatShares);
