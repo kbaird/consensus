@@ -20,11 +20,11 @@ compose(bp, SeatShares) ->
 compose(minimal_connected_winning, SeatShares) -> compose(mcw, SeatShares);
 compose(minimum_connected_winning, SeatShares) -> compose(mcw, SeatShares);
 compose(mcw, SeatShares) ->
-    WithSeats  = winning_coalitions(SeatShares),
-    Contiguous = lists:filter(fun contiguous/1, WithSeats),
-    WithinRngs = lists:filter(fun(C) ->
-                    not too_large(C, Contiguous) end,
-                 Contiguous),
+    WithSeats   = winning_coalitions(SeatShares),
+    Contiguous  = lists:filter(fun contiguous/1, WithSeats),
+    WithinRngs  = lists:filter(fun(C) ->
+                      not too_large(C, Contiguous) end,
+                  Contiguous),
     just_party_names(WithinRngs);
 
 compose(minimal_range, SeatShares) -> compose(mr, SeatShares);
@@ -40,7 +40,7 @@ compose(ms, SeatShares) ->
 compose(minimal_winning_coalition, SeatShares) -> compose(mwc, SeatShares);
 compose(minimum_winning_coalition, SeatShares) -> compose(mwc, SeatShares);
 compose(mwc, SeatShares) ->
-    WithSeats  = mwc_with_seats(SeatShares),
+    WithSeats   = mwc_with_seats(SeatShares),
     just_party_names(WithSeats);
 
 compose(policy_viable_coalition, SeatShares) -> compose(pvc, SeatShares);
