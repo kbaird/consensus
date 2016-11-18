@@ -83,7 +83,7 @@ is_winner(Coalition, SeatShares) ->
     share(Coalition) > share(SeatShares) / 2.0.
 
 just_party_names(Ls) ->
-    [ lists:map(fun(#party_result{name = N}) -> N end, L) || L <- Ls ].
+    [ party_names(Cab) || Cab <- Ls ].
 
 party_names_min_by(Fun, SeatShares) ->
     Cabs    = mwc_with_seats(SeatShares),
@@ -104,7 +104,7 @@ party_endpoints(Cabinet) ->
     {Lo, Hi}.
 
 party_names(Cabinet) ->
-    [ Res#party_result.name || Res <- Cabinet ].
+    [ P#party_result.name || P <- Cabinet ].
 
 powerset([]) -> [[]];
 powerset([H|T]) ->
