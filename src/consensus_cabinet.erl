@@ -122,7 +122,8 @@ range(Cabinet) ->
 % How many seats does this coalition fill?
 share(#party_result{seat_share = Share}) -> Share;
 share(L) ->
-    lists:foldl(fun(#party_result{seat_share = Share}, Sum) -> Share + Sum end, 0, L).
+    SumShares = fun(P, Sum) -> share(P) + Sum end,
+    lists:foldl(SumShares, 0, L).
 
 smallers(Cabinet, Coalitions) ->
     [ Coalition ||  Coalition  <- Coalitions,
