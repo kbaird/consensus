@@ -83,7 +83,7 @@ is_winner(Coalition, SeatShares) ->
     share(Coalition) > share(SeatShares) / 2.0.
 
 just_party_names(Ls) ->
-    [ lists:map(fun(Res) -> Res#party_result.name end, L) || L <- Ls ].
+    [ lists:map(fun(#party_result{name = N}) -> N end, L) || L <- Ls ].
 
 party_names_min_by(Fun, SeatShares) ->
     Cabs    = mwc_with_seats(SeatShares),
