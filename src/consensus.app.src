@@ -1,4 +1,4 @@
-{application, schulze_vote,
+{application, consensus,
  [{description, "An OTP library"},
   {vsn, "0.1.0"},
   {registered, []},
@@ -9,7 +9,7 @@
   {env,[]},
   {modules, []},
 
-  {maintainers, []},
+  {maintainers, ["kcbaird@world.oberlin.edu"]},
   {licenses, []},
   {links, []}
  ]}.
