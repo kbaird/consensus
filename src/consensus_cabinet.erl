@@ -17,7 +17,6 @@ compose(bargaining_proposition, SeatShares) -> compose(bp, SeatShares);
 compose(bp, SeatShares) ->
     party_names_min_by(fun length/1, SeatShares);
 
-
 compose(minimal_connected_winning, SeatShares) -> compose(mcw, SeatShares);
 compose(minimum_connected_winning, SeatShares) -> compose(mcw, SeatShares);
 compose(mcw, SeatShares) ->
@@ -28,18 +27,15 @@ compose(mcw, SeatShares) ->
                  Contiguous),
     just_party_names(WithinRngs);
 
-
 compose(minimal_range, SeatShares) -> compose(mr, SeatShares);
 compose(minimum_range, SeatShares) -> compose(mr, SeatShares);
 compose(mr, SeatShares) ->
     party_names_min_by(fun range/1, SeatShares);
 
-
 compose(minimal_size, SeatShares) -> compose(ms, SeatShares);
 compose(minimum_size, SeatShares) -> compose(ms, SeatShares);
 compose(ms, SeatShares) ->
     party_names_min_by(fun share/1, SeatShares);
-
 
 compose(minimal_winning_coalition, SeatShares) -> compose(mwc, SeatShares);
 compose(minimum_winning_coalition, SeatShares) -> compose(mwc, SeatShares);
@@ -59,13 +55,15 @@ compose(pvc, SeatShares) ->
 %%====================================================================
 %% Internal functions
 %%====================================================================
+all_in(Inner, All) ->
+    lists:all(fun(Elem) -> lists:member(Elem, Inner) end, All).
+
 atom_to_ascii(Atom) -> hd(atom_to_list(Atom)).
 
 centrist_party([Name])    -> Name;
 centrist_party([Name, _]) -> Name;
 centrist_party(Parties) ->
-    Len = length(Parties),
-    Mod = trunc(Len / 2),
+    Mod = trunc(length(Parties) / 2),
     Sub = lists:sublist(Parties, Mod+1, Mod),
     centrist_party(Sub).
 
@@ -75,9 +73,7 @@ contiguous(Cabinet) ->
     PartyVals   = [ atom_to_ascii(Name) || Name <- PartyNames ],
     {Lo, Hi}    = party_endpoints(Cabinet),
     AllParties  = lists:seq(atom_to_ascii(Lo), atom_to_ascii(Hi)),
-    lists:all(fun(PartyVal) ->
-                lists:member(PartyVal, PartyVals)
-              end, AllParties).
+    all_in(PartyVals, AllParties).
 
 is_coalition([{_, _}]) -> false;
 is_coalition(_)       -> true.
@@ -116,8 +112,7 @@ powerset([H|T]) ->
     powerset(H, PT, PT).
 
 powerset(_, [],    Acc) -> Acc;
-powerset(X, [H|T], Acc) ->
-    powerset(X, T, [[X|H]|Acc]).
+powerset(X, [H|T], Acc) -> powerset(X, T, [[X|H]|Acc]).
 
 % How many steps between the :leftmost" partner and the "rightmost" partner?
 range(Cabinet) ->
@@ -132,9 +127,7 @@ share(L) ->
 smallers(Cabinet, Coalitions) ->
     [ Coalition ||  Coalition  <- Coalitions,
                     length(Coalition) < length(Cabinet),
-                    lists:all(fun(Party) ->
-                        lists:member(Party, Cabinet)
-                    end, Coalition) ].
+                    all_in(Cabinet, Coalition) ].
 
 % Are any elements in arg2 subsets of arg1?
 too_large(C, Coalitions) ->
