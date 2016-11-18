@@ -3,9 +3,10 @@
 [![Build Status](https://semaphoreci.com/api/v1/kbaird/schulze-vote-erlang/branches/master/badge.svg)](https://semaphoreci.com/kbaird/schulze-vote-erlang)
 
 An OTP library implementing consensus-oriented political functions, including the
-[Schulze voting method](https://en.wikipedia.org/wiki/Schulze_method)
+[Schulze voting method](https://en.wikipedia.org/wiki/Schulze_method) and the
+[Gallagher Index](https://en.wikipedia.org/wiki/Gallagher_Index).
 
-The [main non-trivial test
+The [main non-trivial Schulze test
 file](https://github.com/kbaird/schulze-vote-erlang/blob/master/test/tn_capital_test.erl)
 uses the [TN Capital
 example](https://en.wikipedia.org/wiki/Condorcet_method#Example:_Voting_on_the_location_of_Tennessee.27s_capital)
