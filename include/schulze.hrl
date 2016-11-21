@@ -10,5 +10,8 @@
     {
         candidates :: [candidate(), ...]
     }).
--type ballot() :: #ballot{}.
+-opaque ballot() :: #ballot{}.
 
+-export_type([
+    ballot/0
+]).
