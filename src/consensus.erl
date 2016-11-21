@@ -34,11 +34,9 @@ effective_num_parties(PartyShares) -> 1 / sum_for(PartyShares).
 gallagher_index(ElectionResults) ->
     consensus_index:gallagher(ElectionResults).
 
--spec schulze_rankings([ballot(), ...]) -> [name(), ...].
 schulze_rankings(Ballots) ->
     consensus_schulze:rankings(Ballots).
 
--spec schulze_winner([ballot(), ...]) -> name().
 schulze_winner(Ballots) ->
     consensus_schulze:winner(Ballots).
 
