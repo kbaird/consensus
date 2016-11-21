@@ -11,4 +11,7 @@
     seat_share  :: seat_share(),
     vote_share  :: vote_share()
 }).
--type party_result() :: #party_result{}.
+-opaque party_result() :: #party_result{}.
+-export_type([
+    party_result/0
+]).
