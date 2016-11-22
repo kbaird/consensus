@@ -46,8 +46,7 @@ compose(mwc, SeatShares) ->
 compose(policy_viable_coalition, SeatShares) -> compose(pvc, SeatShares);
 compose(pvc, SeatShares) ->
     Cabinets    = mwc_with_seats(SeatShares),
-    PartyNames  = party_names(SeatShares),
-    CenterPty   = centrist_party(PartyNames),
+    CenterPty   = centrist_party(party_names(SeatShares)),
     WithCtrPty  = [ Cab ||  Cab <- Cabinets,
                             lists:member(CenterPty, party_names(Cab)) ],
     just_party_names(WithCtrPty).
