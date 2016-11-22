@@ -73,6 +73,8 @@ contiguous(Cabinet) ->
     PartyNames  = party_names(Cabinet),
     PartyVals   = [ atom_to_ascii(Name) || Name <- PartyNames ],
     {Lo, Hi}    = party_endpoints(Cabinet),
+    % This will not work with real party names,
+    % but works for the current single letter codes
     AllParties  = lists:seq(atom_to_ascii(Lo), atom_to_ascii(Hi)),
     all_in(PartyVals, AllParties).
 
