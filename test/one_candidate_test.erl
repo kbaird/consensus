@@ -2,7 +2,7 @@
 -author('Kevin C. Baird').
 
 -include_lib("eunit/include/eunit.hrl").
--include_lib("schulze.hrl").
+-include_lib("condorcet.hrl").
 
 one_candidate_setup()     -> ok.
 one_candidate_teardown(_) -> ok.
@@ -17,17 +17,17 @@ one_candidate_test_() ->
     }.
 
 one_candidate_one_voter_case() ->
-    Ballot = schulze_ballot:make([a]),
-    Winner = consensus:schulze_winner([Ballot]),
+    Ballot = condorcet_ballot:make([a]),
+    Winner = consensus:condorcet_winner([Ballot]),
     ?assertEqual(a, Winner).
 
 one_candidate_multiple_voter_case() ->
-    Ballot1 = schulze_ballot:make([a]),
-    Ballot2 = schulze_ballot:make([a]),
-    Ballot3 = schulze_ballot:make([a]),
-    Ballot4 = schulze_ballot:make([a]),
+    Ballot1 = condorcet_ballot:make([a]),
+    Ballot2 = condorcet_ballot:make([a]),
+    Ballot3 = condorcet_ballot:make([a]),
+    Ballot4 = condorcet_ballot:make([a]),
     Ballots = [Ballot1, Ballot2, Ballot3, Ballot4],
-    Winner  = consensus:schulze_winner(Ballots),
+    Winner  = consensus:condorcet_winner(Ballots),
     ?assertEqual(a, Winner).
 
 %%% PRIVATE FUNCTIONS

@@ -1,4 +1,4 @@
--module(schulze_candidate).
+-module(condorcet_candidate).
 
 %% API exports
 -export([
@@ -6,7 +6,7 @@
     rank/2
 ]).
 
--include("schulze.hrl").
+-include("condorcet.hrl").
 
 %%====================================================================
 %% API functions

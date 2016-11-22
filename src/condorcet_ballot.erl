@@ -1,18 +1,18 @@
--module(schulze_ballot).
+-module(condorcet_ballot).
 
 %% API exports
 -export([
     make/1
 ]).
 
--include("schulze.hrl").
+-include("condorcet.hrl").
 
 %%====================================================================
 %% API functions
 %%====================================================================
 -spec make([name(), ...]) -> ballot().
 make(CandidateNames) ->
-    Candidates = [ schulze_candidate:make(Name) || Name <- CandidateNames ],
+    Candidates = [ condorcet_candidate:make(Name) || Name <- CandidateNames ],
     #ballot{candidates = Candidates}.
 
 %%====================================================================

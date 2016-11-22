@@ -5,12 +5,12 @@
     cabinet_composition/2,
     gallagher_index/1,
     effective_num_parties/1,
-    schulze_rankings/1,
-    schulze_winner/1
+    condorcet_rankings/1,
+    condorcet_winner/1
 ]).
 
 -include("parties.hrl").
--include("schulze.hrl").
+-include("condorcet.hrl").
 
 %%====================================================================
 %% API functions
@@ -34,11 +34,11 @@ effective_num_parties(PartyShares) -> 1 / sum_for(PartyShares).
 gallagher_index(ElectionResults) ->
     consensus_index:gallagher(ElectionResults).
 
-schulze_rankings(Ballots) ->
-    consensus_schulze:rankings(Ballots).
+condorcet_rankings(Ballots) ->
+    consensus_condorcet:rankings(Ballots).
 
-schulze_winner(Ballots) ->
-    consensus_schulze:winner(Ballots).
+condorcet_winner(Ballots) ->
+    consensus_condorcet:winner(Ballots).
 
 %%====================================================================
 %% Internal functions
