@@ -87,10 +87,9 @@ just_party_names(Cabs) ->
     [ party_names(Cab) || Cab <- Cabs ].
 
 party_names_min_by(Fun, SeatShares) ->
-    Cabs    = mwc_with_seats(SeatShares),
-    Vals    = [ Fun(C) || C <- Cabs ],
-    MinVal  = lists:min(Vals),
-    WithSeats = [ Cab || Cab <- Cabs, Fun(Cab) =:= MinVal ],
+    Cabs      = mwc_with_seats(SeatShares),
+    Vals      = [ Fun(C) || C <- Cabs ],
+    WithSeats = [ Cab || Cab <- Cabs, Fun(Cab) =:= lists:min(Vals) ],
     just_party_names(WithSeats).
 
 mwc_with_seats(SeatShares) ->
