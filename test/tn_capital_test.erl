@@ -20,11 +20,11 @@ tn_capital_test_() ->
     }.
 
 tn_capital_winner_case() ->
-    Winner = consensus:schulze_winner(tn_ballots(m)),
+    Winner = consensus:schulze_winner(tn_ballots()),
     ?assertEqual(nashville, Winner).
 
 tn_capital_rankings_case() ->
-    Rankings = consensus:schulze_rankings(tn_ballots(m)),
+    Rankings = consensus:schulze_rankings(tn_ballots()),
     ?assertEqual([nashville, chattanooga, knoxville, memphis], Rankings).
 
 tn_capital_rankings_mod_case() ->
@@ -32,6 +32,8 @@ tn_capital_rankings_mod_case() ->
     ?assertEqual([chattanooga, nashville, knoxville, memphis], Rankings).
 
 %%% PRIVATE FUNCTIONS
+
+tn_ballots() -> tn_ballots(m).
 
 tn_ballots(Atom) ->
     % https://en.wikipedia.org/wiki/Condorcet_method
