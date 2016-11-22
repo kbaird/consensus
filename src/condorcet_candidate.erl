@@ -1,4 +1,4 @@
--module(schulze_candidate).
+-module(condorcet_candidate).
 
 %% API exports
 -export([
@@ -6,7 +6,7 @@
     rank/2
 ]).
 
--include("schulze.hrl").
+-include("condorcet.hrl").
 
 %%====================================================================
 %% API functions
@@ -16,6 +16,9 @@ make(Name) -> #candidate{name = Name}.
 
 -spec rank(list(), map()) -> [candidate(), ...].
 rank(Candidates, Prefs) ->
+    % I think this may actually be closer to
+    % https://en.wikipedia.org/wiki/Ranked_pairs than Schulze
+    % (both satisfy Condorcet criteria)
     ByLeastVotes = fun(C1, C2) ->
         maps:get(C1, maps:get(C2, Prefs), 0) <
         maps:get(C2, maps:get(C1, Prefs), 0)

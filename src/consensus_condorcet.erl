@@ -1,4 +1,4 @@
--module(consensus_schulze).
+-module(consensus_condorcet).
 
 %% API exports
 -export([
@@ -7,7 +7,7 @@
 ]).
 
 -include("parties.hrl").
--include("schulze.hrl").
+-include("condorcet.hrl").
 
 %%====================================================================
 %% API functions
@@ -17,7 +17,7 @@
 rankings(Ballots) ->
     Prefs      = preferences(Ballots, #{}),
     Candidates = maps:keys(Prefs),
-    Ranked     = schulze_candidate:rank(Candidates, Prefs),
+    Ranked     = condorcet_candidate:rank(Candidates, Prefs),
     [ C#candidate.name || C <- Ranked ].
 
 -spec winner([ballot(), ...]) -> name().

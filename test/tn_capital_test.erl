@@ -2,7 +2,7 @@
 -author('Kevin C. Baird').
 
 -include_lib("eunit/include/eunit.hrl").
--include_lib("schulze.hrl").
+-include_lib("condorcet.hrl").
 
 % tn_capital
 
@@ -20,15 +20,15 @@ tn_capital_test_() ->
     }.
 
 tn_capital_winner_case() ->
-    Winner = consensus:schulze_winner(tn_ballots()),
+    Winner = consensus:condorcet_winner(tn_ballots()),
     ?assertEqual(nashville, Winner).
 
 tn_capital_rankings_case() ->
-    Rankings = consensus:schulze_rankings(tn_ballots()),
+    Rankings = consensus:condorcet_rankings(tn_ballots()),
     ?assertEqual([nashville, chattanooga, knoxville, memphis], Rankings).
 
 tn_capital_rankings_mod_case() ->
-    Rankings = consensus:schulze_rankings(tn_ballots(mod)),
+    Rankings = consensus:condorcet_rankings(tn_ballots(mod)),
     ?assertEqual([chattanooga, nashville, knoxville, memphis], Rankings).
 
 %%% PRIVATE FUNCTIONS
@@ -46,9 +46,9 @@ tn_ballots(Atom) ->
         lists:duplicate(17, ballot(k))
     ]).
 
-ballot(m)   -> schulze_ballot:make([memphis, nashville, chattanooga, knoxville]);
-ballot(mod) -> schulze_ballot:make([memphis, chattanooga, nashville, knoxville]);
-ballot(n)   -> schulze_ballot:make([nashville, chattanooga, knoxville, memphis]);
-ballot(c)   -> schulze_ballot:make([chattanooga, knoxville, nashville, memphis]);
-ballot(k)   -> schulze_ballot:make([knoxville, chattanooga, nashville, memphis]).
+ballot(m)   -> condorcet_ballot:make([memphis, nashville, chattanooga, knoxville]);
+ballot(mod) -> condorcet_ballot:make([memphis, chattanooga, nashville, knoxville]);
+ballot(n)   -> condorcet_ballot:make([nashville, chattanooga, knoxville, memphis]);
+ballot(c)   -> condorcet_ballot:make([chattanooga, knoxville, nashville, memphis]);
+ballot(k)   -> condorcet_ballot:make([knoxville, chattanooga, nashville, memphis]).
 

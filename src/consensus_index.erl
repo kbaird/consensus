@@ -6,7 +6,7 @@
 ]).
 
 -include("parties.hrl").
--include("schulze.hrl").
+-include("condorcet.hrl").
 
 %%====================================================================
 %% API functions
