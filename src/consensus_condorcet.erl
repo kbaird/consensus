@@ -40,7 +40,7 @@ increment_vote_count(Cand, Next, PrefsIn) ->
     maps:put(Cand, Incremented, PrefsIn).
 
 -spec preferences(list(), map()) -> map().
-preferences([], Acc)              -> Acc;
+preferences([],            Acc)   -> Acc;
 preferences([Ballot | Bs], AccIn) ->
     [ Cand | Rest ] = Ballot#ballot.candidates,
     case Rest of
