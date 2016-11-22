@@ -20,42 +20,33 @@ tn_capital_test_() ->
     }.
 
 tn_capital_winner_case() ->
-    Winner = consensus:schulze_winner(tn_ballots()),
+    Winner = consensus:schulze_winner(tn_ballots(m)),
     ?assertEqual(nashville, Winner).
 
 tn_capital_rankings_case() ->
-    Rankings = consensus:schulze_rankings(tn_ballots()),
+    Rankings = consensus:schulze_rankings(tn_ballots(m)),
     ?assertEqual([nashville, chattanooga, knoxville, memphis], Rankings).
 
 tn_capital_rankings_mod_case() ->
-    Rankings = consensus:schulze_rankings(tn_mod_ballots()),
+    Rankings = consensus:schulze_rankings(tn_ballots(mod)),
     ?assertEqual([chattanooga, nashville, knoxville, memphis], Rankings).
 
 %%% PRIVATE FUNCTIONS
 
-tn_ballots() ->
+tn_ballots(Atom) ->
     % https://en.wikipedia.org/wiki/Condorcet_method
     %   #Example:_Voting_on_the_location_of_Tennessee.27s_capital
-    BallotM = schulze_ballot:make([memphis, nashville, chattanooga, knoxville]),
-    BallotN = schulze_ballot:make([nashville, chattanooga, knoxville, memphis]),
-    BallotC = schulze_ballot:make([chattanooga, knoxville, nashville, memphis]),
-    BallotK = schulze_ballot:make([knoxville, chattanooga, nashville, memphis]),
+    % Atom = mod means Memphis voters put Chat as 2nd choice.
     lists:flatten([
-        lists:duplicate(42, BallotM),
-        lists:duplicate(26, BallotN),
-        lists:duplicate(15, BallotC),
-        lists:duplicate(17, BallotK)
+        lists:duplicate(42, ballot(Atom)),
+        lists:duplicate(26, ballot(n)),
+        lists:duplicate(15, ballot(c)),
+        lists:duplicate(17, ballot(k))
     ]).
 
-tn_mod_ballots() ->
-    % Memphis voters put Chat as 2nd choice.
-    BallotM = schulze_ballot:make([memphis, chattanooga, nashville, knoxville]),
-    BallotN = schulze_ballot:make([nashville, chattanooga, knoxville, memphis]),
-    BallotC = schulze_ballot:make([chattanooga, knoxville, nashville, memphis]),
-    BallotK = schulze_ballot:make([knoxville, chattanooga, nashville, memphis]),
-    lists:flatten([
-        lists:duplicate(42, BallotM),
-        lists:duplicate(26, BallotN),
-        lists:duplicate(15, BallotC),
-        lists:duplicate(17, BallotK)
-    ]).
+ballot(m)   -> schulze_ballot:make([memphis, nashville, chattanooga, knoxville]);
+ballot(mod) -> schulze_ballot:make([memphis, chattanooga, nashville, knoxville]);
+ballot(n)   -> schulze_ballot:make([nashville, chattanooga, knoxville, memphis]);
+ballot(c)   -> schulze_ballot:make([chattanooga, knoxville, nashville, memphis]);
+ballot(k)   -> schulze_ballot:make([knoxville, chattanooga, nashville, memphis]).
+
