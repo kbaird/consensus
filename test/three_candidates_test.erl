@@ -13,7 +13,8 @@ three_candidates_test_() ->
             [
                 fun three_candidates_one_voter_case/0,
                 fun three_candidates_majority_case/0,
-                fun three_candidates_unanimous_case/0
+                fun three_candidates_unanimous_case/0,
+                fun three_candidates_divergent_case/0
             ]
     }.
 
@@ -42,6 +43,18 @@ three_candidates_unanimous_case() ->
     Ballots = [Ballot1, Ballot2, Ballot3, Ballot4],
     Winner  = consensus:schulze_winner(Ballots),
     ?assertEqual(a, Winner).
+
+three_candidates_divergent_case() ->
+    Ballot1 = schulze_ballot:make([a, b, c]),
+    Ballot2 = schulze_ballot:make([b, c, a]),
+    Ballot3 = schulze_ballot:make([c, b, a]),
+    Ballots = lists:flatten([
+        lists:duplicate(499, Ballot1),
+        lists:duplicate(3,   Ballot2),
+        lists:duplicate(498, Ballot3)
+    ]),
+    Winner  = consensus:schulze_winner(Ballots),
+    ?assertEqual(b, Winner).
 
 %%% PRIVATE FUNCTIONS
 
