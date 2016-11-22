@@ -126,14 +126,11 @@ share(L) ->
     SumShares = fun(P, Sum) -> share(P) + Sum end,
     lists:foldl(SumShares, 0, L).
 
-smallers(Cabinet, Coalitions) ->
-    [ Coalition ||  Coalition  <- Coalitions,
-                    length(Coalition) < length(Cabinet),
-                    all_in(Cabinet, Coalition) ].
-
 % Are any elements in arg2 subsets of arg1?
-too_large(C, Coalitions) ->
-    Smallers = smallers(C, Coalitions),
+too_large(Cabinet, Coalitions) ->
+    Smallers = [ Coalition ||  Coalition  <- Coalitions,
+                    length(Coalition) < length(Cabinet),
+                    all_in(Cabinet, Coalition) ],
     length(Smallers) > 0.
 
 uniqueify(Ls) ->
