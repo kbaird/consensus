@@ -22,10 +22,9 @@ compose(minimum_connected_winning, SeatShares) -> compose(mcw, SeatShares);
 compose(mcw, SeatShares) ->
     WithSeats   = winning_coalitions(SeatShares),
     Contiguous  = lists:filter(fun contiguous/1, WithSeats),
-    WithinRngs  = lists:filter(fun(C) ->
-                      not too_large(C, Contiguous) end,
-                  Contiguous),
-    just_party_names(WithinRngs);
+    SmallEnough = fun(C) -> not too_large(C, Contiguous) end,
+    InRange     = lists:filter(SmallEnough, Contiguous),
+    just_party_names(InRange);
 
 compose(minimal_range, SeatShares) -> compose(mr, SeatShares);
 compose(minimum_range, SeatShares) -> compose(mr, SeatShares);
