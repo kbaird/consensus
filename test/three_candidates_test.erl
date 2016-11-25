@@ -39,10 +39,7 @@ three_candidates_majority_case() ->
 
 three_candidates_unanimous_case() ->
     Ballot1 = condorcet_ballot:make([a, b, c]),
-    Ballot2 = condorcet_ballot:make([a, b, c]),
-    Ballot3 = condorcet_ballot:make([a, b, c]),
-    Ballot4 = condorcet_ballot:make([a, b, c]),
-    Ballots = [Ballot1, Ballot2, Ballot3, Ballot4],
+    Ballots = lists:duplicate(4, Ballot1),
     Winner  = consensus:condorcet_winner(Ballots),
     ?assertEqual(a, Winner).
 
