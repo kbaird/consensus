@@ -2,6 +2,8 @@
 
 [![Build Status](https://semaphoreci.com/api/v1/kbaird/schulze-vote-erlang/branches/master/badge.svg)](https://semaphoreci.com/kbaird/schulze-vote-erlang)
 
+[![Code Climate](https://codeclimate.com/github/kbaird/consensus/badges/gpa.svg)](https://codeclimate.com/github/kbaird/consensus)
+
 An OTP library implementing consensus-oriented political functions, including the
 [Schulze voting method](https://en.wikipedia.org/wiki/Schulze_method) and the
 [Gallagher Index](https://en.wikipedia.org/wiki/Gallagher_Index).
