@@ -4,6 +4,8 @@
 
 [![Code Climate](https://codeclimate.com/github/kbaird/consensus/badges/gpa.svg)](https://codeclimate.com/github/kbaird/consensus)
 
+[![Ebert](https://ebertapp.io/github/kbaird/consensus.svg)](https://ebertapp.io/github/kbaird/consensus)
+
 An OTP library implementing consensus-oriented political functions, including the
 [Schulze voting method](https://en.wikipedia.org/wiki/Schulze_method) and the
 [Gallagher Index](https://en.wikipedia.org/wiki/Gallagher_Index).
