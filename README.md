@@ -1,6 +1,6 @@
 # consensus
 
-[![Build Status](https://semaphoreci.com/api/v1/kbaird/schulze-vote-erlang/branches/master/badge.svg)](https://semaphoreci.com/kbaird/schulze-vote-erlang)
+[![Build Status](https://semaphoreci.com/api/v1/kbaird/consensus/branches/master/badge.svg)](https://semaphoreci.com/kbaird/consensus)
 
 [![Code Climate](https://codeclimate.com/github/kbaird/consensus/badges/gpa.svg)](https://codeclimate.com/github/kbaird/consensus)
 
