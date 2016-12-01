@@ -22,7 +22,7 @@ four_candidates_divergent_case() ->
     Ballot4 = condorcet_ballot:make([c, b, a]),
     Ballots = lists:flatten([
         lists:duplicate(33, Ballot1),
-        lists:duplicate(16,  Ballot2),
+        lists:duplicate(16, Ballot2),
         lists:duplicate(16, Ballot3),
         lists:duplicate(35, Ballot4)
     ]),
