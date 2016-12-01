@@ -12,7 +12,7 @@
 %%====================================================================
 -spec make([name(), ...]) -> ballot().
 make(CandidateNames) ->
-    Candidates = [ condorcet_candidate:make(Name) || Name <- CandidateNames ],
+    Candidates = lists:map(fun condorcet_candidate:make/1, CandidateNames),
     #ballot{candidates = Candidates}.
 
 %%====================================================================

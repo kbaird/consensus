@@ -70,7 +70,7 @@ centrist_party(Parties) ->
 -spec contiguous([cabinet()]) -> boolean().
 contiguous(Cabinet) ->
     PartyNames  = party_names(Cabinet),
-    PartyVals   = [ atom_to_ascii(Name) || Name <- PartyNames ],
+    PartyVals   = lists:map(fun atom_to_ascii/1, PartyNames),
     {Lo, Hi}    = party_endpoints(Cabinet),
     % This will not work with real party names,
     % but works for the current single letter codes
@@ -89,7 +89,7 @@ just_party_names(Cabs) ->
 
 party_names_min_by(Fun, SeatShares) ->
     Cabs      = mwc_with_seats(SeatShares),
-    Vals      = [ Fun(C) || C <- Cabs ],
+    Vals      = lists:map(Fun, Cabs),
     WithSeats = [ Cab || Cab <- Cabs, Fun(Cab) =:= lists:min(Vals) ],
     just_party_names(WithSeats).
 
