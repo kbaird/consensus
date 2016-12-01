@@ -8,10 +8,8 @@
 ---
 styleguide: plataformatec/linters
 engines:
-  fixme:
-    enabled: true
   remark-lint:
     enabled: true
-exclude_paths:
-- README.md
+#exclude_paths:
+#- README.md
 
