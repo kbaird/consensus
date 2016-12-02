@@ -77,7 +77,7 @@ contiguous(Cabinet) ->
     AllParties  = lists:seq(atom_to_ascii(Lo), atom_to_ascii(Hi)),
     all_in(PartyVals, AllParties).
 
-is_coalition([ _ ]) -> false;
+is_coalition([ _ ]) -> false; % has only 1 party in the list
 is_coalition(_)     -> true.
 
 % Does this coalition command a majority of seats?
