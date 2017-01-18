@@ -16,18 +16,18 @@ four_candidates_test_() ->
     }.
 
 four_candidates_divergent_case() ->
-    Ballot1 = condorcet_ballot:make([a, b, c]),
-    Ballot2 = condorcet_ballot:make([b, a, c]),
-    Ballot3 = condorcet_ballot:make([b, c, a]),
-    Ballot4 = condorcet_ballot:make([c, b, a]),
-    Ballots = lists:flatten([
+    Ballot1  = condorcet_ballot:make([a, b, c]),
+    Ballot2  = condorcet_ballot:make([b, a, c]),
+    Ballot3  = condorcet_ballot:make([b, c, a]),
+    Ballot4  = condorcet_ballot:make([c, b, a]),
+    Ballots  = lists:flatten([
         lists:duplicate(33, Ballot1),
         lists:duplicate(16, Ballot2),
         lists:duplicate(16, Ballot3),
         lists:duplicate(35, Ballot4)
     ]),
-    Winner  = consensus:condorcet_winner(Ballots),
-    ?assertEqual(b, Winner).
+    Rankings = consensus:condorcet_rankings(Ballots),
+    ?assertEqual([b, c, a], Rankings).
 
 %%% PRIVATE FUNCTIONS
 
