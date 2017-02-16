@@ -1,4 +1,5 @@
--type name() :: atom().
+-type name()        :: atom().
+-type preferences() :: map(). % cand -> cand -> int
 
 -record(candidate,
     {
