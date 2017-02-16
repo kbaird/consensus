@@ -44,9 +44,11 @@ condorcet_winner(Ballots) ->
 %% Internal functions
 %%====================================================================
 
+-spec sum_for([party_result()]) -> pos_integer().
 sum_for(PartyShares) ->
     lists:foldl(fun sum_share_squares/2, 0, PartyShares).
 
+-spec sum_share_squares(party_result(), pos_integer()) -> pos_integer().
 sum_share_squares(#party_result{seat_share = Share}, Sum) ->
     (Share * Share) + Sum.
 
