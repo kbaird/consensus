@@ -100,6 +100,7 @@ mwc_with_seats(SeatShares) ->
     Winners = winning_coalitions(SeatShares),
     lists:filter(fun(C) -> not too_large(C, Winners) end, Winners).
 
+-spec party_endpoints(cabinet()) -> {party_name(), party_name()}.
 party_endpoints(Cabinet) ->
     PartyNames  = party_names(Cabinet),
     SortedNames = lists:sort(PartyNames),
