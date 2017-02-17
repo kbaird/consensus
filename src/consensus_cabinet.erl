@@ -67,7 +67,7 @@ centrist_party(Parties) ->
     centrist_party(Sub).
 
 % Does this coalition avoid gaps between parties?
--spec contiguous([cabinet()]) -> boolean().
+-spec contiguous(cabinet()) -> boolean().
 contiguous(Cabinet) ->
     PartyNames  = party_names(Cabinet),
     PartyVals   = lists:map(fun atom_to_ascii/1, PartyNames),
@@ -77,13 +77,16 @@ contiguous(Cabinet) ->
     AllParties  = lists:seq(atom_to_ascii(Lo), atom_to_ascii(Hi)),
     all_in(PartyVals, AllParties).
 
+-spec is_coalition(cabinet()) -> boolean().
 is_coalition([ _ ]) -> false; % has only 1 party in the list
 is_coalition(_)     -> true.
 
 % Does this coalition command a majority of seats?
+-spec is_winner([cabinet()], [cabinet()]) -> boolean().
 is_winner(Coalition, SeatShares) ->
     share(Coalition) > share(SeatShares) / 2.0.
 
+-spec just_party_names([cabinet()]) -> [[atom()]].
 just_party_names(Cabs) ->
     [ party_names(Cab) || Cab <- Cabs ].
 
@@ -97,6 +100,7 @@ mwc_with_seats(SeatShares) ->
     Winners = winning_coalitions(SeatShares),
     lists:filter(fun(C) -> not too_large(C, Winners) end, Winners).
 
+-spec party_endpoints(cabinet()) -> {party_name(), party_name()}.
 party_endpoints(Cabinet) ->
     PartyNames  = party_names(Cabinet),
     SortedNames = lists:sort(PartyNames),
@@ -127,6 +131,7 @@ share(L) ->
     lists:foldl(SumShares, 0, L).
 
 % Are any elements in arg2 subsets of arg1?
+-spec too_large(cabinet(), [cabinet()]) -> boolean().
 too_large(Cabinet, Coalitions) ->
     Smallers = [ Coalition ||  Coalition  <- Coalitions,
                     length(Coalition) < length(Cabinet),
@@ -136,6 +141,7 @@ too_large(Cabinet, Coalitions) ->
 uniqueify(Ls) ->
     lists:usort([ lists:usort(L) || L <- Ls ]).
 
+-spec winning_coalitions([cabinet()]) -> [cabinet()].
 winning_coalitions(SeatShares) ->
     PSet        = powerset(SeatShares),
     Unique      = uniqueify(PSet),
