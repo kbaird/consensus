@@ -14,7 +14,7 @@
 -spec make(name()) -> candidate().
 make(Name) -> #candidate{name = Name}.
 
--spec rank(list(), map()) -> [candidate(), ...].
+-spec rank(list(), preferences()) -> [candidate(), ...].
 rank(Candidates, Prefs) ->
     % sort by least votes, so the lowest magnitude for "least votes"
     % (i.e., the winner, with the highest number of votes) is at the front.
@@ -24,7 +24,7 @@ rank(Candidates, Prefs) ->
 %%====================================================================
 %% Internal functions
 %%====================================================================
--spec by_least_votes(map()) ->
+-spec by_least_votes(preferences()) ->
     fun((candidate(), candidate()) -> boolean()).
 by_least_votes(Prefs) ->
     % I think this may actually be closer to
