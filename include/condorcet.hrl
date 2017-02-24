@@ -1,11 +1,16 @@
--type name()        :: atom().
--type preferences() :: map(). % cand -> cand -> int
+-type name() :: atom().
 
 -record(candidate,
     {
         name :: name()
     }).
 -type candidate() :: #candidate{}.
+
+-type preferences() :: #{
+    candidate() => #{
+        candidate() => pos_integer()
+    }
+}.
 
 -record(ballot,
     {
@@ -16,3 +21,4 @@
 -export_type([
     ballot/0
 ]).
+
