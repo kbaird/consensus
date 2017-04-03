@@ -27,10 +27,10 @@ cabinet_composition(Label, SeatShares) ->
 % "'Effective' Number of Parties: A Measure with Application to West Europe."
 % _Comparative Political Studies_ 12, no. 1 (April): 3-27.
 % http://cps.sagepub.com/content/12/1/3.extract
--spec effective_num_parties([party_result(), ...]) -> number().
+-spec effective_num_parties([party_result()]) -> number().
 effective_num_parties(PartyShares) -> 1 / sum_for(PartyShares).
 
--spec gallagher_index([party_result(), ...]) -> number().
+-spec gallagher_index([party_result()]) -> number().
 gallagher_index(ElectionResults) ->
     consensus_index:gallagher(ElectionResults).
 

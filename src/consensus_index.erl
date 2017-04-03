@@ -23,13 +23,17 @@ gallagher(ElectionResults) ->
 %% Internal functions
 %%====================================================================
 
+express_seat_share_as_percentage(PartyResult, TotalSeats) ->
+    Name  = consensus_party:name(PartyResult),
+    Seats = consensus_party:seat_share(PartyResult),
+    Votes = consensus_party:vote_share(PartyResult),
+    consensus_party:make(Name, Seats/TotalSeats, Votes).
+
 -spec results_to_percentages([any()]) -> [consensus_party:party_result()].
 results_to_percentages(ElectionResults) ->
     TotalSeats = lists:foldl(fun sum_seats/2, 0, ElectionResults),
-    [ consensus_party:make(Name, Seats/TotalSeats, Votes) ||
-        #party_result{name       = Name,
-                      seat_share = Seats,
-                      vote_share = Votes} <- ElectionResults ].
+    [ express_seat_share_as_percentage(PartyResult, TotalSeats) ||
+      PartyResult <- ElectionResults ].
 
 -spec sum_diff_squares(party_result(), pos_integer()) -> pos_integer().
 sum_diff_squares(PartyResult, Sum) ->
