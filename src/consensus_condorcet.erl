@@ -49,7 +49,7 @@ preferences(Ballots) -> preferences(Ballots, #{}).
 -spec preferences(list(), map()) -> preferences().
 preferences([],            Acc)   -> Acc;
 preferences([Ballot | Bs], AccIn) ->
-    [ Cand | Rest ] = Ballot#ballot.candidates,
+    [ Cand | Rest ] = condorcet_ballot:candidates(Ballot),
     case Rest of
         [] -> maps:put(Cand, winner, maps:new());
         _  -> Acc = add_preferences(Cand, Rest, AccIn),
