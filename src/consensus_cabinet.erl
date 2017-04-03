@@ -109,7 +109,7 @@ party_endpoints(Cabinet) ->
     {Lo, Hi}.
 
 party_names(Cabinet) ->
-    [ P#party_result.name || P <- Cabinet ].
+    [ consensus_party:name(P) || P <- Cabinet ].
 
 powerset([]) -> [[]];
 powerset([H|T]) ->
@@ -125,10 +125,10 @@ range(Cabinet) ->
     atom_to_ascii(Hi) - atom_to_ascii(Lo).
 
 % How many seats does this coalition fill?
-share(#party_result{seat_share = Share}) -> Share;
-share(L) ->
-    SumShares = fun(P, Sum) -> share(P) + Sum end,
-    lists:foldl(SumShares, 0, L).
+share(Parties) when is_list(Parties) ->
+    SumShares = fun(P, Sum) -> consensus_party:share(P) + Sum end,
+    lists:foldl(SumShares, 0, Parties);
+share(Party) -> share([Party]).
 
 % Are any elements in arg2 subsets of arg1?
 -spec too_large(cabinet(), [cabinet()]) -> boolean().
