@@ -15,9 +15,8 @@
 
 -spec rankings([ballot(), ...]) -> [name(), ...].
 rankings(Ballots) ->
-    Prefs      = preferences(Ballots, #{}),
-    Candidates = maps:keys(Prefs),
-    Ranked     = condorcet_candidate:rank(Candidates, Prefs),
+    Prefs  = preferences(Ballots, #{}),
+    Ranked = condorcet_candidate:rank(Prefs),
     [ C#candidate.name || C <- Ranked ].
 
 -spec winner([ballot(), ...]) -> name().
