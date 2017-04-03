@@ -26,10 +26,10 @@ gallagher(ElectionResults) ->
 -spec results_to_percentages([any()]) -> [consensus_party:party_result()].
 results_to_percentages(ElectionResults) ->
     TotalSeats = lists:foldl(fun sum_seats/2, 0, ElectionResults),
-    [ consensus_party:make(Name, Seats/TotalSeats, V) ||
+    [ consensus_party:make(Name, Seats/TotalSeats, Votes) ||
         #party_result{name       = Name,
                       seat_share = Seats,
-                      vote_share = V} <- ElectionResults ].
+                      vote_share = Votes} <- ElectionResults ].
 
 -spec sum_diff_squares(party_result(), pos_integer()) -> pos_integer().
 sum_diff_squares(PartyResult, Sum) ->
