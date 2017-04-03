@@ -37,7 +37,9 @@ sum_diff_squares(#party_result{seat_share = SeatPC,
     ((VotePC - SeatPC) * (VotePC - SeatPC)) + Sum.
 
 -spec sum_seats(party_result(), pos_integer()) -> pos_integer().
-sum_seats(#party_result{seat_share = Seats}, Sum) -> Seats + Sum.
+sum_seats(PartyResult, Sum) ->
+    Share = consensus_party:share(PartyResult),
+    Share + Sum.
 
 -spec sum_squares_of_pc_diffs([consensus_party:party_result()]) -> number().
 sum_squares_of_pc_diffs(ElectionResults) ->

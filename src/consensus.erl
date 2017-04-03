@@ -49,6 +49,7 @@ sum_for(PartyShares) ->
     lists:foldl(fun sum_share_squares/2, 0, PartyShares).
 
 -spec sum_share_squares(party_result(), pos_integer()) -> pos_integer().
-sum_share_squares(#party_result{seat_share = Share}, Sum) ->
+sum_share_squares(PartyResult, Sum) ->
+    Share = consensus_party:share(PartyResult),
     (Share * Share) + Sum.
 
