@@ -15,7 +15,7 @@
 
 -spec rankings([ballot(), ...]) -> [name(), ...].
 rankings(Ballots) ->
-    Prefs  = preferences(Ballots, #{}),
+    Prefs  = preferences(Ballots),
     Ranked = condorcet_candidate:rank(Prefs),
     [ C#candidate.name || C <- Ranked ].
 
@@ -42,6 +42,9 @@ increment_vote_count(Cand, Next, PrefsIn) ->
     Count       = maps:get(Next, WithCount, 0),
     Incremented = maps:put(Next, Count+1, WithCount),
     maps:put(Cand, Incremented, PrefsIn).
+
+-spec preferences(list()) -> preferences().
+preferences(Ballots) -> preferences(Ballots, #{}).
 
 -spec preferences(list(), map()) -> preferences().
 preferences([],            Acc)   -> Acc;
