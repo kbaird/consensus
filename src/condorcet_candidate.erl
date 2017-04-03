@@ -3,6 +3,7 @@
 %% API exports
 -export([
     make/1,
+    name/1,
     rank/1
 ]).
 
@@ -13,6 +14,9 @@
 %%====================================================================
 -spec make(name()) -> candidate().
 make(Name) -> #candidate{name = Name}.
+
+-spec name(candidate()) -> name().
+name(#candidate{name = Name}) -> Name.
 
 -spec rank(preferences()) -> [candidate(), ...].
 rank(Prefs) ->

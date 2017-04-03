@@ -17,7 +17,7 @@
 rankings(Ballots) ->
     Prefs  = preferences(Ballots),
     Ranked = condorcet_candidate:rank(Prefs),
-    [ C#candidate.name || C <- Ranked ].
+    [ condorcet_candidate:name(C) || C <- Ranked ].
 
 -spec winner([ballot(), ...]) -> name().
 winner(Ballots) -> hd(rankings(Ballots)).
