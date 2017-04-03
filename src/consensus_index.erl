@@ -32,8 +32,9 @@ seat_totals_to_percentages(SeatTotals) ->
                       vote_share = V} <- SeatTotals ].
 
 -spec sum_diff_squares(party_result(), pos_integer()) -> pos_integer().
-sum_diff_squares(#party_result{seat_share = SeatPC,
-                               vote_share = VotePC}, Sum) ->
+sum_diff_squares(PartyResult, Sum) ->
+    SeatPC = consensus_party:seat_share(PartyResult),
+    VotePC = consensus_party:vote_share(PartyResult),
     ((VotePC - SeatPC) * (VotePC - SeatPC)) + Sum.
 
 -spec sum_seats(party_result(), pos_integer()) -> pos_integer().
