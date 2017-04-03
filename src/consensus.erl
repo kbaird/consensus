@@ -46,10 +46,11 @@ condorcet_winner(Ballots) ->
 
 -spec sum_for([party_result()]) -> pos_integer().
 sum_for(PartyShares) ->
-    lists:foldl(fun sum_share_squares/2, 0, PartyShares).
+    lists:foldl(fun sum_seat_share_squares/2, 0, PartyShares).
 
--spec sum_share_squares(party_result(), pos_integer()) -> pos_integer().
-sum_share_squares(PartyResult, Sum) ->
-    Share = consensus_party:share(PartyResult),
-    (Share * Share) + Sum.
+-spec sum_seat_share_squares(party_result(),
+                             pos_integer()) -> pos_integer().
+sum_seat_share_squares(PartyResult, Sum) ->
+    Seats = consensus_party:seat_share(PartyResult),
+    (Seats * Seats) + Sum.
 

@@ -34,7 +34,7 @@ compose(mr, SeatShares) ->
 compose(minimal_size, SeatShares) -> compose(ms, SeatShares);
 compose(minimum_size, SeatShares) -> compose(ms, SeatShares);
 compose(ms, SeatShares) ->
-    party_names_min_by(fun share/1, SeatShares);
+    party_names_min_by(fun seat_share/1, SeatShares);
 
 compose(minimal_winning_coalition, SeatShares) -> compose(mwc, SeatShares);
 compose(minimum_winning_coalition, SeatShares) -> compose(mwc, SeatShares);
@@ -84,7 +84,7 @@ is_coalition(_)     -> true.
 % Does this coalition command a majority of seats?
 -spec is_winner([cabinet()], [cabinet()]) -> boolean().
 is_winner(Coalition, SeatShares) ->
-    share(Coalition) > share(SeatShares) / 2.0.
+    seat_share(Coalition) > seat_share(SeatShares) / 2.0.
 
 -spec just_party_names([cabinet()]) -> [[atom()]].
 just_party_names(Cabs) ->
@@ -125,10 +125,10 @@ range(Cabinet) ->
     atom_to_ascii(Hi) - atom_to_ascii(Lo).
 
 % How many seats does this coalition fill?
-share(Parties) when is_list(Parties) ->
-    SumShares = fun(P, Sum) -> consensus_party:share(P) + Sum end,
+seat_share(Parties) when is_list(Parties) ->
+    SumShares = fun(P, Sum) -> consensus_party:seat_share(P) + Sum end,
     lists:foldl(SumShares, 0, Parties);
-share(Party) -> share([Party]).
+seat_share(Party) -> seat_share([Party]).
 
 % Are any elements in arg2 subsets of arg1?
 -spec too_large(cabinet(), [cabinet()]) -> boolean().
