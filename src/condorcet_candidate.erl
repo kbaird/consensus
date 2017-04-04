@@ -3,7 +3,8 @@
 %% API exports
 -export([
     make/1,
-    rank/2
+    name/1,
+    rank/1
 ]).
 
 -include("condorcet.hrl").
@@ -14,11 +15,15 @@
 -spec make(name()) -> candidate().
 make(Name) -> #candidate{name = Name}.
 
--spec rank(list(), preferences()) -> [candidate(), ...].
-rank(Candidates, Prefs) ->
+-spec name(candidate()) -> name().
+name(#candidate{name = Name}) -> Name.
+
+-spec rank(preferences()) -> [candidate(), ...].
+rank(Prefs) ->
     % sort by least votes, so the lowest magnitude for "least votes"
     % (i.e., the winner, with the highest number of votes) is at the front.
     ByLeastVotes = by_least_votes(Prefs),
+    Candidates   = maps:keys(Prefs),
     lists:sort(ByLeastVotes, Candidates).
 
 %%====================================================================
