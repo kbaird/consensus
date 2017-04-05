@@ -44,7 +44,7 @@ increment_vote_count(Cand, Next, PrefsIn) ->
     maps:put(Cand, Incremented, PrefsIn).
 
 -spec preferences(list()) -> preferences().
-preferences(Ballots) -> preferences(Ballots, #{}).
+preferences(Ballots) -> preferences(Ballots, maps:new()).
 
 -spec preferences(list(), map()) -> preferences().
 preferences([],            Acc)   -> Acc;
