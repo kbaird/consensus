@@ -27,11 +27,7 @@ party(#candidate{party = Party}) -> Party.
 
 -spec rank(preferences()) -> [candidate(), ...].
 rank(Prefs) ->
-    % sort by least votes, so the lowest magnitude for "least votes"
-    % (i.e., the winner, with the highest number of votes) is at the front.
-    ByLeastVotes = by_least_votes(Prefs),
-    Candidates   = maps:keys(Prefs),
-    lists:sort(ByLeastVotes, Candidates).
+    schulze_rank(Prefs).
 
 %%====================================================================
 %% Internal functions
@@ -46,3 +42,49 @@ by_least_votes(Prefs) ->
         maps:get(C1, maps:get(C2, Prefs), 0) <
         maps:get(C2, maps:get(C1, Prefs), 0)
     end.
+
+-spec schulze_rank(preferences()) -> [candidate(), ...].
+schulze_rank(Prefs) ->
+    Candidates = maps:keys(Prefs),
+    TwoCs   = [ {I, J} || I <- Candidates,
+                          J <- Candidates,
+                          I =/= J ],
+    Pass1   = floyd_warshall_stage1(Prefs, maps:new(), TwoCs),
+    FullCs  = [ {I, J, K} || I <- Candidates,
+                             J <- Candidates,
+                             K <- Candidates,
+                             I =/= J,
+                             I =/= K,
+                             J =/= K ],
+    Set = floyd_warshall_stage2(Pass1, FullCs),
+    [ Winner || Winner <- maps:keys(Set),
+                Loser  <- maps:get(Winner, Set),
+                Value  <- maps:values(Winner),
+                Value == 0 ].
+
+floyd_warshall_stage1(_D, P, []) -> P;
+floyd_warshall_stage1(D, P0, [ {I, J} | Rest ]) ->
+    JOverI = maps:get(J, maps:get(I, D)),
+    IOverJ = maps:get(I, maps:get(J, D)),
+    V = case IOverJ > JOverI of
+            true -> IOverJ;
+            _    -> 0
+        end,
+    PI = maps:get(I, P0, maps:new()),
+    PJ = maps:put(J, V, PI),
+    P  = maps:put(I, PJ, P0),
+    floyd_warshall_stage1(D, P, Rest).
+
+floyd_warshall_stage2(P,  []) -> P;
+floyd_warshall_stage2(P0, [ {I, J, K} | Rest ]) ->
+    JOverK = maps:get(J, maps:get(K, P0)),
+    IOverJ = maps:get(I, maps:get(J, P0)),
+    PI   = maps:get(I, P0),
+    PJ0  = maps:get(J, P0),
+    PJI0 = maps:get(I, PJ0),
+    PJK0 = maps:get(K, PJ0),
+    PIK0 = maps:get(K, PI),
+    PJK  = lists:max([ PJK0, lists:min([PJI0, PIK0]) ]),
+    PJ   = maps:put(K, PJK, PJ0),
+    P    = maps:put(J, PJ, P0),
+    floyd_warshall_stage2(P, Rest).
