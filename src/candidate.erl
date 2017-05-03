@@ -27,7 +27,10 @@ party(#candidate{party = Party}) -> Party.
 
 -spec rank(preferences()) -> [candidate(), ...].
 rank(Prefs) ->
-    schulze_rank(Prefs).
+    case length(maps:to_list(Prefs)) of
+        1 -> [ C || {C,_} <- maps:to_list(Prefs) ];
+        _ -> schulze_rank(Prefs)
+    end.
 
 %%====================================================================
 %% Internal functions
@@ -57,10 +60,13 @@ schulze_rank(Prefs) ->
                              I =/= K,
                              J =/= K ],
     Set = floyd_warshall_stage2(Pass1, FullCs),
-    [ Winner || Winner <- maps:keys(Set),
-                Loser  <- maps:get(Winner, Set),
-                Value  <- maps:values(Winner),
-                Value == 0 ].
+    Lst = maps:to_list(Set),
+    Sorted = lists:sort(fun schulze_sorter/2, Lst),
+    [ Candidate || {Candidate, _} <- Sorted ].
+
+schulze_sorter({_, M1}, {_, M2}) ->
+    lists:sum(maps:values(M1)) <
+    lists:sum(maps:values(M2)).
 
 floyd_warshall_stage1(_D, P, []) -> P;
 floyd_warshall_stage1(D, P0, [ {I, J} | Rest ]) ->
@@ -77,8 +83,6 @@ floyd_warshall_stage1(D, P0, [ {I, J} | Rest ]) ->
 
 floyd_warshall_stage2(P,  []) -> P;
 floyd_warshall_stage2(P0, [ {I, J, K} | Rest ]) ->
-    JOverK = maps:get(J, maps:get(K, P0)),
-    IOverJ = maps:get(I, maps:get(J, P0)),
     PI   = maps:get(I, P0),
     PJ0  = maps:get(J, P0),
     PJI0 = maps:get(I, PJ0),
