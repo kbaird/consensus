@@ -68,10 +68,12 @@ schulze_sorter({_, M1}, {_, M2}) ->
     lists:sum(maps:values(M1)) <
     lists:sum(maps:values(M2)).
 
-floyd_warshall_stage1(_D, P, []) -> P;
+floyd_warshall_stage1(_D, P, [])                -> P;
 floyd_warshall_stage1(D, P0, [ {I, J} | Rest ]) ->
-    JOverI = maps:get(J, maps:get(I, D)),
-    IOverJ = maps:get(I, maps:get(J, D)),
+    IVal   = maps:get(I, D),
+    JOverI = maps:get(J, IVal, 0),
+    JVal   = maps:get(J, D),
+    IOverJ = maps:get(I, JVal, 0),
     V = case IOverJ > JOverI of
             true -> IOverJ;
             _    -> 0
