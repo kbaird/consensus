@@ -30,6 +30,10 @@ cabinet_composition(Label, SeatShares) ->
 -spec effective_num_parties([party_result()]) -> number().
 effective_num_parties(PartyShares) -> 1 / sum_for(PartyShares).
 
+% Measure of disproportionality proposed by Michael Gallagher.
+% Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg158. and
+% Gallagher, Michael. 1991. "Proportionality, Disproportionality, and
+% Electoral systems." _Electoral Studies_ 10, no. 1 (March): 33-51.
 -spec gallagher_index([party_result()]) -> number().
 gallagher_index(ElectionResults) ->
     consensus_index:gallagher(ElectionResults).
