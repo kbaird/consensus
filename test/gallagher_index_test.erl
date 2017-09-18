@@ -14,7 +14,9 @@ gallagher_index_test_() ->
             fun gallagher_index_teardown/1,
             [
                 fun gallagher_index_uk2015parl_case/0,
-                fun gallagher_index_us2016potus_case/0
+                fun gallagher_index_us2016potus_case/0,
+                fun gallagher_index_even_three_case/0,
+                fun gallagher_index_even_two_case/0
             ]
     }.
 
@@ -28,8 +30,27 @@ gallagher_index_us2016potus_case() ->
     ?assert(GIdx > 46.70),
     ?assert(GIdx < 46.75).
 
+gallagher_index_even_three_case() ->
+    GIdx = consensus:gallagher_index(even(3)),
+    ?assert(GIdx > 40.40),
+    ?assert(GIdx < 40.42).
+
+gallagher_index_even_two_case() ->
+    GIdx = consensus:gallagher_index(even(2)),
+    ?assert(GIdx > 49.49),
+    ?assert(GIdx < 49.51).
+
 %%% PRIVATE FUNCTIONS
 
+even(3) -> [
+    consensus_party:make(jack_johnson, 1, 33.33),
+    consensus_party:make(john_jackson, 1, 33.33),
+    consensus_party:make(jenn_jackson, 1, 33.33)
+];
+even(2) -> [
+    consensus_party:make(jack_johnson, 1, 50.00),
+    consensus_party:make(john_jackson, 1, 50.00)
+].
 uk2015parl()  -> [
     consensus_party:make(con, 330, 36.9),
     consensus_party:make(lab, 232, 30.4),
