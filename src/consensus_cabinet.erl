@@ -110,7 +110,7 @@ party_endpoints(Cabinet) ->
 party_names(Cabinet) ->
     [ consensus_party:name(P) || P <- Cabinet ].
 
-powerset([]) -> [[]];
+powerset([])    -> [[]];
 powerset([H|T]) ->
     PT = powerset(T),
     powerset(H, PT, PT).
@@ -132,9 +132,9 @@ seat_share(Party) -> seat_share([Party]).
 % Are any elements in arg2 subsets of arg1?
 -spec too_large(cabinet(), [cabinet()]) -> boolean().
 too_large(Cabinet, Coalitions) ->
-    Smallers = [ Coalition ||  Coalition  <- Coalitions,
-                    length(Coalition) < length(Cabinet),
-                    all_in(Cabinet, Coalition) ],
+    Smallers = [ Coalition || Coalition  <- Coalitions,
+                              length(Coalition) < length(Cabinet),
+                              all_in(Cabinet, Coalition) ],
     length(Smallers) > 0.
 
 uniqueify(Ls) ->
