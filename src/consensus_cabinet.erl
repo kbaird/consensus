@@ -78,8 +78,7 @@ contiguous(Cabinet) ->
     all_in(PartyVals, AllParties).
 
 -spec is_coalition(cabinet()) -> boolean().
-is_coalition([ _ ]) -> false; % has only 1 party in the list
-is_coalition(_)     -> true.
+is_coalition(Cab) -> length(Cab) > 1.
 
 % Does this coalition command a majority of seats?
 -spec is_winner([cabinet()], [cabinet()]) -> boolean().
