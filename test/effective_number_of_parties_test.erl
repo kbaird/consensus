@@ -33,23 +33,23 @@ effective_num_parties_even_two_case() ->
 
 effective_num_parties_even_ten_case() ->
     Count = consensus:effective_num_parties(even_ten_state()),
-    ?assert(Count > 9.95),
-    ?assert(Count < 10.05).
+    ?assert(Count > 9.99),
+    ?assert(Count < 10.0).
 
 effective_num_parties_near_even_two_case() ->
     Count = consensus:effective_num_parties(near_even_two_state()),
-    ?assert(Count > 1.97),
-    ?assert(Count < 2.03).
+    ?assert(Count > 1.98),
+    ?assert(Count < 1.99).
 
 effective_num_parties_skewed_two_case() ->
     Count = consensus:effective_num_parties(skewed_two_state()),
-    ?assert(Count > 1.65),
-    ?assert(Count < 1.75).
+    ?assert(Count > 1.72),
+    ?assert(Count < 1.73).
 
 effective_num_parties_skewed_three_case() ->
     Count = consensus:effective_num_parties(skewed_three_state()),
-    ?assert(Count > 2.55),
-    ?assert(Count < 2.65).
+    ?assert(Count > 2.59),
+    ?assert(Count < 2.60).
 
 %%% PRIVATE FUNCTIONS
 

@@ -23,13 +23,13 @@ gallagher_index_test_() ->
 
 gallagher_index_uk2015parl_case() ->
     GIdx = consensus:gallagher_index(uk2015parl()),
-    ?assert(GIdx > 35.15),
-    ?assert(GIdx < 35.20).
+    ?assert(GIdx > 35.17),
+    ?assert(GIdx < 35.18).
 
 gallagher_index_us2016potus_case() ->
     GIdx = consensus:gallagher_index(us2016potus()),
-    ?assert(GIdx > 46.70),
-    ?assert(GIdx < 46.75).
+    ?assert(GIdx > 46.72),
+    ?assert(GIdx < 46.73).
 
 gallagher_index_even_three_case() ->
     GIdx = consensus:gallagher_index(even(3)),
@@ -43,8 +43,8 @@ gallagher_index_even_two_case() ->
 
 gallagher_index_extreme_skew_case() ->
     GIdx = consensus:gallagher_index(extreme_skew()),
-    ?assert(GIdx > 63.93),
-    ?assert(GIdx < 63.97).
+    ?assert(GIdx > 63.95),
+    ?assert(GIdx < 63.96).
 
 %%% PRIVATE FUNCTIONS
 
