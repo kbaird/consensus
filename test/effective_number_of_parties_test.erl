@@ -59,9 +59,9 @@ even_two_state()      -> [
     consensus_party:make(right, 0.5)
 ].
 even_ten_state()      -> [
-    consensus_party:make(N, S) ||
-    {N, S} <- [ {a, 0.1}, {b, 0.1}, {c, 0.1}, {d, 0.1}, {e, 0.1},
-                {f, 0.1}, {g, 0.1}, {h, 0.1}, {i, 0.1}, {j, 0.1} ]
+    consensus_party:make(Name, Share) ||
+    {Name, Share} <- [ {a, 0.1}, {b, 0.1}, {c, 0.1}, {d, 0.1}, {e, 0.1},
+                       {f, 0.1}, {g, 0.1}, {h, 0.1}, {i, 0.1}, {j, 0.1} ]
 ].
 near_even_two_state() -> [
     consensus_party:make(left,  0.55),
