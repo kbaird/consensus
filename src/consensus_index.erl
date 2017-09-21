@@ -6,7 +6,6 @@
 ]).
 
 -include("parties.hrl").
--include("condorcet.hrl").
 
 %%====================================================================
 %% API functions
