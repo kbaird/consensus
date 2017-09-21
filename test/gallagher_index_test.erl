@@ -52,6 +52,7 @@ even(2) -> [
     consensus_party:make(john_jackson, 1, 50.00)
 ].
 uk2015parl()  -> [
+    % party_name, seat_share, vote_pc
     consensus_party:make(con, 330, 36.9),
     consensus_party:make(lab, 232, 30.4),
     consensus_party:make(snp,  56,  4.7),
@@ -60,6 +61,7 @@ uk2015parl()  -> [
     consensus_party:make(grn,   1,  3.8)
 ].
 us2016potus() -> [
+    % party_name, electoral_votes, vote_pc
     consensus_party:make(gop, 306, 46.72),
     consensus_party:make(dem, 232, 47.73)
 ].
