@@ -25,18 +25,12 @@ two_candidates_one_voter_case() ->
 two_candidates_majority_case() ->
     Ballot1 = condorcet_ballot:make([b, a]),
     Ballot2 = condorcet_ballot:make([a, b]),
-    Ballot3 = condorcet_ballot:make([a, b]),
-    Ballot4 = condorcet_ballot:make([a, b]),
-    Ballots = [Ballot1, Ballot2, Ballot3, Ballot4],
+    Ballots = [Ballot1, Ballot2, Ballot2, Ballot2],
     Winner  = consensus:condorcet_winner(Ballots),
     ?assertEqual(a, Winner).
 
 two_candidates_unanimous_case() ->
-    Ballot1 = condorcet_ballot:make([a, b]),
-    Ballot2 = condorcet_ballot:make([a, b]),
-    Ballot3 = condorcet_ballot:make([a, b]),
-    Ballot4 = condorcet_ballot:make([a, b]),
-    Ballots = [Ballot1, Ballot2, Ballot3, Ballot4],
+    Ballots = [condorcet_ballot:make([a]) || _ <- lists:seq(1, 4)],
     Winner  = consensus:condorcet_winner(Ballots),
     ?assertEqual(a, Winner).
 
