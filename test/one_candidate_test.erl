@@ -22,11 +22,7 @@ one_candidate_one_voter_case() ->
     ?assertEqual(a, Winner).
 
 one_candidate_multiple_voter_case() ->
-    Ballot1 = condorcet_ballot:make([a]),
-    Ballot2 = condorcet_ballot:make([a]),
-    Ballot3 = condorcet_ballot:make([a]),
-    Ballot4 = condorcet_ballot:make([a]),
-    Ballots = [Ballot1, Ballot2, Ballot3, Ballot4],
+    Ballots = [condorcet_ballot:make([a]) || _ <- lists:seq(1, 4)],
     Winner  = consensus:condorcet_winner(Ballots),
     ?assertEqual(a, Winner).
 
