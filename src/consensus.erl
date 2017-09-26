@@ -54,7 +54,7 @@ sum_for(PartyShares) ->
 
 -spec sum_seat_share_squares(party_result(),
                              pos_integer()) -> pos_integer().
-sum_seat_share_squares(PartyResult, Sum) ->
+sum_seat_share_squares(PartyResult, Acc) ->
     Seats = consensus_party:seat_share(PartyResult),
-    (Seats * Seats) + Sum.
+    (Seats * Seats) + Acc.
 

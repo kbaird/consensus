@@ -125,7 +125,7 @@ range(Cabinet) ->
 
 % How many seats does this coalition fill?
 seat_share(Parties) when is_list(Parties) ->
-    SumShares = fun(P, Sum) -> consensus_party:seat_share(P) + Sum end,
+    SumShares = fun(P, Acc) -> consensus_party:seat_share(P) + Acc end,
     lists:foldl(SumShares, 0, Parties);
 seat_share(Party) -> seat_share([Party]).
 
