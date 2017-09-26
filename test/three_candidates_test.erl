@@ -56,6 +56,7 @@ three_candidates_divergent_case() ->
     ?assertEqual(b, Winner).
 
 three_candidates_condorcet_over_borda_case() ->
+    % https://en.wikipedia.org/wiki/Condorcet_criterion#Borda_count
     Ballot1 = condorcet_ballot:make([a, b, c]),
     Ballot2 = condorcet_ballot:make([b, c, a]),
     Ballots = lists:flatten([
@@ -66,6 +67,7 @@ three_candidates_condorcet_over_borda_case() ->
     ?assertEqual(a, Winner).
 
 three_candidates_condorcet_over_irv_case() ->
+    % https://en.wikipedia.org/wiki/Condorcet_criterion#Instant-runoff_voting
     Ballot1 = condorcet_ballot:make([a, b, c]),
     Ballot2 = condorcet_ballot:make([c, b, a]),
     Ballot3 = condorcet_ballot:make([b, c, a]),
