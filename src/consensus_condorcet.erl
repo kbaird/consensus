@@ -26,8 +26,8 @@ winner(Ballots) -> hd(rankings(Ballots)).
 %% Internal functions
 %%====================================================================
 -spec add_preferences(candidate(),
-                     [candidate(), ...],
-                     map()) -> preferences().
+                      [candidate(), ...],
+                      map()) -> preferences().
 add_preferences(_Cand, [],              Acc)   -> Acc;
 add_preferences(Cand,  [ Next | Rest ], AccIn) ->
     Acc1 = increment_vote_count(Cand, Next, AccIn),
