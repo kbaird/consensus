@@ -21,10 +21,10 @@ cabinet_composition(Label, SeatShares) ->
     consensus_cabinet:compose(Label, SeatShares).
 
 condorcet_rankings(Ballots) ->
-    consensus_condorcet:rankings(Ballots).
+    condorcet_election:rankings(Ballots).
 
 condorcet_winner(Ballots) ->
-    consensus_condorcet:winner(Ballots).
+    condorcet_election:winner(Ballots).
 
 % Implement Markku Laakso and Rein Taagepera's index as described in
 % Arend Lijphart's Patterns of Democracy (1999), pp67-68. also

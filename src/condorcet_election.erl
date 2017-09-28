@@ -1,4 +1,4 @@
--module(consensus_condorcet).
+-module(condorcet_election).
 
 %% API exports
 -export([
