@@ -21,8 +21,7 @@
 effective_number(PartyShares) -> 1 / sum_for(PartyShares).
 
 -spec make(party_name(), seat_share()) -> party_result().
-make(Name, SeatShare) ->
-    make(Name, SeatShare, undefined).
+make(Name, SeatShare) -> make(Name, SeatShare, undefined).
 
 -spec make(party_name(), seat_share(), vote_share()) -> party_result().
 make(Name, SeatShare, VoteShare) ->
