@@ -9,9 +9,6 @@
     gallagher_index/1
 ]).
 
--include("parties.hrl").
--include("condorcet.hrl").
-
 %%====================================================================
 %% API functions
 %%====================================================================
@@ -32,7 +29,6 @@ condorcet_winner(Ballots) ->
 % "'Effective' Number of Parties: A Measure with Application to West Europe."
 % _Comparative Political Studies_ 12, no. 1 (April): 3-27.
 % http://cps.sagepub.com/content/12/1/3.extract
--spec effective_num_parties([party_result()]) -> number().
 effective_num_parties(PartyShares) ->
     consensus_party:effective_number(PartyShares).
 
@@ -40,7 +36,6 @@ effective_num_parties(PartyShares) ->
 % Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg158. and
 % Gallagher, Michael. 1991. "Proportionality, Disproportionality, and
 % Electoral systems." _Electoral Studies_ 10, no. 1 (March): 33-51.
--spec gallagher_index([party_result()]) -> number().
 gallagher_index(ElectionResults) ->
     consensus_gallagher:index(ElectionResults).
 
