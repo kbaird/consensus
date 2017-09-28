@@ -23,6 +23,7 @@ index(ElectionResults) ->
 %% Internal functions
 %%====================================================================
 
+-spec express_seat_share_as_percentage(party_result(), number()) -> party_result().
 express_seat_share_as_percentage(PartyResult, TotalSeats) ->
     Name  = consensus_party:name(PartyResult),
     Seats = consensus_party:seat_share(PartyResult),
