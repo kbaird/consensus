@@ -28,7 +28,7 @@ winner(Ballots) -> hd(rankings(Ballots)).
 -spec add_preferences(candidate(),
                       [candidate(), ...],
                       map()) -> preferences().
-add_preferences(_Cand, [],              Acc)   -> Acc;
+add_preferences(_LastPlaceCand, [],     Acc)   -> Acc;
 add_preferences(Cand,  [ Next | Rest ], AccIn) ->
     Acc1 = increment_vote_count(Cand, Next, AccIn),
     Acc2 = add_preferences(Cand, Rest, Acc1),
