@@ -21,7 +21,7 @@ compose(minimal_connected_winning, SeatShares) -> compose(mcw, SeatShares);
 compose(minimum_connected_winning, SeatShares) -> compose(mcw, SeatShares);
 compose(mcw, SeatShares) ->
     WithSeats   = winning_coalitions(SeatShares),
-    Contiguous  = lists:filter(fun contiguous/1, WithSeats),
+    Contiguous  = lists:filter(fun is_contiguous/1, WithSeats),
     SmallEnough = fun(C) -> not too_large(C, Contiguous) end,
     InRange     = lists:filter(SmallEnough, Contiguous),
     just_party_names(InRange);
@@ -67,8 +67,8 @@ centrist_party(Parties) ->
     centrist_party(Sub).
 
 % Does this coalition avoid gaps between parties?
--spec contiguous(cabinet()) -> boolean().
-contiguous(Cabinet) ->
+-spec is_contiguous(cabinet()) -> boolean().
+is_contiguous(Cabinet) ->
     PartyNames  = party_names(Cabinet),
     PartyVals   = lists:map(fun atom_to_ascii/1, PartyNames),
     {Lo, Hi}    = party_endpoints(Cabinet),
@@ -107,6 +107,7 @@ party_endpoints(Cabinet) ->
     [ Lo | _ ]  = SortedNames,
     {Lo, Hi}.
 
+-spec party_names(cabinet()) -> [party_name()].
 party_names(Cabinet) ->
     [ consensus_party:name(P) || P <- Cabinet ].
 
@@ -119,15 +120,17 @@ powerset(_, [],    Acc) -> Acc;
 powerset(X, [H|T], Acc) -> powerset(X, T, [[X|H]|Acc]).
 
 % How many steps between the "leftmost" partner and the "rightmost" partner?
+-spec range(cabinet()) -> number().
 range(Cabinet) ->
     {Lo, Hi} = party_endpoints(Cabinet),
     atom_to_ascii(Hi) - atom_to_ascii(Lo).
 
 % How many seats does this coalition fill?
-seat_share(Parties) when is_list(Parties) ->
+-spec seat_share([party_result()]) -> number().
+seat_share(PartyResults) when is_list(PartyResults) ->
     SumShares = fun(P, Acc) -> consensus_party:seat_share(P) + Acc end,
-    lists:foldl(SumShares, 0, Parties);
-seat_share(Party) -> seat_share([Party]).
+    lists:foldl(SumShares, 0, PartyResults);
+seat_share(PartyResult) -> seat_share([PartyResult]).
 
 % Are any elements in arg2 subsets of arg1?
 -spec too_large(cabinet(), [cabinet()]) -> boolean().
