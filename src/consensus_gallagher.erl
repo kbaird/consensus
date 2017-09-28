@@ -1,8 +1,8 @@
--module(consensus_index).
+-module(consensus_gallagher).
 
 %% API exports
 -export([
-    gallagher/1
+    index/1
 ]).
 
 -include("parties.hrl").
@@ -11,8 +11,8 @@
 %% API functions
 %%====================================================================
 
--spec gallagher([party_result(), ...]) -> number().
-gallagher(ElectionResults) ->
+-spec index([party_result(), ...]) -> number().
+index(ElectionResults) ->
     PCs = results_to_percentages(ElectionResults),
     Sum = sum_squares_of_pc_diffs(PCs),
     math:sqrt(Sum / 2).

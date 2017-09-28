@@ -41,7 +41,7 @@ effective_num_parties(PartyShares) -> 1 / sum_for(PartyShares).
 % Electoral systems." _Electoral Studies_ 10, no. 1 (March): 33-51.
 -spec gallagher_index([party_result()]) -> number().
 gallagher_index(ElectionResults) ->
-    consensus_index:gallagher(ElectionResults).
+    consensus_gallagher:index(ElectionResults).
 
 %%====================================================================
 %% Internal functions
