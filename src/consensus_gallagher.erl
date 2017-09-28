@@ -29,7 +29,7 @@ express_seat_share_as_percentage(PartyResult, TotalSeats) ->
     Votes = consensus_party:vote_share(PartyResult),
     consensus_party:make(Name, Seats/TotalSeats, Votes).
 
--spec results_to_percentages([any()]) -> [consensus_party:party_result()].
+-spec results_to_percentages([party_result(), ...]) -> [party_result(), ...].
 results_to_percentages(ElectionResults) ->
     TotalSeats = lists:foldl(fun sum_seats/2, 0, ElectionResults),
     [ express_seat_share_as_percentage(PartyResult, TotalSeats) ||
