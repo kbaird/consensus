@@ -15,7 +15,7 @@
 -spec index([party_result(), ...]) -> number().
 index(ElectionResults) ->
     PCs = results_to_percentages(ElectionResults),
-    Sum = sum_squares_of_pc_diffs(PCs),
+    Sum = lists:foldl(fun sum_diff_squares/2, 0, PCs),
     math:sqrt(Sum / 2).
     % G = sqrt(1/2 * sum( (vote_pc - seat_pc) ** 2 ))
 
@@ -45,7 +45,3 @@ sum_diff_squares(PartyResult, Acc) ->
 sum_seats(PartyResult, Acc) ->
     Seats = consensus_party:seat_share(PartyResult),
     Seats + Acc.
-
--spec sum_squares_of_pc_diffs([consensus_party:party_result()]) -> number().
-sum_squares_of_pc_diffs(ElectionResults) ->
-    lists:foldl(fun sum_diff_squares/2, 0, ElectionResults).
