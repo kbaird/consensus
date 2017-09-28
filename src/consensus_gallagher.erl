@@ -11,6 +11,7 @@
 %% API functions
 %%====================================================================
 
+% See consensus:gallagher_index for references
 -spec index([party_result(), ...]) -> number().
 index(ElectionResults) ->
     PCs = results_to_percentages(ElectionResults),
