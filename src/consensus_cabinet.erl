@@ -53,8 +53,9 @@ compose(pvc, SeatShares) ->
 %%====================================================================
 %% Internal functions
 %%====================================================================
-all_in(Inner, All) ->
-    lists:all(fun(Elem) -> lists:member(Elem, Inner) end, All).
+all_in(ContainsEachItem, ItemsToCheck) ->
+    Present = fun(Elem) -> lists:member(Elem, ContainsEachItem) end,
+    lists:all(Present, ItemsToCheck).
 
 atom_to_ascii(Atom) -> hd(atom_to_list(Atom)).
 
