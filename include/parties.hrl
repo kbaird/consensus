@@ -1,5 +1,5 @@
 -type party_name()  :: atom().
--opaque cabinet()   :: [party_name()].
+-type cabinet()     :: [party_name()].
 
 -type seat_share()  :: number().
 
