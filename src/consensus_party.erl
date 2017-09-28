@@ -29,10 +29,13 @@ make(Name, SeatShare, VoteShare) ->
                   seat_share = SeatShare,
                   vote_share = VoteShare}.
 
+-spec name(party_result()) -> party_name().
 name(#party_result{name = Name}) -> Name.
 
+-spec seat_share(party_result()) -> seat_share().
 seat_share(#party_result{seat_share = Seats}) -> Seats.
 
+-spec vote_share(party_result()) -> vote_share().
 vote_share(#party_result{vote_share = Votes}) -> Votes.
 
 %%====================================================================
