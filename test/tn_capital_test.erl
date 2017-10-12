@@ -15,7 +15,7 @@ tn_capital_test_() ->
             [
                 fun tn_capital_winner_case/0,
                 fun tn_capital_rankings_case/0,
-                fun tn_capital_rankings_mod_case/0
+                fun tn_capital_rankings_modified_case/0
             ]
     }.
 
@@ -27,8 +27,8 @@ tn_capital_rankings_case() ->
     Rankings = consensus:condorcet_rankings(tn_ballots()),
     ?assertEqual([nashville, chattanooga, knoxville, memphis], Rankings).
 
-tn_capital_rankings_mod_case() ->
-    Rankings = consensus:condorcet_rankings(tn_ballots(mod)),
+tn_capital_rankings_modified_case() ->
+    Rankings = consensus:condorcet_rankings(tn_ballots(modified)),
     ?assertEqual([chattanooga, nashville, knoxville, memphis], Rankings).
 
 %%% PRIVATE FUNCTIONS
@@ -46,9 +46,9 @@ tn_ballots(Atom) ->
         lists:duplicate(17, ballot(k))
     ]).
 
-ballot(m)   -> condorcet_ballot:make([memphis, nashville, chattanooga, knoxville]);
-ballot(mod) -> condorcet_ballot:make([memphis, chattanooga, nashville, knoxville]);
-ballot(n)   -> condorcet_ballot:make([nashville, chattanooga, knoxville, memphis]);
-ballot(c)   -> condorcet_ballot:make([chattanooga, knoxville, nashville, memphis]);
-ballot(k)   -> condorcet_ballot:make([knoxville, chattanooga, nashville, memphis]).
+ballot(m)        -> condorcet_ballot:make([memphis, nashville, chattanooga, knoxville]);
+ballot(modified) -> condorcet_ballot:make([memphis, chattanooga, nashville, knoxville]);
+ballot(n)        -> condorcet_ballot:make([nashville, chattanooga, knoxville, memphis]);
+ballot(c)        -> condorcet_ballot:make([chattanooga, knoxville, nashville, memphis]);
+ballot(k)        -> condorcet_ballot:make([knoxville, chattanooga, nashville, memphis]).
 
