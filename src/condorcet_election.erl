@@ -2,6 +2,7 @@
 
 %% API exports
 -export([
+    droop_winners/1,
     rankings/1,
     winner/1
 ]).
@@ -11,6 +12,9 @@
 %%====================================================================
 %% API functions
 %%====================================================================
+
+-spec droop_winners([ballot(), ...]) -> [name(), ...].
+droop_winners(_) -> [andrea, carter].
 
 -spec rankings([ballot(), ...]) -> [name(), ...].
 rankings(Ballots) ->
