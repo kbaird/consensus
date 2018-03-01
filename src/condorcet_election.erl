@@ -14,12 +14,25 @@
 %%====================================================================
 
 -spec droop_winners(pos_integer(), [ballot(), ...]) -> [name(), ...].
-droop_winners(SeatsCount, Ballots) ->
-    Quota = length(Ballots) / (SeatsCount+1) + 1,
+droop_winners(SeatsCount, Ballots) -> droop_winners(SeatsCount, Ballots, []).
+
+droop_winners(SeatsCount, _Bs, Winners) when length(Winners) =:= SeatsCount ->
+    lists:reverse(Winners);
+droop_winners(SeatsCount, Ballots, Winners) ->
+    %Quota = length(Ballots) / (SeatsCount+1) + 1,
     NestedCands = [ condorcet_ballot:candidates(B) || B <- Ballots ],
+    CNamesWithVotes = sorted_candidate_names_with_votes(NestedCands),
+    [ {Winner, _Votes} | _ ] = lists:sort(fun({_N1, Vs1}, {_N2, Vs2}) -> Vs1 > Vs2 end, CNamesWithVotes),
+    droop_winners(SeatsCount, ballots_without(Ballots, Winner), [ Winner | Winners ]).
+
+ballots_without(Ballots, Winner) ->
+    CandsWithoutWinner  = fun({candidate, CN}) -> CN =/= Winner end,
+    BallotWithoutWinner = fun(B) -> {ballot, lists:filter(CandsWithoutWinner, condorcet_ballot:candidates(B))} end,
+    lists:map(BallotWithoutWinner, Ballots).
+
+sorted_candidate_names_with_votes(NestedCands) ->
     CNames = [ condorcet_candidate:name(C) || C <- lists:usort(lists:flatten(NestedCands)) ],
-    CNamesWithVotes = [ {N, length(lists:filter(fun([{candidate, Name} | _]) -> Name =:= N end, NestedCands))} || N <- CNames ],
-    CNamesWithVotes.
+    [ {N, length(lists:filter(fun([{candidate, Name} | _]) -> Name =:= N end, NestedCands))} || N <- CNames ].
 
 -spec rankings([ballot(), ...]) -> [name(), ...].
 rankings(Ballots) ->
