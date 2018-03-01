@@ -21,7 +21,7 @@ droop_two_winners_three_candidates_stv_stv_case() ->
     CarterOnlyBallots = [condorcet_ballot:make([carter]) || _ <- lists:seq(1, 25)],
     MixedBallots      = [condorcet_ballot:make([andrea, carter]) || _ <- lists:seq(1, 45)],
     Ballots = BradOnlyBallots ++ CarterOnlyBallots ++ MixedBallots,
-    Winner  = consensus:droop_winners(Ballots),
+    Winner  = consensus:droop_winners(2, Ballots),
     ?assertEqual([andrea, carter], Winner).
 
 %%% PRIVATE FUNCTIONS

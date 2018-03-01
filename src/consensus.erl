@@ -5,7 +5,7 @@
     cabinet_composition/2,
     condorcet_rankings/1,
     condorcet_winner/1,
-    droop_winners/1,
+    droop_winners/2,
     effective_num_parties/1,
     gallagher_index/1
 ]).
@@ -24,8 +24,8 @@ condorcet_rankings(Ballots) ->
 condorcet_winner(Ballots) ->
     condorcet_election:winner(Ballots).
 
-droop_winners(Ballots) ->
-    condorcet_election:droop_winners(Ballots).
+droop_winners(SeatsCount, Ballots) ->
+    condorcet_election:droop_winners(SeatsCount, Ballots).
 
 % Implement Markku Laakso and Rein Taagepera's index as described in
 % Arend Lijphart's Patterns of Democracy (1999), pp67-68. also
