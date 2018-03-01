@@ -26,6 +26,7 @@ droop_winners(SeatsCount, Ballots, Winners) ->
     CNamesWithVotes = sorted_candidate_names_with_votes(NestedCands),
     [ {Winner, _Votes} | _ ] = lists:sort(fun({_, V1}, {_, V2}) -> V1 > V2 end,
                                           CNamesWithVotes),
+    % TODO: Don't give 2nd place candidate all of winner's votes in next round, just the surplus beyond the quota
     droop_winners(SeatsCount, ballots_without(Ballots, Winner), [ Winner | Winners ]).
 
 ballots_without(Ballots, Winner) ->
