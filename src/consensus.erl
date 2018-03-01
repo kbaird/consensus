@@ -25,7 +25,7 @@ condorcet_winner(Ballots) ->
     condorcet_election:winner(Ballots).
 
 droop_winners(SeatsCount, Ballots) ->
-    condorcet_election:droop_winners(SeatsCount, Ballots).
+    droop_election:winners(SeatsCount, Ballots).
 
 % Implement Markku Laakso and Rein Taagepera's index as described in
 % Arend Lijphart's Patterns of Democracy (1999), pp67-68. also
