@@ -14,7 +14,12 @@
 %%====================================================================
 
 -spec droop_winners(pos_integer(), [ballot(), ...]) -> [name(), ...].
-droop_winners(_SeatsCount, _Ballots) -> [andrea, carter].
+droop_winners(SeatsCount, Ballots) ->
+    Quota = length(Ballots) / (SeatsCount+1) + 1,
+    NestedCands = [ condorcet_ballot:candidates(B) || B <- Ballots ],
+    CNames = [ condorcet_candidate:name(C) || C <- lists:usort(lists:flatten(NestedCands)) ],
+    CNamesWithVotes = [ {N, length(lists:filter(fun([{candidate, Name} | _]) -> Name =:= N end, NestedCands))} || N <- CNames ],
+    CNamesWithVotes.
 
 -spec rankings([ballot(), ...]) -> [name(), ...].
 rankings(Ballots) ->
