@@ -32,7 +32,7 @@ droop_winners(SeatsCount, Ballots, Winners) ->
 ballots_without(Ballots, {WinnerName, WinnerVotes}, Quota, [ _, _NextCandidate | _ ]) ->
     Raw   = ballots_without(Ballots, {WinnerName, WinnerVotes}, Quota, []),
     % TODO: stop peeking inside ballot and candidate. Use provided funs.
-    Names = [ NextName || {ballot, [{candidate, FirstName}, {candidate, NextName} | _]} <- Ballots,
+    Names = [ NextName || {ballot, [{candidate, FirstName}, {candidate, NextName} | _]} <- ballot:only_multis(Ballots),
                           FirstName =:= WinnerName ],
     VoteCountToTransfer = WinnerVotes - Quota,
     Raw ++ [ ballot:make([NextName]) || NextName <- lists:sublist(Names, VoteCountToTransfer) ];
