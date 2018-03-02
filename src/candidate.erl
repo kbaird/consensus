@@ -1,4 +1,4 @@
--module(condorcet_candidate).
+-module(candidate).
 
 %% API exports
 -export([

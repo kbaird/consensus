@@ -15,8 +15,8 @@
 -spec rankings([ballot(), ...]) -> [name(), ...].
 rankings(Ballots) ->
     Prefs  = preferences(Ballots),
-    Ranked = condorcet_candidate:rank(Prefs),
-    [ condorcet_candidate:name(C) || C <- Ranked ].
+    Ranked = candidate:rank(Prefs),
+    [ candidate:name(C) || C <- Ranked ].
 
 -spec winner([ballot(), ...]) -> name().
 winner(Ballots) -> hd(rankings(Ballots)).
