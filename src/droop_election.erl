@@ -33,8 +33,7 @@ ballots_without(Ballots, {WinnerName, WinnerVotes}, Quota, [ _, _NextCandidate |
     Raw   = ballots_without(Ballots, {WinnerName, WinnerVotes}, Quota, []),
     Multis = ballot:only_multis(Ballots),
     PickedWinner = lists:filter(fun(B) -> ballot:has_top_choice(WinnerName, B) end, Multis),
-    % TODO: stop peeking inside ballot and candidate. Use provided funs.
-    Names = [ NextName || {ballot, [{candidate, _}, {candidate, NextName} | _]} <- PickedWinner ],
+    Names = lists:map(fun ballot:get_2nd_choice_name/1, PickedWinner),
     VoteCountToTransfer = WinnerVotes - Quota,
     Raw ++ [ ballot:make([NextName]) || NextName <- lists:sublist(Names, VoteCountToTransfer) ];
 ballots_without(Ballots, {WinnerName, _WinnerVotes}, _Quota, _) ->

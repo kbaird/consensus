@@ -4,6 +4,7 @@
 -export([
     make/1,
     candidates/1,
+    get_2nd_choice_name/1,
     has_top_choice/2,
     only_multis/1
 ]).
