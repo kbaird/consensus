@@ -1,4 +1,4 @@
--module(condorcet_ballot).
+-module(ballot).
 
 %% API exports
 -export([

@@ -16,10 +16,10 @@ four_candidates_test_() ->
     }.
 
 four_candidates_divergent_case() ->
-    Ballot1  = condorcet_ballot:make([a, b, c]),
-    Ballot2  = condorcet_ballot:make([b, a, c]),
-    Ballot3  = condorcet_ballot:make([b, c, a]),
-    Ballot4  = condorcet_ballot:make([c, b, a]),
+    Ballot1  = ballot:make([a, b, c]),
+    Ballot2  = ballot:make([b, a, c]),
+    Ballot3  = ballot:make([b, c, a]),
+    Ballot4  = ballot:make([c, b, a]),
     Ballots  = lists:flatten([
         lists:duplicate(33, Ballot1),
         lists:duplicate(16, Ballot2),

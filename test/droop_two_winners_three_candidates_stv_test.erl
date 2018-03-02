@@ -17,9 +17,9 @@ droop_two_winners_three_candidates_stv_test_() ->
 
 % https://en.wikipedia.org/wiki/Droop_quota#An_example_of_use_in_STV
 droop_two_winners_three_candidates_stv_stv_case() ->
-    BradOnlyBallots   = [condorcet_ballot:make([brad])   || _ <- lists:seq(1, 30)],
-    CarterOnlyBallots = [condorcet_ballot:make([carter]) || _ <- lists:seq(1, 25)],
-    MixedBallots      = [condorcet_ballot:make([andrea, carter]) || _ <- lists:seq(1, 45)],
+    BradOnlyBallots   = [ballot:make([brad])   || _ <- lists:seq(1, 30)],
+    CarterOnlyBallots = [ballot:make([carter]) || _ <- lists:seq(1, 25)],
+    MixedBallots      = [ballot:make([andrea, carter]) || _ <- lists:seq(1, 45)],
     Ballots = BradOnlyBallots ++ CarterOnlyBallots ++ MixedBallots,
     Winner  = consensus:droop_winners(2, Ballots),
     ?assertEqual([{andrea, 45}, {carter, 36}], Winner).
