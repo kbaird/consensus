@@ -36,8 +36,7 @@ ballots_without(Ballots, {WinnerName, WinnerVotes}, Quota, [ _, _NextCandidate |
 ballots_without(Ballots, {WinnerName, _WinnerVotes}, _Quota, _) ->
     [ B || B <- Ballots, not lists:member({candidate, WinnerName}, ballot:candidates(B)) ].
 
-sorted_candidate_names_with_votes(NestedCands) ->
-    CNames = [ candidate:name(C) ||
-               C <- lists:usort(lists:flatten(NestedCands)) ],
-    [ {N, length(lists:filter(fun([{candidate, Name} | _]) -> Name =:= N end, NestedCands))} || N <- CNames ].
+sorted_candidate_names_with_votes(NestedCs) ->
+    CNames = [ candidate:name(C) || C <- lists:usort(lists:flatten(NestedCs)) ],
+    [ {N, length(lists:filter(fun([{candidate, Name} | _]) -> Name =:= N end, NestedCs))} || N <- CNames ].
 
