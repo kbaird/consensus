@@ -31,9 +31,8 @@ droop_winners(SeatsCount, Ballots, Winners) ->
 
 ballots_without(Ballots, {WinnerName, WinnerVotes}, Quota, [ _, _NextCandidate | _ ]) ->
     Raw   = ballots_without(Ballots, {WinnerName, WinnerVotes}, Quota, []),
-    Multis = ballot:only_multis(Ballots),
-    PickedWinner = lists:filter(fun(B) -> ballot:has_top_choice(WinnerName, B) end, Multis),
-    Names = lists:map(fun ballot:get_2nd_choice_name/1, PickedWinner),
+    Names = [ ballot:get_2nd_choice_name(B) || B <- ballot:only_multis(Ballots),
+                                               ballot:has_top_choice(WinnerName, B) ],
     VoteCountToTransfer = WinnerVotes - Quota,
     Raw ++ [ ballot:make([NextName]) || NextName <- lists:sublist(Names, VoteCountToTransfer) ];
 ballots_without(Ballots, {WinnerName, _WinnerVotes}, _Quota, _) ->
