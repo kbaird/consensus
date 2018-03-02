@@ -48,10 +48,10 @@ droop_three_winners_five_candidates_stv_stv_case() ->
     Ballot2s = [ballot:make([jo]) || _ <- lists:seq(1, 25)],
     Ballot3s = [ballot:make([kim]) || _ <- lists:seq(1, 24)],
     Ballots = Ballot1s ++ Ballot2s ++ Ballot3s,
-    Winners = consensus:droop_winners(3, Ballots),
-    ?assert(lists:member({alex, 50}, Winners)),
-    ?assert(lists:member({bobbie, 25}, Winners)),
-    ?assert(lists:member({jo, 25}, Winners)).
+    [ Alex | OtherWinners ] = consensus:droop_winners(3, Ballots),
+    ?assertEqual({alex, 50}, Alex),
+    ?assert(lists:member({bobbie, 25}, OtherWinners)),
+    ?assert(lists:member({jo, 25}, OtherWinners)).
 
 %%% PRIVATE FUNCTIONS
 
