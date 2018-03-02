@@ -2,7 +2,7 @@
 -author('Kevin C. Baird').
 
 -include_lib("eunit/include/eunit.hrl").
--include_lib("condorcet.hrl").
+-include_lib("elections.hrl").
 
 % tn_capital
 
@@ -46,9 +46,9 @@ tn_ballots(Atom) ->
         lists:duplicate(17, ballot(k))
     ]).
 
-ballot(m)        -> condorcet_ballot:make([memphis, nashville, chattanooga, knoxville]);
-ballot(modified) -> condorcet_ballot:make([memphis, chattanooga, nashville, knoxville]);
-ballot(n)        -> condorcet_ballot:make([nashville, chattanooga, knoxville, memphis]);
-ballot(c)        -> condorcet_ballot:make([chattanooga, knoxville, nashville, memphis]);
-ballot(k)        -> condorcet_ballot:make([knoxville, chattanooga, nashville, memphis]).
+ballot(m)        -> ballot:make([memphis, nashville, chattanooga, knoxville]);
+ballot(modified) -> ballot:make([memphis, chattanooga, nashville, knoxville]);
+ballot(n)        -> ballot:make([nashville, chattanooga, knoxville, memphis]);
+ballot(c)        -> ballot:make([chattanooga, knoxville, nashville, memphis]);
+ballot(k)        -> ballot:make([knoxville, chattanooga, nashville, memphis]).
 

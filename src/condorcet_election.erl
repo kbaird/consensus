@@ -6,7 +6,7 @@
     winner/1
 ]).
 
--include("condorcet.hrl").
+-include("elections.hrl").
 
 %%====================================================================
 %% API functions
@@ -15,8 +15,8 @@
 -spec rankings([ballot(), ...]) -> [name(), ...].
 rankings(Ballots) ->
     Prefs  = preferences(Ballots),
-    Ranked = condorcet_candidate:rank(Prefs),
-    [ condorcet_candidate:name(C) || C <- Ranked ].
+    Ranked = candidate:rank(Prefs),
+    [ candidate:name(C) || C <- Ranked ].
 
 -spec winner([ballot(), ...]) -> name().
 winner(Ballots) -> hd(rankings(Ballots)).
@@ -48,7 +48,7 @@ preferences(Ballots) -> preferences(Ballots, maps:new()).
 -spec preferences(list(), map()) -> preferences().
 preferences([],            Acc)   -> Acc;
 preferences([Ballot | Bs], AccIn) ->
-    [ Cand | Rest ] = condorcet_ballot:candidates(Ballot),
+    [ Cand | Rest ] = ballot:candidates(Ballot),
     case Rest of
         [] -> maps:put(Cand, winner, maps:new());
         _  -> Acc = add_preferences(Cand, Rest, AccIn),
