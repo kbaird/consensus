@@ -2,7 +2,7 @@
 -author('Kevin C. Baird').
 
 -include_lib("eunit/include/eunit.hrl").
--include_lib("condorcet.hrl").
+-include_lib("elections.hrl").
 
 droop_two_winners_three_candidates_stv_setup()     -> ok.
 droop_two_winners_three_candidates_stv_teardown(_) -> ok.

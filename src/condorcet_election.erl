@@ -6,7 +6,7 @@
     winner/1
 ]).
 
--include("condorcet.hrl").
+-include("elections.hrl").
 
 %%====================================================================
 %% API functions
