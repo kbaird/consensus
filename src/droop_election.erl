@@ -37,8 +37,8 @@ ballots_without(Ballots, {WinnerName, WinnerVotes}, Quota, [ _, _NextCandidate |
     VoteCountToTransfer = WinnerVotes - Quota,
     Raw ++ [ ballot:make([NextName]) || NextName <- lists:sublist(Names, VoteCountToTransfer) ];
 ballots_without(Ballots, {WinnerName, _WinnerVotes}, _Quota, _) ->
-    % TODO: stop peeking inside ballot and candidate. Use provided funs.
-    [ B || B <- Ballots, not lists:member({candidate, WinnerName}, ballot:candidates(B)) ].
+    [ B || B <- Ballots,
+           not lists:member(WinnerName, lists:map(fun candidate:name/1, ballot:candidates(B))) ].
 
 candidate_names_with_top_votes(NestedCs) ->
     CNames = [ candidate:name(C) || C <- lists:usort(lists:flatten(NestedCs)) ],
