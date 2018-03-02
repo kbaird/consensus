@@ -23,7 +23,7 @@ droop_winners(SeatsCount, _Bs, Winners) when length(Winners) =:= SeatsCount ->
 droop_winners(SeatsCount, Ballots, Winners) ->
     Quota = length(Ballots) div (SeatsCount+1) + 1,
     NestedCands = [ ballot:candidates(B) || B <- Ballots ],
-    CNamesWithVotes = candidate_names_with_votes(NestedCands),
+    CNamesWithVotes = candidate_names_with_top_votes(NestedCands),
     % TODO: What if top vote getter is below quota?
     [ Winner | _ ] = lists:sort(fun({_, V1}, {_, V2}) -> V1 > V2 end, CNamesWithVotes),
     Ballots2 = ballots_without(Ballots, Winner, Quota, CNamesWithVotes),
@@ -40,8 +40,7 @@ ballots_without(Ballots, {WinnerName, _WinnerVotes}, _Quota, _) ->
     % TODO: stop peeking inside ballot and candidate. Use provided funs.
     [ B || B <- Ballots, not lists:member({candidate, WinnerName}, ballot:candidates(B)) ].
 
-candidate_names_with_votes(NestedCs) ->
+candidate_names_with_top_votes(NestedCs) ->
     CNames = [ candidate:name(C) || C <- lists:usort(lists:flatten(NestedCs)) ],
-    % TODO: stop peeking inside ballot and candidate. Use provided funs.
-    [ {N, length(lists:filter(fun([{candidate, Name} | _]) -> Name =:= N end, NestedCs))} || N <- CNames ].
+    [ {N, length(lists:filter(fun([C|_]) -> candidate:name(C) =:= N end, NestedCs))} || N <- CNames ].
 
