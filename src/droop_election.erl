@@ -24,13 +24,12 @@ droop_winners(SeatsCount, Ballots, Winners) ->
     %Quota = length(Ballots) / (SeatsCount+1) + 1,
     NestedCands = [ condorcet_ballot:candidates(B) || B <- Ballots ],
     CNamesWithVotes = sorted_candidate_names_with_votes(NestedCands),
-    [ {Winner, _Votes} | _ ] = lists:sort(fun({_, V1}, {_, V2}) -> V1 > V2 end,
-                                          CNamesWithVotes),
+    [ Winner | _ ] = lists:sort(fun({_, V1}, {_, V2}) -> V1 > V2 end, CNamesWithVotes),
     % TODO: Don't give 2nd place candidate all of winner's votes in next round, just the surplus beyond the quota
     droop_winners(SeatsCount, ballots_without(Ballots, Winner), [ Winner | Winners ]).
 
-ballots_without(Ballots, Winner) ->
-    CandsWithoutWinner  = fun({candidate, CN}) -> CN =/= Winner end,
+ballots_without(Ballots, {WinnerName, _WinnerVotes}) ->
+    CandsWithoutWinner  = fun({candidate, CN}) -> CN =/= WinnerName end,
     BallotWithoutWinner = fun(B) -> {ballot, lists:filter(CandsWithoutWinner,
                                                           condorcet_ballot:candidates(B))}
                           end,
