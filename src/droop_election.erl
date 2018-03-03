@@ -22,6 +22,7 @@ by_votes({_, V1}, {_, V2}) -> V1 > V2.
 
 droop_winners(SeatsCount, _Bs, Winners) when length(Winners) =:= SeatsCount ->
     lists:reverse(Winners);
+
 droop_winners(SeatsCount, Ballots, Winners) ->
     Quota       = length(Ballots) div (SeatsCount+1) + 1,
     NestedCands = [ ballot:candidates(B) || B <- Ballots ],
@@ -38,6 +39,7 @@ ballots_without(Ballots, {WinnerName, WinnerVotes}, Quota, [ _, _NextCandidate |
                 _    -> Names
             end,
     Raw ++ [ ballot:make([NextName]) || NextName <- More ];
+
 ballots_without(Ballots, {WinnerName, _WinnerVotes}, _Quota, _) ->
     [ B || B <- Ballots,
            not lists:member(WinnerName, lists:map(fun candidate:name/1, ballot:candidates(B))) ].
