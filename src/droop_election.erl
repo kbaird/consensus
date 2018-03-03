@@ -18,13 +18,15 @@ winners(SeatsCount, Ballots) -> droop_winners(SeatsCount, Ballots, []).
 %% Internal functions
 %%====================================================================
 
+by_votes({_, V1}, {_, V2}) -> V1 > V2.
+
 droop_winners(SeatsCount, _Bs, Winners) when length(Winners) =:= SeatsCount ->
     lists:reverse(Winners);
 droop_winners(SeatsCount, Ballots, Winners) ->
     Quota       = length(Ballots) div (SeatsCount+1) + 1,
     NestedCands = [ ballot:candidates(B) || B <- Ballots ],
     CNamesWithVotes = candidate_names_with_top_votes(NestedCands),
-    [ Winner | _ ]  = lists:sort(fun({_, V1}, {_, V2}) -> V1 > V2 end, CNamesWithVotes),
+    [ Winner | _ ]  = lists:sort(fun by_votes/2, CNamesWithVotes),
     Ballots2 = ballots_without(Ballots, Winner, Quota, CNamesWithVotes),
     droop_winners(SeatsCount, Ballots2, [ Winner | Winners ]).
 
