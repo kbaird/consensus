@@ -4,9 +4,10 @@
 -export([
     make/1,
     candidates/1,
-    get_2nd_choice_name/1,
+    get_tail_names/1,
     has_top_choice/2,
-    only_multis/1
+    only_multis/1,
+    remove/2
 ]).
 
 -include("elections.hrl").
@@ -22,10 +23,10 @@ make(CandidateNames) ->
 -spec candidates(ballot()) -> [candidate(), ...].
 candidates(#ballot{candidates = Candidates}) -> Candidates.
 
--spec get_2nd_choice_name(ballot()) -> name().
-get_2nd_choice_name(Ballot) ->
-    [ _, C2 | _ ] = candidates(Ballot),
-    candidate:name(C2).
+-spec get_tail_names(ballot()) -> [name()].
+get_tail_names(Ballot) ->
+    [ _ | Cs ] = candidates(Ballot),
+    [ candidate:name(C) || C <- Cs ].
 
 -spec has_top_choice(name(), ballot()) -> boolean().
 has_top_choice(Name, Ballot) ->
@@ -35,6 +36,12 @@ has_top_choice(Name, Ballot) ->
 -spec only_multis([ballot()]) -> [ballot()].
 only_multis(Ballots) ->
     lists:filter(fun(B) -> length(candidates(B)) > 1 end, Ballots).
+
+-spec remove(ballot(), name()) -> ballot().
+remove(Ballot, Name) ->
+   Candidates = [ candidate:name(C) || C <- candidates(Ballot) ],
+   ShortCands = lists:subtract(Candidates, [Name]),
+   make(ShortCands).
 
 %%====================================================================
 %% Internal functions

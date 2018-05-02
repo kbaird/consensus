@@ -11,16 +11,16 @@ ballot_test_() ->
     {setup, fun ballot_setup/0,
             fun ballot_teardown/1,
             [
-                fun get_2nd_choice_name_case/0,
+                fun get_tail_names_case/0,
                 fun has_top_choice_case/0,
                 fun make_and_candidates_case/0,
                 fun only_multis_case/0
             ]
     }.
 
-get_2nd_choice_name_case() ->
+get_tail_names_case() ->
     B = ballot:make([a,b,c]),
-    ?assertEqual(b, ballot:get_2nd_choice_name(B)).
+    ?assertEqual([b,c], ballot:get_tail_names(B)).
 
 has_top_choice_case() ->
     B = ballot:make([a,b,c]),

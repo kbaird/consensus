@@ -11,9 +11,9 @@ droop_stv_test_() ->
     {setup, fun droop_stv_setup/0,
             fun droop_stv_teardown/1,
             [
-                fun droop_two_winners_three_candidates_stv_stv_case/0,
+                fun droop_two_winners_three_candidates_stv_stv_case/0%,
                 %fun droop_five_winners_six_candidates_stv_stv_case/0,
-                fun droop_three_winners_five_candidates_stv_stv_case/0
+                %fun droop_three_winners_five_candidates_stv_stv_case/0
             ]
     }.
 
