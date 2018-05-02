@@ -11,9 +11,9 @@ droop_stv_test_() ->
     {setup, fun droop_stv_setup/0,
             fun droop_stv_teardown/1,
             [
-                fun droop_two_winners_three_candidates_stv_stv_case/0%,
-                %fun droop_five_winners_six_candidates_stv_stv_case/0,
-                %fun droop_three_winners_five_candidates_stv_stv_case/0
+                fun droop_two_winners_three_candidates_stv_stv_case/0,
+                fun droop_five_winners_six_candidates_stv_stv_case/0,
+                fun droop_three_winners_five_candidates_stv_stv_case/0
             ]
     }.
 
@@ -49,6 +49,7 @@ droop_three_winners_five_candidates_stv_stv_case() ->
     Ballot3s = [ballot:make([kim]) || _ <- lists:seq(1, 24)],
     Ballots = Ballot1s ++ Ballot2s ++ Ballot3s,
     [ Alex | OtherWinners ] = consensus:droop_winners(3, Ballots),
+    % TODO: For this to work, we need ballots to include parties
     ?assertEqual({alex, 50}, Alex),
     ?assert(lists:member({bobbie, 25}, OtherWinners)),
     ?assert(lists:member({jo, 25}, OtherWinners)).

@@ -24,9 +24,10 @@ droop_winners(SeatsCount, Ballots, Winners) ->
     Quota       = length(Ballots) / (SeatsCount+1) + 1,
     NestedCands = [ ballot:candidates(B) || B <- Ballots ],
     CNamesWithVotes = candidate_names_with_top_votes(NestedCands),
-    [ Winner | _ ]  = lists:sort(fun({_, V1}, {_, V2}) -> V1 > V2 end, CNamesWithVotes),
-    Ballots2 = ballots_without(Ballots, Winner, Quota, CNamesWithVotes),
-    droop_winners(SeatsCount, Ballots2, [ Winner | Winners ]).
+    WinnersThisTime = [ {N, V} || {N, V} <- CNamesWithVotes, V > Quota ],
+    % TODO: Handle multiple winners going above the quota on this first round
+    Ballots2 = ballots_without(Ballots, WinnersThisTime, Quota, CNamesWithVotes),
+    droop_winners(SeatsCount, Ballots2, WinnersThisTime ++ Winners).
 
 ballots_without(Ballots, {WinnerName, WinnerVotes}, Quota, [ _, _NextCandidate | _ ]) ->
     Raw       = ballots_without(Ballots, {WinnerName, WinnerVotes}, Quota, []),

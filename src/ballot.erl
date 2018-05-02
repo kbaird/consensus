@@ -6,8 +6,7 @@
     candidates/1,
     get_tail_names/1,
     has_top_choice/2,
-    only_multis/1,
-    remove/2
+    only_multis/1
 ]).
 
 -include("elections.hrl").
@@ -36,12 +35,6 @@ has_top_choice(Name, Ballot) ->
 -spec only_multis([ballot()]) -> [ballot()].
 only_multis(Ballots) ->
     lists:filter(fun(B) -> length(candidates(B)) > 1 end, Ballots).
-
--spec remove(ballot(), name()) -> ballot().
-remove(Ballot, Name) ->
-   Candidates = [ candidate:name(C) || C <- candidates(Ballot) ],
-   ShortCands = lists:subtract(Candidates, [Name]),
-   make(ShortCands).
 
 %%====================================================================
 %% Internal functions
