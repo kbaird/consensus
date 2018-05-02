@@ -14,6 +14,7 @@ ballot_test_() ->
                 fun get_2nd_choice_name_case/0,
                 fun has_top_choice_case/0,
                 fun make_and_candidates_case/0,
+                fun make_partisan_case/0,
                 fun only_multis_case/0
             ]
     }.
@@ -32,6 +33,13 @@ make_and_candidates_case() ->
     B = ballot:make([a,b,c]),
     Cs = ballot:candidates(B),
     ?assertEqual([a,b,c], lists:map(fun candidate:name/1, Cs)).
+
+make_partisan_case() ->
+    Input = [{a,lib},{b,con},{c,lab}],
+    B = ballot:make(Input),
+    Cs = ballot:candidates(B),
+    ?assertEqual([a,b,c], lists:map(fun candidate:name/1, Cs)),
+    ?assertEqual([lib,con,lab], lists:map(fun candidate:party/1, Cs)).
 
 only_multis_case() ->
     B1 = ballot:make([a,b,c]),

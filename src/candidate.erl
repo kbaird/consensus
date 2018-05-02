@@ -4,6 +4,7 @@
 -export([
     make/1,
     name/1,
+    party/1,
     rank/1
 ]).
 
@@ -13,10 +14,15 @@
 %% API functions
 %%====================================================================
 -spec make(name()) -> candidate().
-make(Name) -> #candidate{name = Name}.
+make({Name, Party}) when is_atom(Name) andalso is_atom(Party) ->
+    #candidate{name = Name, party = Party};
+make(Name) when is_atom(Name) -> #candidate{name = Name}.
 
 -spec name(candidate()) -> name().
 name(#candidate{name = Name}) -> Name.
+
+-spec party(candidate()) -> atom().
+party(#candidate{party = Party}) -> Party.
 
 -spec rank(preferences()) -> [candidate(), ...].
 rank(Prefs) ->
