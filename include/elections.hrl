@@ -2,7 +2,7 @@
 
 -record(candidate,
     {
-        name :: name(),
+        name :: nil | name(),
         party :: nil | atom()
     }).
 -type candidate() :: #candidate{}.

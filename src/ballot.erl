@@ -3,6 +3,7 @@
 %% API exports
 -export([
     make/1,
+    make/2,
     candidates/1,
     get_2nd_choice_name/1,
     has_top_choice/2,
@@ -10,6 +11,7 @@
 ]).
 
 -include("include/elections.hrl").
+-include("include/parties.hrl").
 
 %%====================================================================
 %% API functions
@@ -18,6 +20,9 @@
 make(CandidateNames) ->
     Candidates = lists:map(fun candidate:make/1, CandidateNames),
     #ballot{candidates = Candidates}.
+
+-spec make([], party_name()) -> ballot().
+make([], PartyName) -> #ballot{candidates = [candidate:make({nil, PartyName})]}.
 
 -spec candidates(ballot()) -> [candidate(), ...].
 candidates(#ballot{candidates = Candidates}) -> Candidates.

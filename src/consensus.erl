@@ -7,7 +7,8 @@
     condorcet_winner/1,
     droop_winners/2,
     effective_num_parties/1,
-    gallagher_index/1
+    gallagher_index/1,
+    jefferson_dhondt_rankings/1
 ]).
 
 %%====================================================================
@@ -42,4 +43,7 @@ effective_num_parties(PartyShares) ->
 % Electoral systems." _Electoral Studies_ 10, no. 1 (March): 33-51.
 gallagher_index(ElectionResults) ->
     consensus_gallagher:index(ElectionResults).
+
+jefferson_dhondt_rankings(Ballots) ->
+    jefferson_dhondt_election:rankings(Ballots).
 
