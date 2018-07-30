@@ -5,7 +5,7 @@
     compose/2
 ]).
 
--include("parties.hrl").
+-include("include/parties.hrl").
 
 %%====================================================================
 %% API functions
