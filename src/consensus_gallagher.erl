@@ -5,7 +5,7 @@
     index/1
 ]).
 
--include("parties.hrl").
+-include("include/parties.hrl").
 
 %%====================================================================
 %% API functions

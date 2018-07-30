@@ -5,7 +5,7 @@
     compose/2
 ]).
 
--include("parties.hrl").
+-include("include/parties.hrl").
 
 %%====================================================================
 %% API functions
@@ -53,11 +53,13 @@ compose(pvc, SeatShares) ->
 %%====================================================================
 %% Internal functions
 %%====================================================================
+-spec all_in([party_name()], [party_name()]) -> boolean().
 all_in(ContainsEachItem, ItemsToCheck) ->
     Present = fun(Elem) -> lists:member(Elem, ContainsEachItem) end,
     lists:all(Present, ItemsToCheck).
 
-atom_to_ascii(Atom) -> hd(atom_to_list(Atom)).
+-spec atom_to_char(atom()) -> char().
+atom_to_char(Atom) -> hd(atom_to_list(Atom)).
 
 -spec centrist_party([party_name()]) -> party_name().
 centrist_party([Name])    -> Name;
@@ -71,11 +73,11 @@ centrist_party(Parties) ->
 -spec is_contiguous(cabinet()) -> boolean().
 is_contiguous(Cabinet) ->
     PartyNames  = party_names(Cabinet),
-    PartyVals   = lists:map(fun atom_to_ascii/1, PartyNames),
+    PartyVals   = lists:map(fun atom_to_char/1, PartyNames),
     {Lo, Hi}    = party_endpoints(Cabinet),
     % This will not work with real party names,
     % but works for the current single letter codes
-    AllParties  = lists:seq(atom_to_ascii(Lo), atom_to_ascii(Hi)),
+    AllParties  = lists:seq(atom_to_char(Lo), atom_to_char(Hi)),
     all_in(PartyVals, AllParties).
 
 -spec is_coalition(cabinet()) -> boolean().
@@ -87,8 +89,7 @@ is_winner(Coalition, SeatShares) ->
     seat_share(Coalition) > seat_share(SeatShares) / 2.0.
 
 -spec just_party_names([cabinet()]) -> [[atom()]].
-just_party_names(Cabs) ->
-    [ party_names(Cab) || Cab <- Cabs ].
+just_party_names(Cabs) -> [ party_names(Cab) || Cab <- Cabs ].
 
 party_names_min_by(Fun, SeatShares) ->
     Cabs      = mwc_with_seats(SeatShares),
@@ -124,7 +125,7 @@ powerset(X, [H|T], Acc) -> powerset(X, T, [[X|H]|Acc]).
 -spec range(cabinet()) -> number().
 range(Cabinet) ->
     {Lo, Hi} = party_endpoints(Cabinet),
-    atom_to_ascii(Hi) - atom_to_ascii(Lo).
+    atom_to_char(Hi) - atom_to_char(Lo).
 
 % How many seats does this coalition fill?
 -spec seat_share([party_result()]) -> number().
@@ -133,7 +134,7 @@ seat_share(PartyResults) when is_list(PartyResults) ->
     lists:foldl(SumShares, 0, PartyResults);
 seat_share(PartyResult) -> seat_share([PartyResult]).
 
-% Are any elements in arg2 subsets of arg1?
+% Are any elements in Coalitions subsets of Cabinet?
 -spec too_large(cabinet(), [cabinet()]) -> boolean().
 too_large(Cabinet, Coalitions) ->
     Smallers = [ Coalition || Coalition  <- Coalitions,
@@ -141,8 +142,7 @@ too_large(Cabinet, Coalitions) ->
                               all_in(Cabinet, Coalition) ],
     length(Smallers) > 0.
 
-uniqueify(Ls) ->
-    lists:usort([ lists:usort(L) || L <- Ls ]).
+uniqueify(Ls) -> lists:usort([ lists:usort(L) || L <- Ls ]).
 
 -spec winning_coalitions([cabinet()]) -> [cabinet()].
 winning_coalitions(SeatShares) ->
