@@ -38,3 +38,5 @@ Download [elvis](https://github.com/inaka/elvis), then
 
 - Schulze Method
   - currently requires every ballot to be complete
+- [Webster/Sainte-Laguë Method](https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method#Description_of_the_method)
+- [d'Hondt/Jefferson Method](https://en.wikipedia.org/wiki/D%27Hondt_method)
