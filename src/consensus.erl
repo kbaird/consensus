@@ -8,7 +8,8 @@
     droop_winners/2,
     effective_num_parties/1,
     gallagher_index/1,
-    jefferson_dhondt_rankings/1
+    jefferson_dhondt_rankings/2,
+    webster_sainte_lague_rankings/2
 ]).
 
 %%====================================================================
@@ -44,6 +45,8 @@ effective_num_parties(PartyShares) ->
 gallagher_index(ElectionResults) ->
     consensus_gallagher:index(ElectionResults).
 
-jefferson_dhondt_rankings(Ballots) ->
-    jefferson_dhondt_election:rankings(Ballots).
+jefferson_dhondt_rankings(Ballots, NumberOfSeats) ->
+    jefferson_dhondt_election:rankings(Ballots, NumberOfSeats).
 
+webster_sainte_lague_rankings(Ballots, NumberOfSeats) ->
+    webster_sainte_lague_election:rankings(Ballots, NumberOfSeats).

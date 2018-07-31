@@ -22,7 +22,7 @@ webster_sainte_lague_basic_case() ->
     BallotsB = [ballot:make([], b) || _ <- lists:seq(1, 24)],
     BallotsC = [ballot:make([], c) || _ <- lists:seq(1, 23)],
     Ballots  = lists:flatten([BallotsA, BallotsB, BallotsC]),
-    Rankings = consensus:webster_sainte_lague_rankings(Ballots),
+    Rankings = consensus:webster_sainte_lague_rankings(Ballots, 7),
     ?assertEqual([{a, 3, 3.71}, {b, 2, 1.68}, {c, 2, 1.61}], Rankings).
 
 %%% PRIVATE FUNCTIONS

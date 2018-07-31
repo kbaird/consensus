@@ -23,7 +23,7 @@ jefferson_dhondt_basic_case() ->
     BallotsC = [ballot:make([], c) || _ <- lists:seq(1, 3)],
     BallotsD = [ballot:make([], d) || _ <- lists:seq(1, 2)],
     Ballots  = lists:flatten([BallotsA, BallotsB, BallotsC, BallotsD]),
-    Rankings = consensus:jefferson_dhondt_rankings(Ballots),
+    Rankings = consensus:jefferson_dhondt_rankings(Ballots, 8),
     ?assertEqual([{a, 4, 3.4}, {b, 3, 2.8}, {c, 1, 1.1}, {d, 0, 0.7}], Rankings).
 
 %%% PRIVATE FUNCTIONS
