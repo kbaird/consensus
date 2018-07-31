@@ -7,7 +7,9 @@
     condorcet_winner/1,
     droop_winners/2,
     effective_num_parties/1,
-    gallagher_index/1
+    gallagher_index/1,
+    jefferson_dhondt_rankings/2,
+    webster_sainte_lague_rankings/2
 ]).
 
 %%====================================================================
@@ -43,3 +45,8 @@ effective_num_parties(PartyShares) ->
 gallagher_index(ElectionResults) ->
     consensus_gallagher:index(ElectionResults).
 
+jefferson_dhondt_rankings(Votes, NumberOfSeats) ->
+    party_list_election:jefferson_dhondt_rankings(Votes, NumberOfSeats).
+
+webster_sainte_lague_rankings(Votes, NumberOfSeats) ->
+    party_list_election:webster_sainte_lague_rankings(Votes, NumberOfSeats).
