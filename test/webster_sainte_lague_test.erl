@@ -17,12 +17,8 @@ webster_sainte_lague_test_() ->
     }.
 
 webster_sainte_lague_basic_case() ->
-    % Dividing vote totals by 10K
-    BallotsA = [ballot:make([], a) || _ <- lists:seq(1, 53)],
-    BallotsB = [ballot:make([], b) || _ <- lists:seq(1, 24)],
-    BallotsC = [ballot:make([], c) || _ <- lists:seq(1, 23)],
-    Ballots  = lists:flatten([BallotsA, BallotsB, BallotsC]),
-    Rankings = consensus:webster_sainte_lague_rankings(Ballots, 7),
+    Votes    = [ {a, 53000}, {b, 24000}, {c, 23000} ],
+    Rankings = consensus:webster_sainte_lague_rankings(Votes, 7),
     ?assertEqual([{a, 3, 3.71}, {b, 2, 1.68}, {c, 2, 1.61}], Rankings).
 
 %%% PRIVATE FUNCTIONS
