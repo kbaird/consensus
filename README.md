@@ -7,8 +7,10 @@
 [![Ebert](https://ebertapp.io/github/kbaird/consensus.svg)](https://ebertapp.io/github/kbaird/consensus)
 
 An OTP library implementing consensus-oriented political functions, including the
-[Schulze voting method](https://en.wikipedia.org/wiki/Schulze_method) and the
-[Gallagher Index](https://en.wikipedia.org/wiki/Gallagher_Index).
+[Schulze voting method](https://en.wikipedia.org/wiki/Schulze_method), the
+[Gallagher Index](https://en.wikipedia.org/wiki/Gallagher_Index), the
+[d'Hondt/Jefferson Method](https://en.wikipedia.org/wiki/D%27Hondt_method), and the
+[Webster/Sainte-Laguë Method](https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method#Description_of_the_method).
 
 The
 [main non-trivial Condorcet test file](https://github.com/kbaird/schulze-vote-erlang/blob/master/test/tn_capital_test.erl)
