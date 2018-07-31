@@ -17,7 +17,6 @@
 -spec jefferson_dhondt_rankings([{party_name(), pos_integer()}, ...], pos_integer()) ->
     [{name(), pos_integer(), float()}, ...].
 jefferson_dhondt_rankings(Votes, NumberOfSeats) ->
-    %%% TODO: real implementation as per
     % https://en.wikipedia.org/wiki/D%27Hondt_method#Allocation
     rankings(jefferson_dhondt, Votes, NumberOfSeats).
 
@@ -25,7 +24,6 @@ jefferson_dhondt_rankings(Votes, NumberOfSeats) ->
 -spec webster_sainte_lague_rankings([{party_name(), pos_integer()}, ...], pos_integer()) ->
     [{name(), pos_integer(), float()}, ...].
 webster_sainte_lague_rankings(Votes, NumberOfSeats) ->
-    %%% TODO: real implementation as per
     % https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method#Description_of_the_method
     rankings(webster_sainte_lague, Votes, NumberOfSeats).
 
@@ -41,7 +39,7 @@ quotient(jefferson_dhondt, SeatsSoFar, VoteCount) ->
     VoteCount / Denominator;
 
 quotient(webster_sainte_lague, SeatsSoFar, VoteCount) ->
-    Denominator = SeatsSoFar*2 + 1,
+    Denominator = SeatsSoFar * 2 + 1,
     VoteCount / Denominator.
 
 rankings(Label, Votes, NumberOfSeatsToFill) ->
@@ -50,7 +48,7 @@ rankings(Label, Votes, NumberOfSeatsToFill) ->
 
 share(Votes, TotalVotes, SeatsFilled) ->
     Prec = math:pow(10, 2),
-    trunc(Votes /TotalVotes * SeatsFilled * Prec) / Prec.
+    trunc(Votes / TotalVotes * SeatsFilled * Prec) / Prec.
 
 tabulate(_, Counters, SeatsFilled, SeatsFilled) ->
     VoteCounts = [ VoteCount || {_PN, _SSF, VoteCount} <- Counters ],
