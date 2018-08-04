@@ -2,6 +2,7 @@
 
 %% API exports
 -export([
+    borda_rankings/2,
     cabinet_composition/2,
     condorcet_rankings/1,
     condorcet_winner/1,
@@ -15,6 +16,9 @@
 %%====================================================================
 %% API functions
 %%====================================================================
+
+borda_rankings(Label, Ballots) ->
+    borda:rankings(Label, Ballots).
 
 % Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg93.
 cabinet_composition(Label, SeatShares) ->
