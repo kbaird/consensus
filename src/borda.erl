@@ -47,8 +47,7 @@ rankings(Label, [B | Bs], CandCount, Acc) when is_map(Acc) ->
     Acc2 = add_votes(Label, Candidates, Acc),
     rankings(Label, Bs, CandCount, Acc2).
 
-value(base0, Last, Last) -> 0;
-value(base0, Position, CandCount) -> value(base0, Position + 1, CandCount) + 1;
+value(base0, Position, CandCount) -> CandCount - Position;
 
 value(base1, Position, CandCount) -> value(base0, Position, CandCount) + 1;
 
