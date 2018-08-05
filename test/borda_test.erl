@@ -42,7 +42,7 @@ borda_naura_case() ->
                   {andrew, 63.25},
                   {brian, 49.5},
                   {catherine, 52.5},
-                  {david, 43.08}
+                  {david, 43.08333333333333}
                  ], Rankings).
 
 %%% PRIVATE FUNCTIONS
@@ -51,8 +51,8 @@ ballots() ->
     Ballot1  = ballot:make([andrew, catherine, brian, david]),
     Ballot2  = ballot:make([catherine, brian, david, andrew]),
     Ballot3  = ballot:make([brian, catherine, david, andrew]),
-    Ballot4  = ballot:make([david, catherine, ballot, david]),
-    Ballots  = lists:flatten([
+    Ballot4  = ballot:make([david, catherine, brian, andrew]),
+    lists:flatten([
         lists:duplicate(51, Ballot1),
         lists:duplicate(5, Ballot2),
         lists:duplicate(23, Ballot3),
