@@ -9,7 +9,8 @@
 An OTP library implementing consensus-oriented political functions, including the
 [Schulze voting method](https://en.wikipedia.org/wiki/Schulze_method), the
 [Gallagher Index](https://en.wikipedia.org/wiki/Gallagher_Index), the
-[d'Hondt/Jefferson Method](https://en.wikipedia.org/wiki/D%27Hondt_method), and the
+[d'Hondt/Jefferson Method](https://en.wikipedia.org/wiki/D%27Hondt_method),
+various [Borda Counts](https://en.wikipedia.org/wiki/Borda_count#Example) and the
 [Webster/Sainte-Laguë Method](https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method#Description_of_the_method).
 
 The
