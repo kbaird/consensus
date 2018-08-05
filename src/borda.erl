@@ -26,11 +26,15 @@ add_votes(Label, [C | Cs], Acc) when is_map(Acc) -> add_votes(Label, [C | Cs], A
 add_votes(_,     [],       Acc, _) -> Acc;
 add_votes(Label, [C | Cs], Acc, Position) ->
     CN = candidate:name(C),
+    Acc2 = add_votes_at_position(CN, Position, Acc),
+    add_votes(Label, Cs, Acc2, Position + 1).
+
+-spec add_votes_at_position(name(), pos_integer(), map()) -> map().
+add_votes_at_position(CN, Position, Acc) ->
     VotesByPosition = maps:get(CN, Acc, #{}),
     VotesAtPosition = maps:get(Position, VotesByPosition, 0),
     NewVotes = maps:put(Position, VotesAtPosition + 1, VotesByPosition),
-    Acc2 = maps:put(CN, NewVotes, Acc),
-    add_votes(Label, Cs, Acc2, Position + 1).
+    maps:put(CN, NewVotes, Acc).
 
 -spec borda_values(label(), pos_integer(), map()) -> map().
 borda_values(Label, CandCount, Acc) when is_atom(Label) andalso is_map(Acc) ->
