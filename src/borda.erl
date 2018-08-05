@@ -49,8 +49,7 @@ borda_values(Label, CandCount, [CandName | CNs], From, Acc) ->
 
 rankings(Label, [],       CandCount, Acc) -> borda_values(Label, CandCount, Acc);
 rankings(Label, [B | Bs], CandCount, Acc) when is_map(Acc) ->
-    Candidates = ballot:candidates(B),
-    Acc2 = add_votes(Label, Candidates, Acc),
+    Acc2 = add_votes(Label, ballot:candidates(B), Acc),
     rankings(Label, Bs, CandCount, Acc2).
 
 -spec value(label(), pos_integer(), pos_integer()) -> non_neg_integer().
