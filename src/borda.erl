@@ -11,11 +11,14 @@
 %%====================================================================
 %% API functions
 %%====================================================================
--spec rankings(label(), [ballot(), ...]) -> [{name(), number()}, ...].
-rankings(Label, Ballots) ->
+
+% https://en.wikipedia.org/wiki/Borda_count#Example
+-spec rankings(label(), [ballot(), ...]) -> [{name(), number()}, ...] | binary().
+rankings(Label, Ballots) when Label =:= base0 orelse Label =:= base1 orelse Label =:= naura ->
     Candidates = ballot:candidates(hd(Ballots)),
     Map = rankings(Label, Ballots, length(Candidates), #{}),
-    maps:to_list(Map).
+    maps:to_list(Map);
+rankings(_, _) -> <<"Please restrict the first argument to base0, base1, or naura.">>.
 
 %%====================================================================
 %% Internal functions
