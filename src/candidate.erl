@@ -9,6 +9,7 @@
 ]).
 
 -include("include/elections.hrl").
+-include("include/parties.hrl").
 
 %%====================================================================
 %% API functions
@@ -21,7 +22,7 @@ make(Name) when is_atom(Name) -> #candidate{name = Name}.
 -spec name(candidate()) -> name().
 name(#candidate{name = Name}) -> Name.
 
--spec party(candidate()) -> atom().
+-spec party(candidate()) -> party_name().
 party(#candidate{party = Party}) -> Party.
 
 -spec rank(preferences()) -> [candidate(), ...].

@@ -5,12 +5,13 @@
     rankings/2
 ]).
 
+-include("include/common.hrl").
 -include("include/elections.hrl").
 
 %%====================================================================
 %% API functions
 %%====================================================================
--spec rankings(atom(), [ballot(), ...]) -> [{atom(), number()}, ...].
+-spec rankings(label(), [ballot(), ...]) -> [{name(), number()}, ...].
 rankings(Label, Ballots) ->
     Candidates = ballot:candidates(hd(Ballots)),
     Map = rankings(Label, Ballots, length(Candidates), #{}),
@@ -19,7 +20,7 @@ rankings(Label, Ballots) ->
 %%====================================================================
 %% Internal functions
 %%====================================================================
--spec add_votes(atom(), [candidate(), ...], map()) -> map().
+-spec add_votes(label(), [candidate(), ...], map()) -> map().
 add_votes(Label, [C | Cs], Acc) when is_map(Acc) -> add_votes(Label, [C | Cs], Acc, 1).
 
 add_votes(_,     [],       Acc, _) -> Acc;
@@ -31,7 +32,7 @@ add_votes(Label, [C | Cs], Acc, Position) ->
     Acc2 = maps:put(CN, NewVotes, Acc),
     add_votes(Label, Cs, Acc2, Position + 1).
 
--spec borda_values(atom(), pos_integer(), map()) -> map().
+-spec borda_values(label(), pos_integer(), map()) -> map().
 borda_values(Label, CandCount, Acc) when is_atom(Label) andalso is_map(Acc) ->
     borda_values(Label, CandCount, maps:keys(Acc), Acc, #{}).
 
@@ -48,7 +49,7 @@ rankings(Label, [B | Bs], CandCount, Acc) when is_map(Acc) ->
     Acc2 = add_votes(Label, Candidates, Acc),
     rankings(Label, Bs, CandCount, Acc2).
 
--spec value(atom(), pos_integer(), pos_integer()) -> non_neg_integer().
+-spec value(label(), pos_integer(), pos_integer()) -> non_neg_integer().
 value(base0, Position, CandCount) -> CandCount - Position;
 
 value(base1, Position, CandCount) -> value(base0, Position, CandCount) + 1;
@@ -56,7 +57,7 @@ value(base1, Position, CandCount) -> value(base0, Position, CandCount) + 1;
 value(naura, 1,        _CandCount) -> 1;
 value(naura, Position, _CandCount) -> 1.0 / Position.
 
--spec value_of_votes(atom(), pos_integer(), map()) -> non_neg_integer().
+-spec value_of_votes(label(), pos_integer(), map()) -> non_neg_integer().
 value_of_votes(Label, CandCount, Votes) when is_map(Votes) ->
     Values = lists:map(fun(Idx) ->
                             EachValue = value(Label, Idx, CandCount),
