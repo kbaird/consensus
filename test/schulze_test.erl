@@ -2,7 +2,6 @@
 -author('Kevin C. Baird').
 
 -include_lib("eunit/include/eunit.hrl").
--include_lib("condorcet.hrl").
 
 % Schulze
 % Taken from http://wiki.electorama.com/wiki/Schulze_method
@@ -64,4 +63,4 @@ schulze_ex2_ballots() ->
         lists:duplicate(4, ballot([d, c, b, a]))
     ]).
 
-ballot(L) -> condorcet_ballot:make(L).
+ballot(L) -> ballot:make(L).
