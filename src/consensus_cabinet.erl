@@ -9,42 +9,47 @@
 -include("include/parties.hrl").
 
 %%====================================================================
+%% Guard Macros
+%%====================================================================
+
+-define(IS_BP(Label), Label =:= bp orelse Label =:= bargaining_proposition).
+-define(IS_MCW(Label), Label =:= mcw orelse
+                       Label =:= minimal_connected_winning orelse
+                       Label =:= minimum_connected_winning).
+-define(IS_MR(Label), Label =:= mr orelse Label =:= minimal_range orelse Label =:= minimum_range).
+-define(IS_MS(Label), Label =:= ms orelse Label =:= minimal_size orelse Label =:= minimum_size).
+-define(IS_MWC(Label), Label =:= mwc orelse
+                       Label =:= minimal_winning_coalition orelse
+                       Label =:= minimum_winning_coalition).
+-define(IS_PVC(Label), Label =:= pvc orelse Label =:= policy_viable_coalition).
+
+%%====================================================================
 %% API functions
 %%====================================================================
 
 % Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg93.
 -spec compose(label(), [party_result()]) -> [cabinet()].
-compose(bargaining_proposition, SeatShares) -> compose(bp, SeatShares);
-compose(bp, SeatShares) ->
+compose(Label, SeatShares) when ?IS_BP(Label) ->
     party_names_min_by(fun length/1, SeatShares);
 
-compose(minimal_connected_winning, SeatShares) -> compose(mcw, SeatShares);
-compose(minimum_connected_winning, SeatShares) -> compose(mcw, SeatShares);
-compose(mcw, SeatShares) ->
+compose(Label, SeatShares) when ?IS_MCW(Label) ->
     WithSeats   = winning_coalitions(SeatShares),
     Contiguous  = lists:filter(fun is_contiguous/1, WithSeats),
     SmallEnough = fun(C) -> not is_too_large(C, Contiguous) end,
     InRange     = lists:filter(SmallEnough, Contiguous),
     just_party_names(InRange);
 
-compose(minimal_range, SeatShares) -> compose(mr, SeatShares);
-compose(minimum_range, SeatShares) -> compose(mr, SeatShares);
-compose(mr, SeatShares) ->
+compose(Label, SeatShares) when ?IS_MR(Label) ->
     party_names_min_by(fun range/1, SeatShares);
 
-compose(minimal_size, SeatShares) -> compose(ms, SeatShares);
-compose(minimum_size, SeatShares) -> compose(ms, SeatShares);
-compose(ms, SeatShares) ->
+compose(Label, SeatShares) when ?IS_MS(Label) ->
     party_names_min_by(fun seat_share/1, SeatShares);
 
-compose(minimal_winning_coalition, SeatShares) -> compose(mwc, SeatShares);
-compose(minimum_winning_coalition, SeatShares) -> compose(mwc, SeatShares);
-compose(mwc, SeatShares) ->
+compose(Label, SeatShares) when ?IS_MWC(Label) ->
     WithSeats   = mwc_with_seats(SeatShares),
     just_party_names(WithSeats);
 
-compose(policy_viable_coalition, SeatShares) -> compose(pvc, SeatShares);
-compose(pvc, SeatShares) ->
+compose(Label, SeatShares) when ?IS_PVC(Label) ->
     Cabinets    = mwc_with_seats(SeatShares),
     CenterPty   = centrist_party(party_names(SeatShares)),
     WithCtrPty  = [ Cab ||  Cab <- Cabinets,
