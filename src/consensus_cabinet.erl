@@ -100,7 +100,7 @@ is_winner(Coalition, SeatShares) ->
     seat_share(Coalition) > seat_share(SeatShares) / 2.0.
 
 -spec just_party_names([cabinet()]) -> [[atom()]].
-just_party_names(Cabs) -> [ party_names(Cab) || Cab <- Cabs ].
+just_party_names(Cabs) -> lists:map(fun party_names/1, Cabs).
 
 party_names_min_by(Fun, SeatShares) ->
     Cabs      = mwc_with_seats(SeatShares),
@@ -114,13 +114,11 @@ mwc_with_seats(SeatShares) ->
 
 -spec party_endpoints(cabinet()) -> {party_name(), party_name()}.
 party_endpoints(Cabinet) ->
-    PartyNames      = party_names(Cabinet),
-    [ Lo | Sorted ] = lists:sort(PartyNames),
-    {Lo, lists:last(Sorted)}.
+    [ Hd | Tail ] = lists:sort(party_names(Cabinet)),
+    {Hd, lists:last(Tail)}.
 
 -spec party_names(cabinet()) -> [party_name()].
-party_names(Cabinet) ->
-    [ consensus_party:name(P) || P <- Cabinet ].
+party_names(Cabinet) -> lists:map(fun consensus_party:name/1, Cabinet).
 
 % How many steps between the "leftmost" partner and the "rightmost" partner?
 -spec range(cabinet()) -> number().
