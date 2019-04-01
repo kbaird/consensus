@@ -10,7 +10,9 @@
     effective_num_parties/1,
     gallagher_index/1,
     jefferson_dhondt_rankings/2,
-    webster_sainte_lague_rankings/2
+    jefferson_dhondt_rankings/3,
+    webster_sainte_lague_rankings/2,
+    webster_sainte_lague_rankings/3
 ]).
 
 %%====================================================================
@@ -50,7 +52,13 @@ gallagher_index(ElectionResults) ->
     consensus_gallagher:index(ElectionResults).
 
 jefferson_dhondt_rankings(Votes, NumberOfSeats) ->
-    party_list_election:jefferson_dhondt_rankings(Votes, NumberOfSeats).
+    jefferson_dhondt_rankings(Votes, NumberOfSeats, 0.0).
+
+jefferson_dhondt_rankings(Votes, NumberOfSeats, Threshold) ->
+    party_list_election:jefferson_dhondt_rankings(Votes, NumberOfSeats, Threshold).
 
 webster_sainte_lague_rankings(Votes, NumberOfSeats) ->
-    party_list_election:webster_sainte_lague_rankings(Votes, NumberOfSeats).
+    webster_sainte_lague_rankings(Votes, NumberOfSeats, 0.0).
+
+webster_sainte_lague_rankings(Votes, NumberOfSeats, Threshold) ->
+    party_list_election:webster_sainte_lague_rankings(Votes, NumberOfSeats, Threshold).
