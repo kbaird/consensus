@@ -24,8 +24,7 @@ candidates(#ballot{candidates = Candidates}) -> Candidates.
 
 -spec get_2nd_choice_name(ballot()) -> name().
 get_2nd_choice_name(Ballot) ->
-    [ _, C2 | _ ] = candidates(Ballot),
-    candidate:name(C2).
+    candidate:name(lists:nth(2, candidates(Ballot))).
 
 -spec has_top_choice(name(), ballot()) -> boolean().
 has_top_choice(Name, Ballot) ->
