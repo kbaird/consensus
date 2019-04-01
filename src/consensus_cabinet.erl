@@ -23,7 +23,7 @@ compose(minimum_connected_winning, SeatShares) -> compose(mcw, SeatShares);
 compose(mcw, SeatShares) ->
     WithSeats   = winning_coalitions(SeatShares),
     Contiguous  = lists:filter(fun is_contiguous/1, WithSeats),
-    SmallEnough = fun(C) -> not too_large(C, Contiguous) end,
+    SmallEnough = fun(C) -> not is_too_large(C, Contiguous) end,
     InRange     = lists:filter(SmallEnough, Contiguous),
     just_party_names(InRange);
 
@@ -84,6 +84,14 @@ is_contiguous(Cabinet) ->
 -spec is_coalition(cabinet()) -> boolean().
 is_coalition(Cab) -> length(Cab) > 1.
 
+% Are any elements in Coalitions subsets of Cabinet?
+-spec is_too_large(cabinet(), [cabinet()]) -> boolean().
+is_too_large(Cabinet, Coalitions) ->
+    Smallers = [ Coalition || Coalition  <- Coalitions,
+                              length(Coalition) < length(Cabinet),
+                              all_in(Cabinet, Coalition) ],
+    length(Smallers) > 0.
+
 % Does this coalition command a majority of seats?
 -spec is_winner([cabinet()], [cabinet()]) -> boolean().
 is_winner(Coalition, SeatShares) ->
@@ -100,7 +108,7 @@ party_names_min_by(Fun, SeatShares) ->
 
 mwc_with_seats(SeatShares) ->
     Winners = winning_coalitions(SeatShares),
-    lists:filter(fun(C) -> not too_large(C, Winners) end, Winners).
+    lists:filter(fun(C) -> not is_too_large(C, Winners) end, Winners).
 
 -spec party_endpoints(cabinet()) -> {party_name(), party_name()}.
 party_endpoints(Cabinet) ->
@@ -134,14 +142,6 @@ seat_share(PartyResults) when is_list(PartyResults) ->
     SumShares = fun(P, Acc) -> consensus_party:seat_share(P) + Acc end,
     lists:foldl(SumShares, 0, PartyResults);
 seat_share(PartyResult) -> seat_share([PartyResult]).
-
-% Are any elements in Coalitions subsets of Cabinet?
--spec too_large(cabinet(), [cabinet()]) -> boolean().
-too_large(Cabinet, Coalitions) ->
-    Smallers = [ Coalition || Coalition  <- Coalitions,
-                              length(Coalition) < length(Cabinet),
-                              all_in(Cabinet, Coalition) ],
-    length(Smallers) > 0.
 
 uniqueify(Ls) -> lists:usort([ lists:usort(L) || L <- Ls ]).
 
