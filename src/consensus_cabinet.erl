@@ -59,9 +59,6 @@ all_in(ContainsEachItem, ItemsToCheck) ->
     Present = fun(Elem) -> lists:member(Elem, ContainsEachItem) end,
     lists:all(Present, ItemsToCheck).
 
--spec atom_to_char(atom()) -> char().
-atom_to_char(Atom) -> hd(atom_to_list(Atom)).
-
 -spec centrist_party([party_name()]) -> party_name().
 centrist_party([Name])    -> Name;
 centrist_party([Name, _]) -> Name;
@@ -74,11 +71,11 @@ centrist_party(Parties) ->
 -spec is_contiguous(cabinet()) -> boolean().
 is_contiguous(Cabinet) ->
     PartyNames  = party_names(Cabinet),
-    PartyVals   = lists:map(fun atom_to_char/1, PartyNames),
+    PartyVals   = lists:map(fun consensus_utils:atom_to_char/1, PartyNames),
     {Lo, Hi}    = party_endpoints(Cabinet),
     % This will not work with real party names,
     % but works for the current single letter codes
-    AllParties  = lists:seq(atom_to_char(Lo), atom_to_char(Hi)),
+    AllParties  = lists:seq(consensus_utils:atom_to_char(Lo), consensus_utils:atom_to_char(Hi)),
     all_in(PartyVals, AllParties).
 
 -spec is_coalition(cabinet()) -> boolean().
@@ -122,19 +119,11 @@ party_endpoints(Cabinet) ->
 party_names(Cabinet) ->
     [ consensus_party:name(P) || P <- Cabinet ].
 
-powerset([])    -> [[]];
-powerset([H|T]) ->
-    PT = powerset(T),
-    powerset(H, PT, PT).
-
-powerset(_, [],    Acc) -> Acc;
-powerset(X, [H|T], Acc) -> powerset(X, T, [[X|H]|Acc]).
-
 % How many steps between the "leftmost" partner and the "rightmost" partner?
 -spec range(cabinet()) -> number().
 range(Cabinet) ->
     {Lo, Hi} = party_endpoints(Cabinet),
-    atom_to_char(Hi) - atom_to_char(Lo).
+    consensus_utils:atom_to_char(Hi) - consensus_utils:atom_to_char(Lo).
 
 % How many seats does this coalition fill?
 -spec seat_share([party_result()]) -> number().
@@ -143,11 +132,9 @@ seat_share(PartyResults) when is_list(PartyResults) ->
     lists:foldl(SumShares, 0, PartyResults);
 seat_share(PartyResult) -> seat_share([PartyResult]).
 
-uniqueify(Ls) -> lists:usort([ lists:usort(L) || L <- Ls ]).
-
 -spec winning_coalitions([cabinet()]) -> [cabinet()].
 winning_coalitions(SeatShares) ->
-    PSet        = powerset(SeatShares),
-    Unique      = uniqueify(PSet),
+    PSet        = consensus_utils:powerset(SeatShares),
+    Unique      = consensus_utils:uniqueify(PSet),
     Coalitions  = lists:filter(fun is_coalition/1, Unique),
     lists:filter(fun(C) -> is_winner(C, SeatShares) end, Coalitions).
