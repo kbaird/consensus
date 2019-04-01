@@ -114,11 +114,9 @@ mwc_with_seats(SeatShares) ->
 
 -spec party_endpoints(cabinet()) -> {party_name(), party_name()}.
 party_endpoints(Cabinet) ->
-    PartyNames  = party_names(Cabinet),
-    SortedNames = lists:sort(PartyNames),
-    [ Hi | _ ]  = lists:reverse(SortedNames),
-    [ Lo | _ ]  = SortedNames,
-    {Lo, Hi}.
+    PartyNames      = party_names(Cabinet),
+    [ Lo | Sorted ] = lists:sort(PartyNames),
+    {Lo, lists:last(Sorted)}.
 
 -spec party_names(cabinet()) -> [party_name()].
 party_names(Cabinet) ->
