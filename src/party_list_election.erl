@@ -2,8 +2,8 @@
 
 %% API exports
 -export([
-    jefferson_dhondt_rankings/2,
-    webster_sainte_lague_rankings/2
+    jefferson_dhondt_rankings/3,
+    webster_sainte_lague_rankings/3
 ]).
 
 -include("include/elections.hrl").
@@ -14,18 +14,18 @@
 %%====================================================================
 
 % Returns {PartyName, ActualSeatsWon, ProportionalSeats}
--spec jefferson_dhondt_rankings([{party_name(), pos_integer()}, ...], pos_integer()) ->
+-spec jefferson_dhondt_rankings([{party_name(), pos_integer()}, ...], pos_integer(), float()) ->
     [{name(), pos_integer(), float()}, ...].
-jefferson_dhondt_rankings(Votes, NumberOfSeats) ->
+jefferson_dhondt_rankings(Votes, NumberOfSeats, Threshold) ->
     % https://en.wikipedia.org/wiki/D%27Hondt_method#Allocation
-    rankings(jefferson_dhondt, Votes, NumberOfSeats).
+    rankings(jefferson_dhondt, Votes, NumberOfSeats, Threshold).
 
 % Returns {PartyName, ActualSeatsWon, ProportionalSeats}
--spec webster_sainte_lague_rankings([{party_name(), pos_integer()}, ...], pos_integer()) ->
+-spec webster_sainte_lague_rankings([{party_name(), pos_integer()}, ...], pos_integer(), float()) ->
     [{name(), pos_integer(), float()}, ...].
-webster_sainte_lague_rankings(Votes, NumberOfSeats) ->
+webster_sainte_lague_rankings(Votes, NumberOfSeats, Threshold) ->
     % https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method#Description_of_the_method
-    rankings(webster_sainte_lague, Votes, NumberOfSeats).
+    rankings(webster_sainte_lague, Votes, NumberOfSeats, Threshold).
 
 %%====================================================================
 %% Internal functions
@@ -42,24 +42,25 @@ quotient(webster_sainte_lague, SeatsSoFar, VoteCount) ->
     Denominator = SeatsSoFar * 2 + 1,
     VoteCount / Denominator.
 
-rankings(Label, Votes, NumberOfSeatsToFill) ->
-    Counters = [ {PartyName, 0, VoteCount} || {PartyName, VoteCount} <- Votes ],
-    tabulate(Label, Counters, NumberOfSeatsToFill, 0).
+rankings(Label, Votes, NumberOfSeatsToFill, Threshold) ->
+    TotalVoteCnt = lists:sum([ VoteCount || {_PartyName, VoteCount} <- Votes ]),
+    MinVoteCnt = TotalVoteCnt * Threshold,
+    Counters = [ {PartyName, 0, VoteCount} || {PartyName, VoteCount} <- Votes, VoteCount >= MinVoteCnt ],
+    tabulate(Label, Counters, TotalVoteCnt, NumberOfSeatsToFill, 0).
 
 share(Votes, TotalVotes, SeatsFilled) ->
     Prec = math:pow(10, 2),
     trunc(Votes / TotalVotes * SeatsFilled * Prec) / Prec.
 
-tabulate(_, Counters, SeatsFilled, SeatsFilled) ->
-    VoteCounts = [ VoteCount || {_PN, _SSF, VoteCount} <- Counters ],
-    TotalVotes = lists:sum(VoteCounts),
-    Sorted     = lists:sort(fun by_seats_won/2, Counters),
-    [ {PN, PartySeats, share(VoteCount, TotalVotes, SeatsFilled)} || {PN, PartySeats, VoteCount} <- Sorted ];
+tabulate(_, Counters, TotalVoteCnt, SeatsFilled, SeatsFilled) ->
+    Sorted = lists:sort(fun by_seats_won/2, Counters),
+    [ {PtyName, PtySeats, share(VoteCount, TotalVoteCnt, SeatsFilled)} ||
+      {PtyName, PtySeats, VoteCount} <- Sorted ];
 
-tabulate(Label, Counters, SeatsToFill, SeatsFilled) ->
+tabulate(Label, Counters, TotalVoteCnt, SeatsToFill, SeatsFilled) ->
     Counters2 = [ {PartyName, SeatsSoFar, VoteCount, quotient(Label, SeatsSoFar, VoteCount)} ||
                   {PartyName, SeatsSoFar, VoteCount} <- Counters ],
     [ {WinPN, WinSeatsSoFar, WinVC, WinQ} | Rest ] = lists:sort(fun by_highest_quotient/2, Counters2),
     Counters3 = [ {WinPN, WinSeatsSoFar+1, WinVC, WinQ} | Rest ],
     Counters4 = [ {PartyName, SeatsSoFar, VoteCount} || {PartyName, SeatsSoFar, VoteCount, _Q} <- Counters3 ],
-    tabulate(Label, Counters4, SeatsToFill, SeatsFilled+1).
+    tabulate(Label, Counters4, TotalVoteCnt, SeatsToFill, SeatsFilled+1).
