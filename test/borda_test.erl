@@ -58,15 +58,9 @@ borda_nauru_case() ->
 
 borda_nauru_us2016_case() ->
     Rankings = consensus:borda_rankings(nauru, ballots(us2016)),
-    [ {clinton, HC}, {trump, DT}, {johnson, GJ}, {stein, JS} ] = Rankings,
-    ?assert(HC > 64.1),
-    ?assert(HC < 64.2),
-    ?assert(DT > 56.24),
-    ?assert(DT < 56.26),
+    [ {clinton, 64.0}, {trump, 56.75}, {johnson, GJ}, {stein, 34.25} ] = Rankings,
     ?assert(GJ > 53.33),
-    ?assert(GJ < 53.34),
-    ?assert(JS > 34.58),
-    ?assert(JS < 34.59).
+    ?assert(GJ < 53.34).
 
 %%% PRIVATE FUNCTIONS
 
@@ -99,9 +93,9 @@ ballots(us2016) ->
         lists:duplicate(29, DemL),
         lists:duplicate(13, DemG),
         lists:duplicate(10, GOPD),
-        lists:duplicate(5, LibD),
-        lists:duplicate(5, LibG),
-        lists:duplicate(5, LibR),
+        lists:duplicate(7, LibR),
+        lists:duplicate(4, LibD),
+        lists:duplicate(4, LibG),
         lists:duplicate(2, GrnD),
         lists:duplicate(1, GrnL)
     ]).
