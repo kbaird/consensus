@@ -94,14 +94,17 @@ ballots(us2016) ->
     LibR = ballot:make([johnson, trump, clinton, stein]),
     lists:flatten([
         lists:duplicate(30, GOPL),
-        lists:duplicate(25, DemL),
         lists:duplicate(10, GOPD),
-        lists:duplicate(9, DemR),
-        lists:duplicate(7, LibR),
-        lists:duplicate(5, DemG),
-        lists:duplicate(4, LibD),
-        lists:duplicate(3, GrnD),
-        lists:duplicate(3, LibG),
         lists:duplicate(2, GOPG),
+
+        lists:duplicate(25, DemL),
+        lists:duplicate(9, DemR),
+        lists:duplicate(5, DemG),
+
+        lists:duplicate(7, LibR),
+        lists:duplicate(4, LibD),
+        lists:duplicate(3, LibG),
+
+        lists:duplicate(3, GrnD),
         lists:duplicate(2, GrnL)
     ]).
