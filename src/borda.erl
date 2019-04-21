@@ -14,11 +14,15 @@
 
 % https://en.wikipedia.org/wiki/Borda_count#Example
 -spec rankings(label(), [ballot(), ...]) -> [{name(), number()}, ...] | binary().
-rankings(Label, Ballots) when Label =:= base0 orelse Label =:= base1 orelse Label =:= naura ->
+rankings(Label, Ballots) when Label =:= base0 orelse
+                              Label =:= base1 orelse
+                              Label =:= dowdell orelse
+                              Label =:= nauru ->
     Candidates = ballot:candidates(hd(Ballots)),
     Map = rankings(Label, Ballots, length(Candidates), #{}),
-    maps:to_list(Map);
-rankings(_, _) -> <<"Please restrict the first argument to base0, base1, or naura.">>.
+    L = maps:to_list(Map),
+    lists:sort(fun by_votes/2, L);
+rankings(_, _) -> <<"Please restrict the first argument to base0, base1, dowdell, or nauru.">>.
 
 %%====================================================================
 %% Internal functions
@@ -50,6 +54,8 @@ borda_values(Label, CandCount, [CandName | CNs], From, Acc) ->
     Acc2 = maps:put(CandName, value_of_votes(Label, CandCount, Votes), Acc),
     borda_values(Label, CandCount, CNs, From2, Acc2).
 
+by_votes({_, V1}, {_, V2}) -> V1 > V2.
+
 rankings(Label, [],       CandCount, Acc) -> borda_values(Label, CandCount, Acc);
 rankings(Label, [B | Bs], CandCount, Acc) when is_map(Acc) ->
     Acc2 = add_votes(Label, ballot:candidates(B), Acc),
@@ -60,8 +66,11 @@ value(base0, Position, CandCount) -> CandCount - Position;
 
 value(base1, Position, CandCount) -> value(base0, Position, CandCount) + 1;
 
-value(naura, 1,        _CandCount) -> 1;
-value(naura, Position, _CandCount) -> 1.0 / Position.
+% Cf. https://en.wikipedia.org/wiki/Borda_count#Dowdall_system_(Nauru)
+value(dowdell, Position,  CandCount) -> value(nauru, Position, CandCount);
+
+value(nauru, 1,        _CandCount) -> 1;
+value(nauru, Position, _CandCount) -> 1.0 / Position.
 
 -spec value_of_votes(label(), pos_integer(), map()) -> non_neg_integer().
 value_of_votes(Label, CandCount, Votes) when is_map(Votes) ->
