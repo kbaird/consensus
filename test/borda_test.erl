@@ -2,7 +2,6 @@
 -author('Kevin C. Baird').
 
 -include_lib("eunit/include/eunit.hrl").
--include_lib("elections.hrl").
 
 borda_setup()     -> ok.
 borda_teardown(_) -> ok.

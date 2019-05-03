@@ -3,8 +3,6 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
--include("parties.hrl").
-
 % cabinet_composition
 
 cabinet_composition_setup()     -> ok.

@@ -3,10 +3,6 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
--include("parties.hrl").
-
-% effective # of parties
-
 effective_num_parties_setup()     -> ok.
 effective_num_parties_teardown(_) -> ok.
 

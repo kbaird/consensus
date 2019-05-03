@@ -2,7 +2,6 @@
 -author('Kevin C. Baird').
 
 -include_lib("eunit/include/eunit.hrl").
--include_lib("elections.hrl").
 
 webster_sainte_lague_setup()     -> ok.
 webster_sainte_lague_teardown(_) -> ok.

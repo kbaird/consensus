@@ -2,7 +2,6 @@
 -author('Kevin C. Baird').
 
 -include_lib("eunit/include/eunit.hrl").
--include_lib("elections.hrl").
 
 ballot_setup()     -> ok.
 ballot_teardown(_) -> ok.

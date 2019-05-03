@@ -2,7 +2,6 @@
 -author('Kevin C. Baird').
 
 -include_lib("eunit/include/eunit.hrl").
--include_lib("elections.hrl").
 
 jefferson_dhondt_setup()     -> ok.
 jefferson_dhondt_teardown(_) -> ok.

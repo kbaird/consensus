@@ -2,7 +2,6 @@
 -author('Kevin C. Baird').
 
 -include_lib("eunit/include/eunit.hrl").
--include_lib("elections.hrl").
 
 droop_stv_setup()     -> ok.
 droop_stv_teardown(_) -> ok.
