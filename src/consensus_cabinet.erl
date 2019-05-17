@@ -80,7 +80,7 @@ is_contiguous(Cabinet) ->
     {Lo, Hi}    = party_endpoints(Cabinet),
     % This will not work with real party names,
     % but works for the current single letter codes
-    AllParties  = lists:seq(consensus_utils:binary_to_char(Lo), consensus_utils:binary_to_char(Hi)),
+    AllParties  = lists:seq(Lo, Hi),
     all_in(PartyVals, AllParties).
 
 -spec is_coalition(cabinet()) -> boolean().
@@ -112,10 +112,11 @@ mwc_with_seats(SeatShares) ->
     Winners = winning_coalitions(SeatShares),
     lists:filter(fun(C) -> not is_too_large(C, Winners) end, Winners).
 
--spec party_endpoints(cabinet()) -> {party_name(), party_name()}.
+-spec party_endpoints(cabinet()) -> {char(), char()}.
 party_endpoints(Cabinet) ->
     [ Hd | Tail ] = lists:sort(party_names(Cabinet)),
-    {Hd, lists:last(Tail)}.
+    Last = lists:last(Tail),
+    {consensus_utils:binary_to_char(Hd), consensus_utils:binary_to_char(Last)}.
 
 -spec party_names(cabinet()) -> [party_name()].
 party_names(Cabinet) -> lists:map(fun consensus_party:name/1, Cabinet).
@@ -124,7 +125,7 @@ party_names(Cabinet) -> lists:map(fun consensus_party:name/1, Cabinet).
 -spec range(cabinet()) -> number().
 range(Cabinet) ->
     {Lo, Hi} = party_endpoints(Cabinet),
-    consensus_utils:binary_to_char(Hi) - consensus_utils:binary_to_char(Lo).
+    Hi - Lo.
 
 % How many seats does this coalition fill?
 -spec seat_share([party_result()]) -> number().
