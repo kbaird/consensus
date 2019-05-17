@@ -116,8 +116,7 @@ mwc_with_seats(SeatShares) ->
 -spec party_endpoints(cabinet()) -> {party_name(), party_name()}.
 party_endpoints(Cabinet) ->
     [ Hd | Tail ] = lists:sort(party_names(Cabinet)),
-    Last = lists:last(Tail),
-    {Hd, Last}.
+    {Hd, lists:last(Tail)}.
 
 -spec party_names(cabinet()) -> [party_name()].
 party_names(Cabinet) -> lists:map(fun consensus_party:name/1, Cabinet).
