@@ -3,7 +3,7 @@
 -record(candidate,
     {
         name :: name(),
-        party :: nil | atom()
+        party :: binary() | undefined
     }).
 -type candidate() :: #candidate{}.
 

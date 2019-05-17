@@ -76,11 +76,11 @@ centrist_party(Parties) ->
 -spec is_contiguous(cabinet()) -> boolean().
 is_contiguous(Cabinet) ->
     PartyNames  = party_names(Cabinet),
-    PartyVals   = lists:map(fun consensus_utils:atom_to_char/1, PartyNames),
+    PartyVals   = lists:map(fun consensus_utils:binary_to_char/1, PartyNames),
     {Lo, Hi}    = party_endpoints(Cabinet),
     % This will not work with real party names,
     % but works for the current single letter codes
-    AllParties  = lists:seq(consensus_utils:atom_to_char(Lo), consensus_utils:atom_to_char(Hi)),
+    AllParties  = lists:seq(consensus_utils:binary_to_char(Lo), consensus_utils:binary_to_char(Hi)),
     all_in(PartyVals, AllParties).
 
 -spec is_coalition(cabinet()) -> boolean().
@@ -124,7 +124,7 @@ party_names(Cabinet) -> lists:map(fun consensus_party:name/1, Cabinet).
 -spec range(cabinet()) -> number().
 range(Cabinet) ->
     {Lo, Hi} = party_endpoints(Cabinet),
-    consensus_utils:atom_to_char(Hi) - consensus_utils:atom_to_char(Lo).
+    consensus_utils:binary_to_char(Hi) - consensus_utils:binary_to_char(Lo).
 
 % How many seats does this coalition fill?
 -spec seat_share([party_result()]) -> number().

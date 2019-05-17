@@ -1,4 +1,4 @@
--type party_name()  :: atom().
+-type party_name()  :: binary().
 -type cabinet()     :: [party_name()].
 
 -type seat_share()  :: number().
