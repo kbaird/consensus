@@ -2,7 +2,7 @@
 
 %% API exports
 -export([
-    atom_to_char/1,
+    binary_to_char/1,
     powerset/1,
     uniqueify/1
 ]).
@@ -14,8 +14,8 @@
 %% API functions
 %%====================================================================
 
--spec atom_to_char(atom()) -> char().
-atom_to_char(Atom) -> hd(atom_to_list(Atom)).
+-spec binary_to_char(binary()) -> char().
+binary_to_char(Bin) -> hd(binary_to_list(Bin)).
 
 powerset([])    -> [[]];
 powerset([H|T]) ->

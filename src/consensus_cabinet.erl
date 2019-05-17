@@ -2,7 +2,8 @@
 
 %% API exports
 -export([
-    compose/2
+    compose/2,
+    compose/3
 ]).
 
 -include("include/common.hrl").
@@ -32,13 +33,6 @@
 compose(Label, SeatShares) when ?IS_BP(Label) ->
     party_names_min_by(fun length/1, SeatShares);
 
-compose(Label, SeatShares) when ?IS_MCW(Label) ->
-    WithSeats   = winning_coalitions(SeatShares),
-    Contiguous  = lists:filter(fun is_contiguous/1, WithSeats),
-    SmallEnough = fun(C) -> not is_too_large(C, Contiguous) end,
-    InRange     = lists:filter(SmallEnough, Contiguous),
-    just_party_names(InRange);
-
 compose(Label, SeatShares) when ?IS_MR(Label) ->
     party_names_min_by(fun range/1, SeatShares);
 
@@ -55,6 +49,15 @@ compose(Label, SeatShares) when ?IS_PVC(Label) ->
     WithCtrPty  = [ Cab ||  Cab <- Cabinets,
                             lists:member(CenterPty, party_names(Cab)) ],
     just_party_names(WithCtrPty).
+
+% This case requires knowledge of all parties
+-spec compose(label(), [party_result()], [party_name()]) -> [cabinet()].
+compose(Label, SeatShares, AllParties) when ?IS_MCW(Label) ->
+    WithSeats   = winning_coalitions(SeatShares),
+    Contiguous  = lists:filter(fun(Coalition) -> is_contiguous(Coalition, AllParties) end, WithSeats),
+    SmallEnough = fun(C) -> not is_too_large(C, Contiguous) end,
+    InRange     = lists:filter(SmallEnough, Contiguous),
+    just_party_names(InRange).
 
 %%====================================================================
 %% Internal functions
@@ -73,15 +76,13 @@ centrist_party(Parties) ->
     centrist_party(Sub).
 
 % Does this coalition avoid gaps between parties?
--spec is_contiguous(cabinet()) -> boolean().
-is_contiguous(Cabinet) ->
-    PartyNames  = party_names(Cabinet),
-    PartyVals   = lists:map(fun consensus_utils:atom_to_char/1, PartyNames),
-    {Lo, Hi}    = party_endpoints(Cabinet),
-    % This will not work with real party names,
-    % but works for the current single letter codes
-    AllParties  = lists:seq(consensus_utils:atom_to_char(Lo), consensus_utils:atom_to_char(Hi)),
-    all_in(PartyVals, AllParties).
+-spec is_contiguous(cabinet(), [party_name()]) -> boolean().
+is_contiguous(Cabinet, AllParties) ->
+    PartyNames = party_names(Cabinet),
+    {FirstParty, LastParty} = party_endpoints(Cabinet),
+    Opposition = [AP || AP <- AllParties, not lists:member(AP, PartyNames)],
+    Forbidden  = [OP || OP <- Opposition, OP < LastParty, OP > FirstParty],
+    Forbidden == [].
 
 -spec is_coalition(cabinet()) -> boolean().
 is_coalition(Cab) -> length(Cab) > 1.
@@ -124,7 +125,7 @@ party_names(Cabinet) -> lists:map(fun consensus_party:name/1, Cabinet).
 -spec range(cabinet()) -> number().
 range(Cabinet) ->
     {Lo, Hi} = party_endpoints(Cabinet),
-    consensus_utils:atom_to_char(Hi) - consensus_utils:atom_to_char(Lo).
+    consensus_utils:binary_to_char(Hi) - consensus_utils:binary_to_char(Lo).
 
 % How many seats does this coalition fill?
 -spec seat_share([party_result()]) -> number().
