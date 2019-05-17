@@ -79,8 +79,7 @@ centrist_party(Parties) ->
 -spec is_contiguous(cabinet(), [party_name()]) -> boolean().
 is_contiguous(Cabinet, AllParties) ->
     PartyNames = party_names(Cabinet),
-    [ FirstParty | Tail ] = lists:sort(PartyNames),
-    LastParty  = lists:last(Tail),
+    {FirstParty, LastParty} = party_endpoints(Cabinet),
     Opposition = [AP || AP <- AllParties, not lists:member(AP, PartyNames)],
     Forbidden  = [OP || OP <- Opposition, OP < LastParty, OP > FirstParty],
     Forbidden == [].
@@ -114,11 +113,11 @@ mwc_with_seats(SeatShares) ->
     Winners = winning_coalitions(SeatShares),
     lists:filter(fun(C) -> not is_too_large(C, Winners) end, Winners).
 
--spec party_endpoints(cabinet()) -> {char(), char()}.
+-spec party_endpoints(cabinet()) -> {party_name(), party_name()}.
 party_endpoints(Cabinet) ->
     [ Hd | Tail ] = lists:sort(party_names(Cabinet)),
     Last = lists:last(Tail),
-    {consensus_utils:binary_to_char(Hd), consensus_utils:binary_to_char(Last)}.
+    {Hd, Last}.
 
 -spec party_names(cabinet()) -> [party_name()].
 party_names(Cabinet) -> lists:map(fun consensus_party:name/1, Cabinet).
@@ -127,7 +126,7 @@ party_names(Cabinet) -> lists:map(fun consensus_party:name/1, Cabinet).
 -spec range(cabinet()) -> number().
 range(Cabinet) ->
     {Lo, Hi} = party_endpoints(Cabinet),
-    Hi - Lo.
+    consensus_utils:binary_to_char(Hi) - consensus_utils:binary_to_char(Lo).
 
 % How many seats does this coalition fill?
 -spec seat_share([party_result()]) -> number().
