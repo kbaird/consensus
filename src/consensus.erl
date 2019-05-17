@@ -4,6 +4,7 @@
 -export([
     borda_rankings/2,
     cabinet_composition/2,
+    cabinet_composition/3,
     condorcet_rankings/1,
     condorcet_winner/1,
     droop_winners/2,
@@ -25,6 +26,9 @@ borda_rankings(Label, Ballots) ->
 % Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg93.
 cabinet_composition(Label, SeatShares) ->
     consensus_cabinet:compose(Label, SeatShares).
+
+cabinet_composition(Label, SeatShares, AllParties) ->
+    consensus_cabinet:compose(Label, SeatShares, AllParties).
 
 condorcet_rankings(Ballots) ->
     condorcet_election:rankings(Ballots).
