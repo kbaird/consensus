@@ -30,10 +30,12 @@ schulze_ex1_rankings_case() ->
 
 schulze_ex2_winner_case() ->
     Winner = consensus:condorcet_winner(schulze_ex2_ballots()),
+    Winner = consensus:condorcet_winner(schulze_ex2_ballots(partial)),
     ?assertEqual(d, Winner).
 
 schulze_ex2_rankings_case() ->
     Rankings = consensus:condorcet_rankings(schulze_ex2_ballots()),
+    Rankings = consensus:condorcet_rankings(schulze_ex2_ballots(partial)),
     ?assertEqual([d, a, c, b], Rankings).
 
 %%% PRIVATE FUNCTIONS
@@ -63,6 +65,21 @@ schulze_ex2_ballots() ->
         lists:duplicate(1, ballot([d, a, c, b])),
         lists:duplicate(5, ballot([d, b, a, c])),
         lists:duplicate(4, ballot([d, c, b, a]))
+    ]).
+
+schulze_ex2_ballots(partial) ->
+    % this just leaves off the final candidate, ensuring that the implementation treats
+    % this case the same as explicitly putting the only remaining candidate in last place.
+    lists:flatten([
+        lists:duplicate(5, ballot([a, c, b])),
+        lists:duplicate(2, ballot([a, c, d])),
+        lists:duplicate(3, ballot([a, d, c])),
+        lists:duplicate(4, ballot([b, a, c])),
+        lists:duplicate(3, ballot([c, b, d])),
+        lists:duplicate(3, ballot([c, d, b])),
+        lists:duplicate(1, ballot([d, a, c])),
+        lists:duplicate(5, ballot([d, b, a])),
+        lists:duplicate(4, ballot([d, c, b]))
     ]).
 
 ballot(L) -> ballot:make(L).

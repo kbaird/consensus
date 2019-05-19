@@ -36,8 +36,3 @@ from Wikipedia.
 Download [elvis](https://github.com/inaka/elvis), then
 
     $ elvis rock
-
-## TODO
-
-- Schulze Method
-  - currently requires every ballot to be complete
