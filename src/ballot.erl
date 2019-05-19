@@ -27,6 +27,11 @@ candidates(#ballot{candidates = Candidates}) -> Candidates.
 get_2nd_choice_name(Ballot) ->
     hd(get_tail_names(Ballot)).
 
+-spec get_tail_names(ballot()) -> [name()].
+get_tail_names(Ballot) ->
+    [ _ | Cs ] = candidates(Ballot),
+    [ candidate:name(C) || C <- Cs ].
+
 -spec has_top_choice(name(), ballot()) -> boolean().
 has_top_choice(Name, Ballot) ->
    Names = lists:map(fun candidate:name/1, candidates(Ballot)),
@@ -44,8 +49,3 @@ ensure_candidate(X) ->
         true -> X;
         _ -> candidate:make(X)
     end.
-
--spec get_tail_names(ballot()) -> [name()].
-get_tail_names(Ballot) ->
-    [ _ | Cs ] = candidates(Ballot),
-    [ candidate:name(C) || C <- Cs ].
