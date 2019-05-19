@@ -38,6 +38,7 @@ schulze_ex2_rankings_case() ->
 
 %%% PRIVATE FUNCTIONS
 
+% https://wiki.electorama.com/wiki/Schulze_method#Example_1
 schulze_ex1_ballots() ->
     lists:flatten([
         lists:duplicate(5, ballot([a, c, b, e, d])),
@@ -50,6 +51,7 @@ schulze_ex1_ballots() ->
         lists:duplicate(8, ballot([e, b, a, d, c]))
     ]).
 
+% https://wiki.electorama.com/wiki/Schulze_method#Example_2
 schulze_ex2_ballots() ->
     lists:flatten([
         lists:duplicate(5, ballot([a, c, b, d])),

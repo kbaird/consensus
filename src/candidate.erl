@@ -28,24 +28,13 @@ party(#candidate{party = Party}) -> Party.
 -spec rank(preferences()) -> [candidate(), ...].
 rank(Prefs) ->
     case length(maps:to_list(Prefs)) of
-        1 -> [ C || {C,_} <- maps:to_list(Prefs) ];
+        1 -> [ C || {C, _} <- maps:to_list(Prefs) ];
         _ -> schulze_rank(Prefs)
     end.
 
 %%====================================================================
 %% Internal functions
 %%====================================================================
--spec by_least_votes(preferences()) ->
-    fun((candidate(), candidate()) -> boolean()).
-by_least_votes(Prefs) ->
-    % I think this may actually be closer to
-    % https://en.wikipedia.org/wiki/Ranked_pairs than Schulze
-    % (both satisfy Condorcet criteria)
-    fun(C1, C2) ->
-        maps:get(C1, maps:get(C2, Prefs), 0) <
-        maps:get(C2, maps:get(C1, Prefs), 0)
-    end.
-
 -spec schulze_rank(preferences()) -> [candidate(), ...].
 schulze_rank(Prefs) ->
     Candidates = maps:keys(Prefs),
