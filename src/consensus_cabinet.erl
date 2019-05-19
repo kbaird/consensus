@@ -50,11 +50,11 @@ compose(Label, SeatShares) when ?IS_PVC(Label) ->
                             lists:member(CenterPty, party_names(Cab)) ],
     just_party_names(WithCtrPty).
 
-% This case requires knowledge of all parties
+% This case requires knowledge of all party names
 -spec compose(label(), [party_result()], [party_name()]) -> [cabinet()].
-compose(Label, SeatShares, AllParties) when ?IS_MCW(Label) ->
+compose(Label, SeatShares, AllPartyNames) when ?IS_MCW(Label) ->
     WithSeats   = winning_coalitions(SeatShares),
-    Contiguous  = lists:filter(fun(Coalition) -> is_contiguous(Coalition, AllParties) end, WithSeats),
+    Contiguous  = lists:filter(fun(Coalition) -> is_contiguous(Coalition, AllPartyNames) end, WithSeats),
     SmallEnough = fun(C) -> not is_too_large(C, Contiguous) end,
     InRange     = lists:filter(SmallEnough, Contiguous),
     just_party_names(InRange).
@@ -77,10 +77,10 @@ centrist_party(Parties) ->
 
 % Does this coalition avoid gaps between parties?
 -spec is_contiguous(cabinet(), [party_name()]) -> boolean().
-is_contiguous(Cabinet, AllParties) ->
+is_contiguous(Cabinet, AllPartyNames) ->
     PartyNames = party_names(Cabinet),
     {FirstParty, LastParty} = party_endpoints(Cabinet),
-    Opposition = [AP || AP <- AllParties, not lists:member(AP, PartyNames)],
+    Opposition = [AP || AP <- AllPartyNames, not lists:member(AP, PartyNames)],
     Forbidden  = [OP || OP <- Opposition, OP < LastParty, OP > FirstParty],
     Forbidden == [].
 
