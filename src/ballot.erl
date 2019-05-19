@@ -5,6 +5,7 @@
     make/1,
     candidates/1,
     get_2nd_choice_name/1,
+    get_tail_names/1,
     has_top_choice/2,
     only_multis/1
 ]).
@@ -24,7 +25,7 @@ candidates(#ballot{candidates = Candidates}) -> Candidates.
 
 -spec get_2nd_choice_name(ballot()) -> name().
 get_2nd_choice_name(Ballot) ->
-    candidate:name(lists:nth(2, candidates(Ballot))).
+    hd(get_tail_names(Ballot)).
 
 -spec has_top_choice(name(), ballot()) -> boolean().
 has_top_choice(Name, Ballot) ->
@@ -43,3 +44,8 @@ ensure_candidate(X) ->
         true -> X;
         _ -> candidate:make(X)
     end.
+
+-spec get_tail_names(ballot()) -> [name()].
+get_tail_names(Ballot) ->
+    [ _ | Cs ] = candidates(Ballot),
+    [ candidate:name(C) || C <- Cs ].
