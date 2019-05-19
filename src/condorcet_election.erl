@@ -28,14 +28,10 @@ winner(Ballots) -> hd(rankings(Ballots)).
                       map()) -> preferences().
 add_preferences([_LastPlaceCand], Acc) -> Acc;
 
-add_preferences([Cand, Last], AccIn) ->
-    increment_vote_count(Cand, Last, AccIn);
-
-add_preferences([Cand, Next | Rest], AccIn) ->
-    Acc1  = increment_vote_count(Cand, Next, AccIn),
-    Adder = fun(C, Acc) -> increment_vote_count(Cand, C, Acc) end,
-    Acc2  = lists:foldl(Adder, Acc1, Rest),
-    add_preferences([Next | Rest], Acc2).
+add_preferences([Cand | Rest], AccIn) ->
+    Add = fun(C, Acc) -> increment_vote_count(Cand, C, Acc) end,
+    Acc = lists:foldl(Add, AccIn, Rest),
+    add_preferences(Rest, Acc).
 
 -spec increment_vote_count(candidate(),
                            candidate(),
