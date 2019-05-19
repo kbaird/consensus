@@ -54,10 +54,10 @@ cabinet_composition_mr_case() ->
                  ], Cabinet).
 
 cabinet_composition_mcw_case() ->
-    AllParties = all_parties(),
-    Cabinet = consensus:cabinet_composition(minimal_connected_winning, parliament(), AllParties),
-    Cabinet = consensus:cabinet_composition(minimum_connected_winning, parliament(), AllParties),
-    Cabinet = consensus:cabinet_composition(mcw, parliament(), AllParties),
+    AllPartyNames = all_party_names(),
+    Cabinet = consensus:cabinet_composition(minimal_connected_winning, parliament(), AllPartyNames),
+    Cabinet = consensus:cabinet_composition(minimum_connected_winning, parliament(), AllPartyNames),
+    Cabinet = consensus:cabinet_composition(mcw, parliament(), AllPartyNames),
     ?assertEqual([[<<"a">>, <<"b">>, <<"c">>],
                   [<<"b">>, <<"c">>, <<"d">>],
                   [<<"c">>, <<"d">>, <<"e">>]
@@ -73,7 +73,7 @@ cabinet_composition_pvc_case() ->
 
 %%% PRIVATE FUNCTIONS
 
-all_parties() -> [<<"a">>, <<"b">>, <<"c">>, <<"d">>, <<"e">>].
+all_party_names() -> [<<"a">>, <<"b">>, <<"c">>, <<"d">>, <<"e">>].
 
 parliament() -> [
     consensus_party:make(<<"a">>, 8),

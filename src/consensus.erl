@@ -27,8 +27,8 @@ borda_rankings(Label, Ballots) ->
 cabinet_composition(Label, SeatShares) ->
     consensus_cabinet:compose(Label, SeatShares).
 
-cabinet_composition(Label, SeatShares, AllParties) ->
-    consensus_cabinet:compose(Label, SeatShares, AllParties).
+cabinet_composition(Label, SeatShares, AllPartyNames) ->
+    consensus_cabinet:compose(Label, SeatShares, AllPartyNames).
 
 condorcet_rankings(Ballots) ->
     condorcet_election:rankings(Ballots).
