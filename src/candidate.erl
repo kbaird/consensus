@@ -27,22 +27,61 @@ party(#candidate{party = Party}) -> Party.
 
 -spec rank(preferences()) -> [candidate(), ...].
 rank(Prefs) ->
-    % sort by least votes, so the lowest magnitude for "least votes"
-    % (i.e., the winner, with the highest number of votes) is at the front.
-    ByLeastVotes = by_least_votes(Prefs),
-    Candidates   = maps:keys(Prefs),
-    lists:sort(ByLeastVotes, Candidates).
+    case length(maps:to_list(Prefs)) of
+        1 -> [ C || {C, _} <- maps:to_list(Prefs) ];
+        _ -> schulze_rank(Prefs)
+    end.
 
 %%====================================================================
 %% Internal functions
 %%====================================================================
--spec by_least_votes(preferences()) ->
-    fun((candidate(), candidate()) -> boolean()).
-by_least_votes(Prefs) ->
-    % I think this may actually be closer to
-    % https://en.wikipedia.org/wiki/Ranked_pairs than Schulze
-    % (both satisfy Condorcet criteria)
-    fun(C1, C2) ->
-        maps:get(C1, maps:get(C2, Prefs), 0) <
-        maps:get(C2, maps:get(C1, Prefs), 0)
-    end.
+
+% https://wiki.electorama.com/wiki/Schulze_method#Implementation
+-spec schulze_rank(preferences()) -> [candidate(), ...].
+schulze_rank(Prefs) ->
+    Candidates = maps:keys(Prefs),
+    TwoCs   = [ {I, J} || I <- Candidates,
+                          J <- Candidates,
+                          I =/= J ],
+    Pass1   = floyd_warshall_stage1(Prefs, maps:new(), TwoCs),
+    FullCs  = [ {I, J, K} || I <- Candidates,
+                             J <- Candidates,
+                             K <- Candidates,
+                             I =/= J,
+                             I =/= K,
+                             J =/= K ],
+    Set = floyd_warshall_stage2(Pass1, FullCs),
+    Lst = maps:to_list(Set),
+    Sorted = lists:sort(fun schulze_sorter/2, Lst),
+    [ Candidate || {Candidate, _} <- Sorted ].
+
+schulze_sorter({_, M1}, {_, M2}) ->
+    lists:sum(maps:values(M1)) <
+    lists:sum(maps:values(M2)).
+
+floyd_warshall_stage1(_D, P, [])                -> P;
+floyd_warshall_stage1(D, P0, [ {I, J} | Rest ]) ->
+    IVal   = maps:get(I, D),
+    JOverI = maps:get(J, IVal, 0),
+    JVal   = maps:get(J, D),
+    IOverJ = maps:get(I, JVal, 0),
+    V = case IOverJ > JOverI of
+            true -> IOverJ;
+            _    -> 0
+        end,
+    PI = maps:get(I, P0, maps:new()),
+    PJ = maps:put(J, V, PI),
+    P  = maps:put(I, PJ, P0),
+    floyd_warshall_stage1(D, P, Rest).
+
+floyd_warshall_stage2(P,  []) -> P;
+floyd_warshall_stage2(P0, [ {I, J, K} | Rest ]) ->
+    PI   = maps:get(I, P0),
+    PJ0  = maps:get(J, P0),
+    PJI0 = maps:get(I, PJ0),
+    PJK0 = maps:get(K, PJ0),
+    PIK0 = maps:get(K, PI),
+    PJK  = lists:max([ PJK0, lists:min([PJI0, PIK0]) ]),
+    PJ   = maps:put(K, PJK, PJ0),
+    P    = maps:put(J, PJ, P0),
+    floyd_warshall_stage2(P, Rest).

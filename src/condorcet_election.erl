@@ -24,33 +24,50 @@ winner(Ballots) -> hd(rankings(Ballots)).
 %%====================================================================
 %% Internal functions
 %%====================================================================
--spec add_preferences(candidate(),
-                      [candidate(), ...],
+-spec add_preferences([candidate(), ...],
                       map()) -> preferences().
-add_preferences(_LastPlaceCand, [],     Acc)   -> Acc;
-add_preferences(Cand,  [ Next | Rest ], AccIn) ->
-    Acc1 = increment_vote_count(Cand, Next, AccIn),
-    Acc2 = add_preferences(Cand, Rest, Acc1),
-    add_preferences(Next, Rest, Acc2).
+add_preferences([_LastPlaceCand], Acc) -> Acc;
+
+add_preferences([Cand, Last], AccIn) ->
+    increment_vote_count(Cand, Last, AccIn);
+
+add_preferences([Cand, Next | Rest], AccIn) ->
+    Acc1  = increment_vote_count(Cand, Next, AccIn),
+    Adder = fun(C, Acc) -> increment_vote_count(Cand, C, Acc) end,
+    Acc2  = lists:foldl(Adder, Acc1, Rest),
+    add_preferences([Next | Rest], Acc2).
 
 -spec increment_vote_count(candidate(),
                            candidate(),
                            preferences()) -> preferences().
 increment_vote_count(Cand, Next, PrefsIn) ->
-    WithCount   = maps:get(Cand, PrefsIn, maps:new()),
-    Count       = maps:get(Next, WithCount, 0),
+    WithCount   = maps:get(Cand, PrefsIn),
+    Count       = maps:get(Next, WithCount),
     Incremented = maps:put(Next, Count+1, WithCount),
     maps:put(Cand, Incremented, PrefsIn).
 
 -spec preferences(list()) -> preferences().
-preferences(Ballots) -> preferences(Ballots, maps:new()).
+preferences(Ballots) ->
+    WithZeroCounts = with_zero_counts(Ballots),
+    preferences(Ballots, WithZeroCounts).
 
 -spec preferences(list(), map()) -> preferences().
 preferences([],            Acc)   -> Acc;
 preferences([Ballot | Bs], AccIn) ->
-    [ Cand | Rest ] = ballot:candidates(Ballot),
-    case Rest of
-        [] -> maps:put(Cand, winner, maps:new());
-        _  -> Acc = add_preferences(Cand, Rest, AccIn),
-              preferences(Bs, Acc)
-    end.
+    Candidates = ballot:candidates(Ballot),
+    Acc = add_preferences(Candidates, AccIn),
+    preferences(Bs, Acc).
+
+with_zero_counts(Ballots) ->
+    AllCandidates = [C || B <- Ballots, C <- ballot:candidates(B)],
+    UniqueCandidates = lists:usort(AllCandidates),
+    lists:foldl(fun(Cand, Acc) ->
+                    Others = lists:delete(Cand, UniqueCandidates),
+                    ZC = zero_counts(Others, Acc),
+                    maps:put(Cand, ZC, Acc)
+                end,
+    maps:new(),
+    UniqueCandidates).
+
+zero_counts([],            Acc) -> Acc;
+zero_counts([Next | Rest], Acc) -> zero_counts(Rest, maps:put(Next, 0, Acc)).
