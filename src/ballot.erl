@@ -14,9 +14,9 @@
 %%====================================================================
 %% API functions
 %%====================================================================
--spec make([name(), ...]) -> ballot().
-make(CandidateNames) ->
-    Candidates = lists:map(fun candidate:make/1, CandidateNames),
+-spec make([name(), ...] | [candidate(), ...]) -> ballot().
+make(CandidatesOrNames) ->
+    Candidates = lists:map(fun ensure_candidate/1, CandidatesOrNames),
     #ballot{candidates = Candidates}.
 
 -spec candidates(ballot()) -> [candidate(), ...].
@@ -38,4 +38,8 @@ only_multis(Ballots) ->
 %%====================================================================
 %% Internal functions
 %%====================================================================
-
+ensure_candidate(X) ->
+    case candidate:is_candidate(X) of
+        true -> X;
+        _ -> candidate:make(X)
+    end.

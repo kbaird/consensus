@@ -3,6 +3,7 @@
 %% API exports
 -export([
     make/1,
+    is_candidate/1,
     name/1,
     party/1,
     rank/1
@@ -15,9 +16,13 @@
 %% API functions
 %%====================================================================
 -spec make(name()) -> candidate().
-make({Name, Party}) when is_atom(Name) andalso is_atom(Party) ->
+make({Name, Party}) when is_atom(Name) andalso is_binary(Party) ->
     #candidate{name = Name, party = Party};
 make(Name) when is_atom(Name) -> #candidate{name = Name}.
+
+-spec is_candidate(term()) -> boolean().
+is_candidate(#candidate{}) -> true;
+is_candidate(_Other)       -> false.
 
 -spec name(candidate()) -> name().
 name(#candidate{name = Name}) -> Name.
