@@ -35,6 +35,8 @@ rank(Prefs) ->
 %%====================================================================
 %% Internal functions
 %%====================================================================
+
+% https://wiki.electorama.com/wiki/Schulze_method#Implementation
 -spec schulze_rank(preferences()) -> [candidate(), ...].
 schulze_rank(Prefs) ->
     Candidates = maps:keys(Prefs),
