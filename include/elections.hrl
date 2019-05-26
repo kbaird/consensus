@@ -19,7 +19,16 @@
     }).
 -type ballot() :: #ballot{}.
 
+% https://en.wikipedia.org/wiki/Mixed-member_proportional_representation
+-record(mmp_ballot,
+    {
+        candidates :: [candidate(), ...],
+        party_list_choice :: binary()
+    }).
+-type mmp_ballot() :: #mmp_ballot{}.
+
 -export_type([
-    ballot/0
+    ballot/0,
+    mmp_ballot/0
 ]).
 

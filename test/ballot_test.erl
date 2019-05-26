@@ -15,6 +15,7 @@ ballot_test_() ->
                 fun has_top_choice_case/0,
                 fun make_and_candidates_case/0,
                 fun make_from_candidates_case/0,
+                fun make_mmp_case/0,
                 fun make_partisan_case/0,
                 fun only_multis_case/0
             ]
@@ -47,6 +48,14 @@ make_from_candidates_case() ->
     Cs2 = ballot:candidates(B2),
     ?assertEqual([a, b, c], lists:map(fun candidate:name/1, Cs2)),
     ?assertEqual([<<"lib">>, <<"con">>, <<"lab">>], lists:map(fun candidate:party/1, Cs2)).
+
+make_mmp_case() ->
+    RankedCandidates = [{a, <<"lib">>}, {b, <<"con">>}, {c, <<"lab">>}],
+    B = ballot:make_mmp(RankedCandidates, <<"grn">>),
+    Cs = ballot:candidates(B),
+    ?assertEqual(<<"grn">>, ballot:party(B)),
+    ?assertEqual([a, b, c], lists:map(fun candidate:name/1, Cs)),
+    ?assertEqual([<<"lib">>, <<"con">>, <<"lab">>], lists:map(fun candidate:party/1, Cs)).
 
 make_partisan_case() ->
     Input = [{a, <<"lib">>}, {b, <<"con">>}, {c, <<"lab">>}],
