@@ -53,10 +53,11 @@ compose(Label, SeatShares) when ?IS_PVC(Label) ->
 % This case requires knowledge of all party names
 -spec compose(label(), [party_result()], [party_name()]) -> [cabinet()].
 compose(Label, SeatShares, AllPartyNames) when ?IS_MCW(Label) ->
-    WithSeats   = winning_coalitions(SeatShares),
-    Contiguous  = lists:filter(fun(Coalition) -> is_contiguous(Coalition, AllPartyNames) end, WithSeats),
-    SmallEnough = fun(C) -> not is_too_large(C, Contiguous) end,
-    InRange     = lists:filter(SmallEnough, Contiguous),
+    WithSeats    = winning_coalitions(SeatShares),
+    IsContiguous = fun(Coalition) -> is_contiguous(Coalition, AllPartyNames) end,
+    Contiguous   = lists:filter(IsContiguous, WithSeats),
+    SmallEnough  = fun(C) -> not is_too_large(C, Contiguous) end,
+    InRange      = lists:filter(SmallEnough, Contiguous),
     just_party_names(InRange).
 
 %%====================================================================
