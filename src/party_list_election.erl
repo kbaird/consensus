@@ -9,6 +9,8 @@
 -include("include/elections.hrl").
 -include("include/parties.hrl").
 
+-define(STARTING_SEATS, 0).
+
 %%====================================================================
 %% API functions
 %%====================================================================
@@ -45,8 +47,9 @@ quotient(webster_sainte_lague, SeatsSoFar, VoteCount) ->
 rankings(Label, Votes, NumberOfSeatsToFill, Threshold) ->
     TotalVoteCnt = lists:sum([ VoteCount || {_PartyName, VoteCount} <- Votes ]),
     MinVoteCnt = TotalVoteCnt * Threshold,
-    Counters = [ {PartyName, 0, VoteCount} || {PartyName, VoteCount} <- Votes, VoteCount >= MinVoteCnt ],
-    tabulate(Label, Counters, TotalVoteCnt, NumberOfSeatsToFill, 0).
+    Counters = [ {PartyName, ?STARTING_SEATS, VoteCount} ||
+                 {PartyName, VoteCount} <- Votes, VoteCount >= MinVoteCnt ],
+    tabulate(Label, Counters, TotalVoteCnt, NumberOfSeatsToFill, ?STARTING_SEATS).
 
 share(Votes, TotalVotes, SeatsFilled) ->
     Prec = math:pow(10, 2),
