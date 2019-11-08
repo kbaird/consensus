@@ -47,7 +47,8 @@ quotient(webster_sainte_lague, SeatsSoFar, VoteCount) ->
 rankings(Label, Votes, NumberOfSeatsToFill, Threshold) ->
     TotalVoteCnt = lists:sum([ VoteCount || {_PartyName, VoteCount} <- Votes ]),
     MinVoteCnt = TotalVoteCnt * Threshold,
-    Counters = [ {PartyName, ?STARTING_SEATS, VoteCount} || {PartyName, VoteCount} <- Votes, VoteCount >= MinVoteCnt ],
+    Counters = [ {PartyName, ?STARTING_SEATS, VoteCount} ||
+                 {PartyName, VoteCount} <- Votes, VoteCount >= MinVoteCnt ],
     tabulate(Label, Counters, TotalVoteCnt, NumberOfSeatsToFill, ?STARTING_SEATS).
 
 share(Votes, TotalVotes, SeatsFilled) ->
