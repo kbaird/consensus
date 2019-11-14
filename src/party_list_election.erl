@@ -44,12 +44,12 @@ quotient(webster_sainte_lague, SeatsSoFar, VoteCount) ->
     Denominator = SeatsSoFar * 2 + 1,
     VoteCount / Denominator.
 
-rankings(Label, Votes, NumberOfSeatsToFill, Threshold) ->
+rankings(Method, Votes, NumberOfSeatsToFill, Threshold) ->
     TotalVoteCnt = lists:sum([ VoteCount || {_PartyName, VoteCount} <- Votes ]),
     MinVoteCnt = TotalVoteCnt * Threshold,
     Counters = [ {PartyName, ?STARTING_SEATS, VoteCount} ||
                  {PartyName, VoteCount} <- Votes, VoteCount >= MinVoteCnt ],
-    tabulate(Label, Counters, TotalVoteCnt, NumberOfSeatsToFill, ?STARTING_SEATS).
+    tabulate(Method, Counters, TotalVoteCnt, NumberOfSeatsToFill, ?STARTING_SEATS).
 
 share(Votes, TotalVotes, SeatsFilled) ->
     Prec = math:pow(10, 2),
@@ -60,10 +60,10 @@ tabulate(_, Counters, TotalVoteCnt, SeatsFilled, SeatsFilled) ->
     [ {PtyName, PtySeats, share(VoteCount, TotalVoteCnt, SeatsFilled)} ||
       {PtyName, PtySeats, VoteCount} <- Sorted ];
 
-tabulate(Label, Counters, TotalVoteCnt, SeatsToFill, SeatsFilled) ->
-    Counters2 = [ {PartyName, SeatsSoFar, VoteCount, quotient(Label, SeatsSoFar, VoteCount)} ||
+tabulate(Method, Counters, TotalVoteCnt, SeatsToFill, SeatsFilled) ->
+    Counters2 = [ {PartyName, SeatsSoFar, VoteCount, quotient(Method, SeatsSoFar, VoteCount)} ||
                   {PartyName, SeatsSoFar, VoteCount} <- Counters ],
     [ {WinPN, WinSeatsSoFar, WinVC, WinQ} | Rest ] = lists:sort(fun by_highest_quotient/2, Counters2),
     Counters3 = [ {WinPN, WinSeatsSoFar+1, WinVC, WinQ} | Rest ],
     Counters4 = [ {PartyName, SeatsSoFar, VoteCount} || {PartyName, SeatsSoFar, VoteCount, _Q} <- Counters3 ],
-    tabulate(Label, Counters4, TotalVoteCnt, SeatsToFill, SeatsFilled+1).
+    tabulate(Method, Counters4, TotalVoteCnt, SeatsToFill, SeatsFilled+1).
