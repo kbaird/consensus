@@ -22,7 +22,9 @@ three_candidates_test_() ->
 three_candidates_one_voter_case() ->
     Ballot = ballot:make([a, b, c]),
     Winner = consensus:condorcet_winner([Ballot]),
-    ?assertEqual(a, Winner).
+    ?assertEqual(a, Winner),
+    Rankings = consensus:condorcet_rankings([Ballot]),
+    ?assertEqual([a, b, c], Rankings).
 
 three_candidates_majority_case() ->
     Ballot1  = ballot:make([c, b, a]),
@@ -40,7 +42,9 @@ three_candidates_unanimous_case() ->
     Ballot1 = ballot:make([a, b, c]),
     Ballots = lists:duplicate(4, Ballot1),
     Winner  = consensus:condorcet_winner(Ballots),
-    ?assertEqual(a, Winner).
+    ?assertEqual(a, Winner),
+    Rankings = consensus:condorcet_rankings(Ballots),
+    ?assertEqual([a, b, c], Rankings).
 
 three_candidates_divergent_case() ->
     Ballot1 = ballot:make([a, b, c]),
