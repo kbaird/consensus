@@ -49,7 +49,7 @@ effective_num_parties_skewed_three_case() ->
 
 %%% PRIVATE FUNCTIONS
 
-single_party_state()  -> [ consensus_party:make(ccp, 1) ].
+single_party_state()  -> [ consensus_party:make(single_party, 1) ].
 even_two_state()      -> [
     consensus_party:make(left,  0.5),
     consensus_party:make(right, 0.5)
