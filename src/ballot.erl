@@ -39,7 +39,7 @@ has_top_choice(Name, Ballot) ->
 
 -spec only_multis([ballot()]) -> [ballot()].
 only_multis(Ballots) ->
-    lists:filter(fun(B) -> length(candidates(B)) > 1 end, Ballots).
+    lists:filter(fun is_multi/1, Ballots).
 
 %%====================================================================
 %% Internal functions
@@ -49,3 +49,6 @@ ensure_candidate(X) ->
         true -> X;
         _ -> candidate:make(X)
     end.
+
+-spec is_multi(ballot()) -> boolean().
+is_multi(B) -> length(candidates(B)) > 1.
