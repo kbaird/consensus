@@ -9,15 +9,21 @@
 -include("include/elections.hrl").
 
 %%====================================================================
+%% Guard Macros
+%%====================================================================
+
+-define(IS_VALID_LABEL(Label), Label =:= base0 orelse
+                               Label =:= base1 orelse
+                               Label =:= dowdell orelse
+                               Label =:= nauru).
+
+%%====================================================================
 %% API functions
 %%====================================================================
 
 % https://en.wikipedia.org/wiki/Borda_count#Example
 -spec rankings(label(), [ballot(), ...]) -> [{name(), number()}, ...] | binary().
-rankings(Label, Ballots) when Label =:= base0 orelse
-                              Label =:= base1 orelse
-                              Label =:= dowdell orelse
-                              Label =:= nauru ->
+rankings(Label, Ballots) when ?IS_VALID_LABEL(Label) ->
     Candidates = ballot:candidates(hd(Ballots)),
     Map = rankings(Label, Ballots, length(Candidates), #{}),
     L = maps:to_list(Map),
