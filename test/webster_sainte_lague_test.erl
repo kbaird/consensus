@@ -24,7 +24,7 @@ webster_sainte_lague_basic_case() ->
 
 % https://en.wikipedia.org/wiki/2016_Rhineland-Palatinate_state_election
 webster_sainte_lague_2016_rhineland_palatinate_case() ->
-    Votes    = [ {spd, 771848}, {cdu, 677507}, {afd, 268628}, {fdp, 132294}, {grn, 113261}, {lnk, 60074} ],
+    Votes    = [ {spd, 771848}, {cdu, 677507}, {afd, 268628}, {fdp, 132294}, {grn, 113261}, {lnk, 59970} ],
     Rankings = consensus:webster_sainte_lague_rankings(Votes, 101, 0.05),
     % Not checking percentages, because I think they removed smaller totals from the reported results
     [{spd, 39, _}, {cdu, 35, _}, {afd, 14, _}, {fdp, 7, _}, {grn, 6, _}] = Rankings.
