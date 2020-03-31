@@ -1,9 +1,9 @@
--type name() :: atom().
+-type candidate_name() :: atom().
 
 -record(candidate,
     {
-        name :: name(),
-        party :: binary() | undefined
+        name :: candidate_name(),
+        party :: undefined | binary()
     }).
 -type candidate() :: #candidate{}.
 

@@ -12,13 +12,13 @@
 %% API functions
 %%====================================================================
 
--spec rankings([ballot(), ...]) -> [name(), ...].
+-spec rankings([ballot(), ...]) -> [candidate_name(), ...].
 rankings(Ballots) ->
     Prefs  = preferences(Ballots),
     Ranked = candidate:rank(Prefs),
     [ candidate:name(C) || C <- Ranked ].
 
--spec winner([ballot(), ...]) -> name().
+-spec winner([ballot(), ...]) -> candidate_name().
 winner(Ballots) -> hd(rankings(Ballots)).
 
 %%====================================================================

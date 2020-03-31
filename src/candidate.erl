@@ -15,7 +15,7 @@
 %%====================================================================
 %% API functions
 %%====================================================================
--spec make(name()) -> candidate().
+-spec make(candidate_name()) -> candidate().
 make({Name, Party}) when is_atom(Name) andalso is_binary(Party) ->
     #candidate{name = Name, party = Party};
 make(Name) when is_atom(Name) -> #candidate{name = Name}.
@@ -24,7 +24,7 @@ make(Name) when is_atom(Name) -> #candidate{name = Name}.
 is_candidate(#candidate{}) -> true;
 is_candidate(_Other)       -> false.
 
--spec name(candidate()) -> name().
+-spec name(candidate()) -> candidate_name().
 name(#candidate{name = Name}) -> Name.
 
 -spec party(candidate()) -> party_name().

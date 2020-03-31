@@ -22,7 +22,7 @@
 %%====================================================================
 
 % https://en.wikipedia.org/wiki/Borda_count#Example
--spec rankings(label(), [ballot(), ...]) -> [{name(), number()}, ...] | binary().
+-spec rankings(label(), [ballot(), ...]) -> [{candidate_name(), number()}, ...] | binary().
 rankings(Label, Ballots) when ?IS_VALID_LABEL(Label) ->
     Candidates = ballot:candidates(hd(Ballots)),
     Map = rankings(Label, Ballots, length(Candidates), #{}),
@@ -42,7 +42,7 @@ add_votes(Label, [C | Cs], Acc, Position) ->
     Acc2 = add_votes_at_position(CN, Position, Acc),
     add_votes(Label, Cs, Acc2, Position + 1).
 
--spec add_votes_at_position(name(), pos_integer(), map()) -> map().
+-spec add_votes_at_position(candidate_name(), pos_integer(), map()) -> map().
 add_votes_at_position(CN, Position, Acc) ->
     VotesByPosition = maps:get(CN, Acc, #{}),
     VotesAtPosition = maps:get(Position, VotesByPosition, 0),

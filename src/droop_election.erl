@@ -11,7 +11,7 @@
 %% API functions
 %%====================================================================
 
--spec winners(pos_integer(), [ballot(), ...]) -> [{name(), pos_integer()}, ...].
+-spec winners(pos_integer(), [ballot(), ...]) -> [{candidate_name(), pos_integer()}, ...].
 winners(SeatsCount, Ballots) -> droop_winners(SeatsCount, Ballots, []).
 
 %%====================================================================
