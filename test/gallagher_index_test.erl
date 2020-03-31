@@ -19,6 +19,7 @@ gallagher_index_test_() ->
             [
                 fun gallagher_index_uk2015parl_case/0,
                 fun gallagher_index_us2016potus_case/0,
+                fun gallagher_index_us2016potus_ec_case/0,
                 fun gallagher_index_even_three_case/0,
                 fun gallagher_index_even_two_case/0,
                 fun gallagher_index_extreme_skew_case/0,
@@ -28,34 +29,35 @@ gallagher_index_test_() ->
 
 gallagher_index_uk2015parl_case() ->
     GIdx = consensus:gallagher_index(uk2015parl()),
-    ?assert(GIdx > 35.17),
-    ?assert(GIdx < 35.18).
+    ?assert(GIdx > 0.15),
+    ?assert(GIdx < 0.16).
 
 gallagher_index_us2016potus_case() ->
     GIdx = consensus:gallagher_index(us2016potus()),
-    ?assert(GIdx > 46.72),
-    ?assert(GIdx < 46.73).
+    ?assert(GIdx > 0.5058),
+    ?assert(GIdx < 0.5059).
+
+gallagher_index_us2016potus_ec_case() ->
+    GIdx = consensus:gallagher_index(us2016potus_ec()),
+    ?assert(GIdx > 0.078),
+    ?assert(GIdx < 0.079).
 
 gallagher_index_even_three_case() ->
     GIdx = consensus:gallagher_index(even(3)),
-    ?assert(GIdx > 40.40),
-    ?assert(GIdx < 40.42).
+    ?assert(GIdx > 0.000040),
+    ?assert(GIdx < 0.000041).
 
 gallagher_index_even_two_case() ->
     GIdx = consensus:gallagher_index(even(2)),
-    ?assert(GIdx > 49.49),
-    ?assert(GIdx < 49.51).
+    ?assertEqual(GIdx, 0.0).
 
 gallagher_index_extreme_skew_case() ->
     GIdx = consensus:gallagher_index(extreme_skew()),
-    ?assert(GIdx > 63.95),
-    ?assert(GIdx < 63.96).
+    ?assertEqual(GIdx, 0.9).
 
-% seems to only get as high as 70% in an ideal case
 gallagher_index_no_skew_case() ->
     GIdx = consensus:gallagher_index(no_skew()),
-    ?assert(GIdx > 69.95),
-    ?assert(GIdx < 70.05).
+    ?assertEqual(GIdx, 0.0).
 
 %%% PRIVATE FUNCTIONS
 
@@ -81,6 +83,7 @@ no_skew() -> [
 
 uk2015parl()  -> [
     % party_name, seat_share, vote_pc
+    % 650 total seats in play
     consensus_party:make(con, 330, 36.9),
     consensus_party:make(lab, 232, 30.4),
     consensus_party:make(snp,  56,  4.7),
@@ -91,6 +94,14 @@ uk2015parl()  -> [
 
 us2016potus() -> [
     % party_name, electoral_votes, vote_pc
+    % 1 Presidential "seat" in play
+    consensus_party:make(gop, 1, 46.72),
+    consensus_party:make(dem, 0, 47.73)
+].
+
+us2016potus_ec() -> [
+    % party_name, electoral_votes, vote_pc
+    % 538 Electoral College "seats" in play
     consensus_party:make(gop, 306, 46.72),
     consensus_party:make(dem, 232, 47.73)
 ].
