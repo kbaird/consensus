@@ -37,7 +37,7 @@ tn_ballots() -> tn_ballots(m).
 tn_ballots(Atom) ->
     % https://en.wikipedia.org/wiki/Condorcet_method
     %   #Example:_Voting_on_the_location_of_Tennessee.27s_capital
-    % Atom = mod means Memphis voters put Chat as 2nd choice.
+    % Atom = modified means Memphis voters put Chattanooga as 2nd choice.
     lists:flatten([
         lists:duplicate(42, ballot(Atom)),
         lists:duplicate(26, ballot(n)),
