@@ -3,7 +3,8 @@
 
 -type seat_share()  :: number().
 
--type vote_share()  :: undefined | number().
+% In practice, 0.0 means "unused"; effectively undefined.
+-type vote_share()  :: number().
 
 -record(party_result,
 {

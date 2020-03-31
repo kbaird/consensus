@@ -27,15 +27,20 @@ gallagher_index_test_() ->
             ]
     }.
 
-gallagher_index_uk2015parl_case() ->
-    GIdx = consensus:gallagher_index(uk2015parl()),
-    ?assert(GIdx > 0.15),
-    ?assert(GIdx < 0.16).
+% In descending order of Gallagher Index / disproportionality / "skew".
+gallagher_index_extreme_skew_case() ->
+    GIdx = consensus:gallagher_index(extreme_skew()),
+    ?assertEqual(GIdx, 0.9).
 
 gallagher_index_us2016potus_case() ->
     GIdx = consensus:gallagher_index(us2016potus()),
     ?assert(GIdx > 0.5058),
     ?assert(GIdx < 0.5059).
+
+gallagher_index_uk2015parl_case() ->
+    GIdx = consensus:gallagher_index(uk2015parl()),
+    ?assert(GIdx > 0.15),
+    ?assert(GIdx < 0.16).
 
 gallagher_index_us2016potus_ec_case() ->
     GIdx = consensus:gallagher_index(us2016potus_ec()),
@@ -44,16 +49,12 @@ gallagher_index_us2016potus_ec_case() ->
 
 gallagher_index_even_three_case() ->
     GIdx = consensus:gallagher_index(even(3)),
-    ?assert(GIdx > 0.000040),
+    % even this much is probably from base 10 math on a binary platform
     ?assert(GIdx < 0.000041).
 
 gallagher_index_even_two_case() ->
     GIdx = consensus:gallagher_index(even(2)),
     ?assertEqual(GIdx, 0.0).
-
-gallagher_index_extreme_skew_case() ->
-    GIdx = consensus:gallagher_index(extreme_skew()),
-    ?assertEqual(GIdx, 0.9).
 
 gallagher_index_no_skew_case() ->
     GIdx = consensus:gallagher_index(no_skew()),
@@ -73,7 +74,7 @@ even(2) -> [
 
 extreme_skew() -> [
     consensus_party:make(usurper, 1, 10.00),
-    consensus_party:make(deposed, 0, 90.00)
+    consensus_party:make(cheated, 0, 90.00)
 ].
 
 no_skew() -> [

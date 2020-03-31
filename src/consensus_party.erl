@@ -21,10 +21,14 @@
 effective_number(PartyShares) -> 1 / sum_for(PartyShares).
 
 -spec make(party_name(), seat_share()) -> party_result().
-make(Name, SeatShare) -> make(Name, SeatShare, undefined).
+make(Name, SeatShare) -> make(Name, SeatShare, 0.0).
 
 -spec make(party_name(), seat_share(), vote_share()) -> party_result().
-make(Name, SeatShare, VoteShare) ->
+make(Name, SeatShare, VoteShare) when VoteShare > 1.0 ->
+    % VoteShare coming in as a percentage, convert to regular units
+    make(Name, SeatShare, VoteShare / 100.0);
+
+make(Name, SeatShare, VoteShare) when VoteShare =< 1.0 ->
     #party_result{name       = Name,
                   seat_share = SeatShare,
                   vote_share = VoteShare}.
