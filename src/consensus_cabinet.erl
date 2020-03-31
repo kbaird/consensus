@@ -13,16 +13,33 @@
 %% Guard Macros
 %%====================================================================
 
--define(IS_BP(Label), Label =:= bp orelse Label =:= bargaining_proposition).
+% smallest of the MWCs
+-define(IS_BP(Label), Label =:= bp orelse
+                      Label =:= bargaining_proposition).
+
+% MRs that don't skip, possibly adding superfluous middle parties
 -define(IS_MCW(Label), Label =:= mcw orelse
                        Label =:= minimal_connected_winning orelse
                        Label =:= minimum_connected_winning).
--define(IS_MR(Label), Label =:= mr orelse Label =:= minimal_range orelse Label =:= minimum_range).
--define(IS_MS(Label), Label =:= ms orelse Label =:= minimal_size orelse Label =:= minimum_size).
+
+% ideologically similar parties more likely to form a coalition
+-define(IS_MR(Label), Label =:= mr orelse
+                      Label =:= minimal_range orelse
+                      Label =:= minimum_range).
+
+% favors a small # of seats to form a seat majority
+-define(IS_MS(Label), Label =:= ms orelse
+                      Label =:= minimal_size orelse
+                      Label =:= minimum_size).
+
+% favors a small # of parties to form a seat majority
 -define(IS_MWC(Label), Label =:= mwc orelse
                        Label =:= minimal_winning_coalition orelse
                        Label =:= minimum_winning_coalition).
--define(IS_PVC(Label), Label =:= pvc orelse Label =:= policy_viable_coalition).
+
+% favors "moderate" parties near the ideological center of the parliament
+-define(IS_PVC(Label), Label =:= pvc orelse
+                       Label =:= policy_viable_coalition).
 
 %%====================================================================
 %% API functions
