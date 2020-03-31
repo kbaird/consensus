@@ -13,6 +13,9 @@ An OTP library implementing consensus-oriented political functions, including th
 various [Borda Counts](https://en.wikipedia.org/wiki/Borda_count#Example) and the
 [Webster/Sainte-Laguë Method](https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method#Description_of_the_method).
 
+This code is heavily based on ideas found in [Patterns of Democracy](http://wikisum.com/w/Lijphart:_Patterns_of_democracy) by
+[Arend Lijphart](https://en.wikipedia.org/wiki/Arend_Lijphart).
+
 The
 [main non-trivial Condorcet test file](https://github.com/kbaird/schulze-vote-erlang/blob/master/test/tn_capital_test.erl)
 uses the
