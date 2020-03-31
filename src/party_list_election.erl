@@ -17,14 +17,14 @@
 
 % Returns {PartyName, ActualSeatsWon, ProportionalSeats}
 -spec jefferson_dhondt_rankings([{party_name(), pos_integer()}, ...], pos_integer(), float()) ->
-    [{candidate_name(), pos_integer(), float()}, ...].
+    [{party_name(), pos_integer(), float()}, ...].
 jefferson_dhondt_rankings(Votes, NumberOfSeats, Threshold) ->
     % https://en.wikipedia.org/wiki/D%27Hondt_method#Allocation
     rankings(jefferson_dhondt, Votes, NumberOfSeats, Threshold).
 
 % Returns {PartyName, ActualSeatsWon, ProportionalSeats}
 -spec webster_sainte_lague_rankings([{party_name(), pos_integer()}, ...], pos_integer(), float()) ->
-    [{candidate_name(), pos_integer(), float()}, ...].
+    [{party_name(), pos_integer(), float()}, ...].
 webster_sainte_lague_rankings(Votes, NumberOfSeats, Threshold) ->
     % https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method#Description_of_the_method
     rankings(webster_sainte_lague, Votes, NumberOfSeats, Threshold).
