@@ -10,6 +10,10 @@ gallagher_index_teardown(_) -> ok.
 
 gallagher_index_test_() ->
     % Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg158.
+    % measure of disproportionality:
+    %   G = √(1/2 * Σ(Vi - Si)^2)
+    %       where Vi is vote % at index i
+    %       and Si is seat % at index i
     {setup, fun gallagher_index_setup/0,
             fun gallagher_index_teardown/1,
             [
@@ -17,7 +21,8 @@ gallagher_index_test_() ->
                 fun gallagher_index_us2016potus_case/0,
                 fun gallagher_index_even_three_case/0,
                 fun gallagher_index_even_two_case/0,
-                fun gallagher_index_extreme_skew_case/0
+                fun gallagher_index_extreme_skew_case/0,
+                fun gallagher_index_no_skew_case/0
             ]
     }.
 
@@ -46,6 +51,12 @@ gallagher_index_extreme_skew_case() ->
     ?assert(GIdx > 63.95),
     ?assert(GIdx < 63.96).
 
+% seems to only get as high as 70% in an ideal case
+gallagher_index_no_skew_case() ->
+    GIdx = consensus:gallagher_index(no_skew()),
+    ?assert(GIdx > 69.95),
+    ?assert(GIdx < 70.05).
+
 %%% PRIVATE FUNCTIONS
 
 even(3) -> [
@@ -61,6 +72,11 @@ even(2) -> [
 extreme_skew() -> [
     consensus_party:make(usurper, 1, 10.00),
     consensus_party:make(deposed, 0, 90.00)
+].
+
+no_skew() -> [
+    consensus_party:make(popular, 1, 100.00),
+    consensus_party:make(pariah,  0,   0.00)
 ].
 
 uk2015parl()  -> [

@@ -14,10 +14,14 @@
 % See consensus:gallagher_index for references
 -spec index([party_result(), ...]) -> number().
 index(ElectionResults) ->
+    % Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg158.
+    % measure of disproportionality:
+    %   G = √(1/2 * Σ(Vi - Si)^2)
+    %       where Vi is vote % at index i
+    %       and Si is seat % at index i
     PCs = results_to_percentages(ElectionResults),
     Sum = lists:foldl(fun sum_diff_squares/2, 0, PCs),
     math:sqrt(Sum / 2).
-    % G = sqrt(1/2 * sum( (vote_pc - seat_pc) ** 2 ))
 
 %%====================================================================
 %% Internal functions
