@@ -34,16 +34,19 @@ gallagher_index_extreme_skew_case() ->
     GIdx = consensus:gallagher_index(extreme_skew()),
     ?assertEqual(GIdx, 0.9).
 
+% https://en.wikipedia.org/wiki/2016_United_States_presidential_election
 gallagher_index_us2016potus_case() ->
     GIdx = consensus:gallagher_index(us2016potus()),
     ?assert(GIdx > 0.5058),
     ?assert(GIdx < 0.5059).
 
+% https://en.wikipedia.org/wiki/2008_United_States_presidential_election
 gallagher_index_us2008potus_case() ->
     GIdx = consensus:gallagher_index(us2008potus()),
     ?assert(GIdx > 0.4635),
     ?assert(GIdx < 0.4636).
 
+% https://en.wikipedia.org/wiki/2015_United_Kingdom_general_election
 gallagher_index_uk2015parl_case() ->
     GIdx = consensus:gallagher_index(uk2015parl()),
     ?assert(GIdx > 0.15),
@@ -131,4 +134,5 @@ us2016potus_ec() -> [
     % 538 Electoral College "seats" in play
     consensus_party:make(gop, 306, 46.72),
     consensus_party:make(dem, 232, 47.73)
+    % counting "faithless" electors as if they were not
 ].
