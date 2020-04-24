@@ -17,6 +17,8 @@ gallagher_index_test_() ->
     {setup, fun gallagher_index_setup/0,
             fun gallagher_index_teardown/1,
             [
+                fun gallagher_index_us2008potus_case/0,
+                fun gallagher_index_us2008potus_ec_case/0,
                 fun gallagher_index_uk2015parl_case/0,
                 fun gallagher_index_us2016potus_case/0,
                 fun gallagher_index_us2016potus_ec_case/0,
@@ -37,10 +39,20 @@ gallagher_index_us2016potus_case() ->
     ?assert(GIdx > 0.5058),
     ?assert(GIdx < 0.5059).
 
+gallagher_index_us2008potus_case() ->
+    GIdx = consensus:gallagher_index(us2008potus()),
+    ?assert(GIdx > 0.4635),
+    ?assert(GIdx < 0.4636).
+
 gallagher_index_uk2015parl_case() ->
     GIdx = consensus:gallagher_index(uk2015parl()),
     ?assert(GIdx > 0.15),
     ?assert(GIdx < 0.16).
+
+gallagher_index_us2008potus_ec_case() ->
+    GIdx = consensus:gallagher_index(us2008potus_ec()),
+    ?assert(GIdx > 0.142),
+    ?assert(GIdx < 0.143).
 
 gallagher_index_us2016potus_ec_case() ->
     GIdx = consensus:gallagher_index(us2016potus_ec()),
@@ -91,6 +103,20 @@ uk2015parl()  -> [
     consensus_party:make(lib,   8,  7.9),
     consensus_party:make(ukip,  1, 12.3),
     consensus_party:make(grn,   1,  3.8)
+].
+
+us2008potus() -> [
+    % party_name, electoral_votes, vote_pc
+    % 1 Presidential "seat" in play
+    consensus_party:make(dem, 1, 52.9),
+    consensus_party:make(gop, 0, 45.6)
+].
+
+us2008potus_ec() -> [
+    % party_name, electoral_votes, vote_pc
+    % 538 Electoral College "seats" in play
+    consensus_party:make(dem, 365, 52.9),
+    consensus_party:make(gop, 173, 45.7)
 ].
 
 us2016potus() -> [
