@@ -61,9 +61,14 @@ tabulate(_, Counters, TotalVoteCnt, SeatsFilled, SeatsFilled) ->
       {PtyName, PtySeats, VoteCount} <- Sorted ];
 
 tabulate(Method, Counters, TotalVoteCnt, SeatsToFill, SeatsFilled) ->
-    Counters2 = [ {PartyName, SeatsSoFar, VoteCount, quotient(Method, SeatsSoFar, VoteCount)} ||
-                  {PartyName, SeatsSoFar, VoteCount} <- Counters ],
-    [ {WinPN, WinSeatsSoFar, WinVC, WinQ} | Rest ] = lists:sort(fun by_highest_quotient/2, Counters2),
+    Counters2 = [
+        {PartyName, SeatsSoFar, VoteCnt,
+            quotient(Method, SeatsSoFar, VoteCnt)} ||
+        {PartyName, SeatsSoFar, VoteCnt} <- Counters
+    ],
+    [ {WinPN, WinSeatsSoFar, WinVC, WinQ} | Rest ] =
+        lists:sort(fun by_highest_quotient/2, Counters2),
     Counters3 = [ {WinPN, WinSeatsSoFar+1, WinVC, WinQ} | Rest ],
-    Counters4 = [ {PartyName, SeatsSoFar, VoteCount} || {PartyName, SeatsSoFar, VoteCount, _Q} <- Counters3 ],
+    Counters4 = [ {PartyName, SeatsSoFar, VoteCount} ||
+                  {PartyName, SeatsSoFar, VoteCount, _Q} <- Counters3 ],
     tabulate(Method, Counters4, TotalVoteCnt, SeatsToFill, SeatsFilled+1).
