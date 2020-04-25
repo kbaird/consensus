@@ -53,7 +53,7 @@ rankings(Method, Votes, NumberOfSeatsToFill, Threshold) ->
 
 share(Votes, TotalVotes, SeatsFilled) ->
     Prec = math:pow(10, 2),
-    trunc(Votes / TotalVotes * SeatsFilled * Prec) / Prec.
+    trunc(Votes * SeatsFilled * Prec / TotalVotes) / Prec.
 
 tabulate(_, Counters, TotalVoteCnt, SeatsFilled, SeatsFilled) ->
     Sorted = lists:sort(fun by_seats_won/2, Counters),
