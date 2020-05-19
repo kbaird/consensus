@@ -63,8 +63,7 @@ tabulate(_, Counters, TotalVoteCnt, TotalSeats, TotalSeats) ->
 
 tabulate(Method, Counters, TotalVoteCnt, TotalSeats, SeatsFilled) when SeatsFilled < TotalSeats ->
     CountersWithQ = [
-        {PartyName, SeatsSoFar, VoteCnt,
-            quotient(Method, SeatsSoFar, VoteCnt)} ||
+        {PartyName, SeatsSoFar, VoteCnt, quotient(Method, SeatsSoFar, VoteCnt)} ||
         {PartyName, SeatsSoFar, VoteCnt} <- Counters
     ],
     [ Winner | Rest ] = lists:sort(fun by_highest_quotient/2, CountersWithQ),
