@@ -56,12 +56,12 @@ share(Votes, TotalVotes, SeatsFilled) ->
     Prec = math:pow(10, 2),
     trunc(Votes * SeatsFilled * Prec / TotalVotes) / Prec.
 
-tabulate(_, Counters, TotalVoteCnt, SeatsFilled, SeatsFilled) ->
+tabulate(_, Counters, TotalVoteCnt, TotalSeats, TotalSeats) ->
     Sorted = lists:sort(fun by_seats_won/2, Counters),
-    [ {PtyName, PtySeats, share(VoteCount, TotalVoteCnt, SeatsFilled)} ||
+    [ {PtyName, PtySeats, share(VoteCount, TotalVoteCnt, TotalSeats)} ||
       {PtyName, PtySeats, VoteCount} <- Sorted ];
 
-tabulate(Method, Counters, TotalVoteCnt, SeatsToFill, SeatsFilled) ->
+tabulate(Method, Counters, TotalVoteCnt, TotalSeats, SeatsFilled) when SeatsFilled < TotalSeats ->
     CountersWithQ = [
         {PartyName, SeatsSoFar, VoteCnt,
             quotient(Method, SeatsSoFar, VoteCnt)} ||
@@ -72,4 +72,4 @@ tabulate(Method, Counters, TotalVoteCnt, SeatsToFill, SeatsFilled) ->
     IncrementedCounters = [ {WinPN, WinSeatsSoFar+1, WinVC, WinQ} | Rest ],
     CountersWithoutQ    = [ {PartyName, SeatsSoFar, VoteCount} ||
                             {PartyName, SeatsSoFar, VoteCount, _Q} <- IncrementedCounters ],
-    tabulate(Method, CountersWithoutQ, TotalVoteCnt, SeatsToFill, SeatsFilled+1).
+    tabulate(Method, CountersWithoutQ, TotalVoteCnt, TotalSeats, SeatsFilled+1).
