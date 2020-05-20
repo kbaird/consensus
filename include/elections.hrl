@@ -18,8 +18,3 @@
         candidates :: [candidate(), ...]
     }).
 -type ballot() :: #ballot{}.
-
--export_type([
-    ballot/0
-]).
-

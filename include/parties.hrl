@@ -13,7 +13,3 @@
     vote_share  :: vote_share()
 }).
 -type party_result() :: #party_result{}.
--export_type([
-    cabinet/0,
-    party_result/0
-]).
