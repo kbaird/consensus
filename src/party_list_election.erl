@@ -64,9 +64,9 @@ remove_quotients(CountersWithQ) ->
     [ {PartyName, SeatsSoFar, VoteCount} ||
       {PartyName, SeatsSoFar, VoteCount, _Q} <- CountersWithQ ].
 
+% Theoretical number of seats before rounding
 share(Votes, TotalVotes, SeatsFilled) ->
-    Prec = math:pow(10, 2),
-    trunc(Votes * SeatsFilled * Prec / TotalVotes) / Prec.
+    trunc(Votes * SeatsFilled * 100.0 / TotalVotes) / 100.0.
 
 tabulate(_Method, Counters, TotalVoteCnt, TotalSeats, TotalSeats) ->
     Sorted = lists:sort(fun by_seats_won/2, Counters),
