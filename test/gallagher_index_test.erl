@@ -118,7 +118,7 @@ us2008potus() -> [
 us2008potus_ec() -> [
     % party_name, electoral_votes, vote_pc
     % 538 Electoral College "seats" in play
-    consensus_party:make(obama, 365, 52.9),
+    consensus_party:make(dem, 365, 52.9),
     consensus_party:make(gop, 173, 45.7)
 ].
 
