@@ -32,9 +32,19 @@ webster_sainte_lague_rankings(Votes, NumberOfSeats, Threshold) ->
 %%====================================================================
 %% Internal functions
 %%====================================================================
+add_quotients(Method, Counters) ->
+    [
+        {PartyName, SeatsSoFar, VoteCnt, quotient(Method, SeatsSoFar, VoteCnt)} ||
+        {PartyName, SeatsSoFar, VoteCnt} <- Counters
+    ].
+
 by_highest_quotient({_, _, _, Q1}, {_, _, _, Q2}) -> Q1 > Q2.
 
 by_seats_won({_, S1, _}, {_, S2, _}) -> S1 > S2.
+
+counters_for_parties_with_enough_votes(Votes, MinVoteCnt) ->
+    [ {PartyName, ?STARTING_SEATS, VoteCount} ||
+      {PartyName, VoteCount} <- Votes, VoteCount >= MinVoteCnt ].
 
 quotient(jefferson_dhondt, SeatsSoFar, VoteCount) ->
     Denominator = SeatsSoFar + 1,
@@ -46,29 +56,27 @@ quotient(webster_sainte_lague, SeatsSoFar, VoteCount) ->
 
 rankings(Method, Votes, NumberOfSeatsToFill, Threshold) ->
     TotalVoteCnt = lists:sum([ VoteCount || {_PartyName, VoteCount} <- Votes ]),
-    MinVoteCnt = TotalVoteCnt * Threshold,
-    % only parties that meet the threshold get counters
-    Counters = [ {PartyName, ?STARTING_SEATS, VoteCount} ||
-                 {PartyName, VoteCount} <- Votes, VoteCount >= MinVoteCnt ],
+    MinVoteCnt   = TotalVoteCnt * Threshold,
+    Counters     = counters_for_parties_with_enough_votes(Votes, MinVoteCnt),
     tabulate(Method, Counters, TotalVoteCnt, NumberOfSeatsToFill, ?STARTING_SEATS).
+
+remove_quotients(CountersWithQ) ->
+    [ {PartyName, SeatsSoFar, VoteCount} ||
+      {PartyName, SeatsSoFar, VoteCount, _Q} <- CountersWithQ ].
 
 share(Votes, TotalVotes, SeatsFilled) ->
     Prec = math:pow(10, 2),
     trunc(Votes * SeatsFilled * Prec / TotalVotes) / Prec.
 
-tabulate(_, Counters, TotalVoteCnt, TotalSeats, TotalSeats) ->
+tabulate(_Method, Counters, TotalVoteCnt, TotalSeats, TotalSeats) ->
     Sorted = lists:sort(fun by_seats_won/2, Counters),
     [ {PtyName, PtySeats, share(VoteCount, TotalVoteCnt, TotalSeats)} ||
       {PtyName, PtySeats, VoteCount} <- Sorted ];
 
 tabulate(Method, Counters, TotalVoteCnt, TotalSeats, SeatsFilled) when SeatsFilled < TotalSeats ->
-    CountersWithQ = [
-        {PartyName, SeatsSoFar, VoteCnt, quotient(Method, SeatsSoFar, VoteCnt)} ||
-        {PartyName, SeatsSoFar, VoteCnt} <- Counters
-    ],
+    CountersWithQ = add_quotients(Method, Counters),
     [ Winner | Rest ] = lists:sort(fun by_highest_quotient/2, CountersWithQ),
     {WinPN, WinSeatsSoFar, WinVC, WinQ} = Winner,
     IncrementedCounters = [ {WinPN, WinSeatsSoFar+1, WinVC, WinQ} | Rest ],
-    CountersWithoutQ    = [ {PartyName, SeatsSoFar, VoteCount} ||
-                            {PartyName, SeatsSoFar, VoteCount, _Q} <- IncrementedCounters ],
+    CountersWithoutQ    = remove_quotients(IncrementedCounters),
     tabulate(Method, CountersWithoutQ, TotalVoteCnt, TotalSeats, SeatsFilled+1).
