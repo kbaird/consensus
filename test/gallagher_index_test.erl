@@ -111,22 +111,22 @@ uk2015parl()  -> [
 us2008potus() -> [
     % party_name, electoral_votes, vote_pc
     % 1 Presidential "seat" in play
-    consensus_party:make(dem, 1, 52.9),
-    consensus_party:make(gop, 0, 45.6)
+    consensus_party:make(obama,  1, 52.9),
+    consensus_party:make(mccain, 0, 45.6)
 ].
 
 us2008potus_ec() -> [
     % party_name, electoral_votes, vote_pc
     % 538 Electoral College "seats" in play
-    consensus_party:make(dem, 365, 52.9),
+    consensus_party:make(obama, 365, 52.9),
     consensus_party:make(gop, 173, 45.7)
 ].
 
 us2016potus() -> [
     % party_name, electoral_votes, vote_pc
     % 1 Presidential "seat" in play
-    consensus_party:make(gop, 1, 46.72),
-    consensus_party:make(dem, 0, 47.73)
+    consensus_party:make(trump,   1, 46.72),
+    consensus_party:make(clinton, 0, 47.73)
 ].
 
 us2016potus_ec() -> [
