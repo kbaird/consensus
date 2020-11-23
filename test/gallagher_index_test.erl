@@ -22,6 +22,8 @@ gallagher_index_test_() ->
                 fun gallagher_index_uk2015parl_case/0,
                 fun gallagher_index_us2016potus_case/0,
                 fun gallagher_index_us2016potus_ec_case/0,
+                fun gallagher_index_us2020potus_case/0,
+                fun gallagher_index_us2020potus_ec_case/0,
                 fun gallagher_index_even_three_case/0,
                 fun gallagher_index_even_two_case/0,
                 fun gallagher_index_extreme_skew_case/0,
@@ -34,17 +36,23 @@ gallagher_index_extreme_skew_case() ->
     GIdx = consensus:gallagher_index(extreme_skew()),
     ?assertEqual(GIdx, 0.9).
 
+% https://en.wikipedia.org/wiki/2008_United_States_presidential_election
+gallagher_index_us2008potus_case() ->
+    GIdx = consensus:gallagher_index(us2008potus()),
+    ?assert(GIdx > 0.4635),
+    ?assert(GIdx < 0.4636).
+
 % https://en.wikipedia.org/wiki/2016_United_States_presidential_election
 gallagher_index_us2016potus_case() ->
     GIdx = consensus:gallagher_index(us2016potus()),
     ?assert(GIdx > 0.5058),
     ?assert(GIdx < 0.5059).
 
-% https://en.wikipedia.org/wiki/2008_United_States_presidential_election
-gallagher_index_us2008potus_case() ->
-    GIdx = consensus:gallagher_index(us2008potus()),
-    ?assert(GIdx > 0.4635),
-    ?assert(GIdx < 0.4636).
+% https://en.wikipedia.org/wiki/2020_United_States_presidential_election
+gallagher_index_us2020potus_case() ->
+    GIdx = consensus:gallagher_index(us2020potus()),
+    ?assert(GIdx > 0.4810),
+    ?assert(GIdx < 0.4811).
 
 % https://en.wikipedia.org/wiki/2015_United_Kingdom_general_election
 gallagher_index_uk2015parl_case() ->
@@ -61,6 +69,11 @@ gallagher_index_us2016potus_ec_case() ->
     GIdx = consensus:gallagher_index(us2016potus_ec()),
     ?assert(GIdx > 0.078),
     ?assert(GIdx < 0.079).
+
+gallagher_index_us2020potus_ec_case() ->
+    GIdx = consensus:gallagher_index(us2020potus_ec()),
+    ?assert(GIdx > 0.050),
+    ?assert(GIdx < 0.051).
 
 gallagher_index_even_three_case() ->
     GIdx = consensus:gallagher_index(even(3)),
@@ -129,10 +142,25 @@ us2016potus() -> [
     consensus_party:make(clinton, 0, 47.73)
 ].
 
+us2020potus() -> [
+    % party_name, electoral_votes, vote_pc
+    % 1 Presidential "seat" in play
+    consensus_party:make(biden, 1, 51.0),
+    consensus_party:make(trump, 0, 47.2)
+].
+
 us2016potus_ec() -> [
     % party_name, electoral_votes, vote_pc
     % 538 Electoral College "seats" in play
     consensus_party:make(gop, 306, 46.72),
     consensus_party:make(dem, 232, 47.73)
+    % counting "faithless" electors as if they were not
+].
+
+us2020potus_ec() -> [
+    % party_name, electoral_votes, vote_pc
+    % 538 Electoral College "seats" in play
+    consensus_party:make(dem, 306, 51.0),
+    consensus_party:make(gop, 232, 47.2)
     % counting "faithless" electors as if they were not
 ].
