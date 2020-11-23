@@ -70,11 +70,11 @@ compose(Label, SeatShares) when ?IS_PVC(Label) ->
 % This case requires knowledge of all party names
 -spec compose(label(), [party_result()], [party_name()]) -> [cabinet()].
 compose(Label, SeatShares, AllPartyNames) when ?IS_MCW(Label) ->
-    WithSeats    = winning_coalitions(SeatShares),
-    IsContiguous = fun(Coalition) -> is_contiguous(Coalition, AllPartyNames) end,
-    Contiguous   = lists:filter(IsContiguous, WithSeats),
-    SmallEnough  = fun(C) -> not is_too_large(C, Contiguous) end,
-    InRange      = lists:filter(SmallEnough, Contiguous),
+    WithSeats     = winning_coalitions(SeatShares),
+    IsContiguous  = fun(Coalition) -> is_contiguous(Coalition, AllPartyNames) end,
+    Contiguous    = lists:filter(IsContiguous, WithSeats),
+    IsSmallEnough = fun(C) -> not is_too_large(C, Contiguous) end,
+    InRange       = lists:filter(IsSmallEnough, Contiguous),
     just_party_names(InRange).
 
 %%====================================================================
@@ -82,8 +82,8 @@ compose(Label, SeatShares, AllPartyNames) when ?IS_MCW(Label) ->
 %%====================================================================
 -spec all_in([party_name()], [party_name()]) -> boolean().
 all_in(ContainsEachItem, ItemsToCheck) ->
-    Present = fun(Elem) -> lists:member(Elem, ContainsEachItem) end,
-    lists:all(Present, ItemsToCheck).
+    IsPresent = fun(Elem) -> lists:member(Elem, ContainsEachItem) end,
+    lists:all(IsPresent, ItemsToCheck).
 
 -spec centrist_party([party_name()]) -> party_name().
 centrist_party([Name])    -> Name;
