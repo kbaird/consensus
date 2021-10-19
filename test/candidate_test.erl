@@ -16,8 +16,8 @@ candidate_test_() ->
     }.
 
 make_case() ->
-    Cs = [candidate:make(I) || I <- [a,b,c]],
-    ?assertEqual([a,b,c], lists:map(fun candidate:name/1, Cs)).
+    Cs = [candidate:make(I) || I <- [a, b, c]],
+    ?assertEqual([a, b, c], lists:map(fun candidate:name/1, Cs)).
 
 make_partisan_case() ->
     Input = [{a, <<"lib">>}, {b, <<"con">>}, {c, <<"lab">>}],

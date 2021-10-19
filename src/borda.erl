@@ -53,7 +53,7 @@ add_votes_at_position(CN, Position, Acc) ->
 borda_values(Label, CandCount, Acc) when is_atom(Label) andalso is_map(Acc) ->
     borda_values(Label, CandCount, maps:keys(Acc), Acc, #{}).
 
-borda_values(_label, _CandCount, [], #{}, Final) -> Final;
+borda_values(_Label, _CandCount, [], #{}, Final) -> Final;
 borda_values(Label, CandCount, [CandName | CNs], From, Acc) ->
     Votes = maps:get(CandName, From),
     From2 = maps:without([CandName], From),
