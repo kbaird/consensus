@@ -46,7 +46,8 @@ ballots_without(Ballots, {WinnerName, _WinnerVotes}, _Quota, _) ->
 
 candidate_names_with_top_votes(NestedCs) ->
     CNames = [ candidate:name(C) || C <- lists:usort(lists:flatten(NestedCs)) ],
-    [ {N, length(lists:filter(fun([C|_]) -> candidate:name(C) =:= N end, NestedCs))} || N <- CNames ].
+    [ {N, length(lists:filter(fun([C|_]) -> candidate:name(C) =:= N end,
+                              NestedCs))} || N <- CNames ].
 
 names_from(WinnerName, Ballots) ->
     [ ballot:get_2nd_choice_name(B) || B <- ballot:only_multis(Ballots),
