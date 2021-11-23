@@ -24,7 +24,7 @@ two_candidates_one_voter_case() ->
 two_candidates_majority_case() ->
     Ballot1 = ballot:make([b, a]),
     Ballot2 = ballot:make([a, b]),
-    Ballots = [Ballot1, Ballot2, Ballot2, Ballot2],
+    Ballots = [Ballot1, Ballot2, Ballot2],
     Winner  = consensus:condorcet_winner(Ballots),
     ?assertEqual(a, Winner).
 
