@@ -32,7 +32,7 @@ webster_sainte_lague_rankings(Votes, NumberOfSeats, Threshold) ->
 %%====================================================================
 %% Internal functions
 %%====================================================================
-add_quotients(Method, Counters) ->
+append_quotients(Method, Counters) ->
     [
         {PartyName, SeatsSoFar, VoteCnt, quotient(Method, SeatsSoFar, VoteCnt)} ||
         {PartyName, SeatsSoFar, VoteCnt} <- Counters
@@ -45,6 +45,10 @@ by_seats_won({_, S1, _}, {_, S2, _}) -> S1 > S2.
 counters_for_parties_with_enough_votes(Votes, MinVoteCnt) ->
     [ {PartyName, ?STARTING_SEATS, VoteCount} ||
       {PartyName, VoteCount} <- Votes, VoteCount >= MinVoteCnt ].
+
+drop_quotients(CountersWithQ) ->
+    [ {PartyName, SeatsSoFar, VoteCount} ||
+      {PartyName, SeatsSoFar, VoteCount, _Q} <- CountersWithQ ].
 
 quotient(jefferson_dhondt, SeatsSoFar, VoteCount) ->
     Denominator = SeatsSoFar + 1,
@@ -60,10 +64,6 @@ rankings(Method, Votes, NumberOfSeatsToFill, Threshold) ->
     Counters     = counters_for_parties_with_enough_votes(Votes, MinVoteCnt),
     tabulate(Method, Counters, TotalVoteCnt, NumberOfSeatsToFill, ?STARTING_SEATS).
 
-remove_quotients(CountersWithQ) ->
-    [ {PartyName, SeatsSoFar, VoteCount} ||
-      {PartyName, SeatsSoFar, VoteCount, _Q} <- CountersWithQ ].
-
 % Theoretical number of seats before rounding
 share(Votes, TotalVotes, SeatsFilled) ->
     trunc(Votes * SeatsFilled * 100.0 / TotalVotes) / 100.0.
@@ -74,9 +74,9 @@ tabulate(_Method, Counters, TotalVoteCnt, TotalSeats, TotalSeats) ->
       {PtyName, PtySeats, VoteCount} <- Sorted ];
 
 tabulate(Method, Counters, TotalVoteCnt, TotalSeats, SeatsFilled) when SeatsFilled < TotalSeats ->
-    CountersWithQ = add_quotients(Method, Counters),
+    CountersWithQ = append_quotients(Method, Counters),
     [ Winner | Rest ] = lists:sort(fun by_highest_quotient/2, CountersWithQ),
     {WinPN, WinSeatsSoFar, WinVC, WinQ} = Winner,
     IncrementedCounters = [ {WinPN, WinSeatsSoFar+1, WinVC, WinQ} | Rest ],
-    CountersWithoutQ    = remove_quotients(IncrementedCounters),
+    CountersWithoutQ    = drop_quotients(IncrementedCounters),
     tabulate(Method, CountersWithoutQ, TotalVoteCnt, TotalSeats, SeatsFilled+1).
