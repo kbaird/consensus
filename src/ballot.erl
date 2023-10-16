@@ -34,8 +34,8 @@ get_tail_names(Ballot) ->
 
 -spec has_top_choice(candidate_name(), ballot()) -> boolean().
 has_top_choice(Name, Ballot) ->
-   Names = lists:map(fun candidate:name/1, candidates(Ballot)),
-   hd(Names) =:= Name.
+    C = hd(candidates(Ballot)),
+    candidate:name(C) =:= Name.
 
 -spec only_multis([ballot()]) -> [ballot()].
 only_multis(Ballots) ->
