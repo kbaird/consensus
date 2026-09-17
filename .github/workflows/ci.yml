@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  eunit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        with:
+          version-file: .tool-versions
+          version-type: strict
+      - run: rebar3 eunit
+
+  dialyzer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        id: setup-beam
+        with:
+          version-file: .tool-versions
+          version-type: strict
+      - uses: actions/cache@v4
+        id: plt
+        with:
+          path: _build/default/rebar3_*_plt
+          key: plt-${{ runner.os }}-${{ steps.setup-beam.outputs.otp-version }}-${{ hashFiles('rebar.lock') }}
+      - run: rebar3 dialyzer
+
+  elvis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        with:
+          version-file: .tool-versions
+          version-type: strict
+      - run: ./elvis rock
