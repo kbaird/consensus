@@ -15,7 +15,8 @@ webster_sainte_lague_test_() ->
                 fun webster_sainte_lague_2016_baden_wuerttemberg_case/0,
                 fun webster_sainte_lague_2016_rhineland_palatinate_case/0,
                 fun webster_sainte_lague_2016_saxony_anhalt_case/0,
-                fun webster_sainte_lague_2021_federal_case/0
+                fun webster_sainte_lague_2021_federal_case/0,
+                fun webster_sainte_lague_2024_german_european_parliament_case/0
             ]
     }.
 
@@ -67,4 +68,33 @@ webster_sainte_lague_2021_federal_case() ->
     % not a constituency win, and is excluded here. Real CDU/CSU = 197.
     [ {spd, 208, _}, {cdu, 194, _}, {grn, 119, _},
       {fdp, 92, _}, {afd, 83, _}, {lnk, 39, _}] = Rankings.
+
+% https://en.wikipedia.org/wiki/2024_European_Parliament_election_in_Germany
+% Germany elects 96 MEPs by the Webster/Sainte-Lague method in a single
+% nationwide constituency with no electoral threshold; the article reports
+% all parties not listed below with 0 seats.
+webster_sainte_lague_2024_german_european_parliament_case() ->
+    Votes     = [ {cdu, 9431567}, {afd, 6324008}, {spd, 5548528},
+                  {greens, 4736913}, {csu, 2513300}, {bsw, 2453652},
+                  {fdp, 2060457}, {linke, 1091268}, {free_voters, 1062132},
+                  {volt, 1023161}, {partei, 775392}, {animal_protection, 570498},
+                  {oedp, 257968}, {family, 243975}, {progress, 227631} ],
+    Rankings  = consensus:webster_sainte_lague_rankings(Votes, 96),
+    SeatByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
+    ?assertEqual(96, lists:sum(maps:values(SeatByName))),
+    ?assertEqual(23, maps:get(cdu,       SeatByName)),
+    ?assertEqual(15, maps:get(afd,       SeatByName)),
+    ?assertEqual(14, maps:get(spd,       SeatByName)),
+    ?assertEqual(12, maps:get(greens,    SeatByName)),
+    ?assertEqual(6,  maps:get(csu,       SeatByName)),
+    ?assertEqual(6,  maps:get(bsw,       SeatByName)),
+    ?assertEqual(5,  maps:get(fdp,       SeatByName)),
+    ?assertEqual(3,  maps:get(linke,     SeatByName)),
+    ?assertEqual(3,  maps:get(free_voters, SeatByName)),
+    ?assertEqual(3,  maps:get(volt,      SeatByName)),
+    ?assertEqual(2,  maps:get(partei,    SeatByName)),
+    ?assertEqual(1,  maps:get(animal_protection, SeatByName)),
+    ?assertEqual(1,  maps:get(oedp,      SeatByName)),
+    ?assertEqual(1,  maps:get(family,    SeatByName)),
+    ?assertEqual(1,  maps:get(progress,  SeatByName)).
 

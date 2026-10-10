@@ -12,6 +12,8 @@ jefferson_dhondt_test_() ->
             fun jefferson_dhondt_teardown/1,
             [
                 fun jefferson_dhondt_basic_case/0,
+                fun jefferson_dhondt_2024_french_european_parliament_case/0,
+                fun jefferson_dhondt_2024_spanish_european_parliament_case/0,
                 fun jefferson_dhondt_2022_faroe_islands_case/0,
                 fun jefferson_dhondt_2022_greenland_case/0,
                 fun jefferson_dhondt_2022_danish_general_election_case/0,
@@ -26,6 +28,47 @@ jefferson_dhondt_basic_case() ->
     Rankings = consensus:jefferson_dhondt_rankings(Votes, 8),
     Rankings = consensus:jefferson_dhondt_rankings(Votes, 8, 0.0),
     ?assertEqual([{a, 4, 3.47}, {b, 3, 2.78}, {c, 1, 1.04}, {d, 0, 0.69}], Rankings).
+
+% https://en.wikipedia.org/wiki/2024_European_Parliament_election_in_France
+% France elects 81 MEPs by closed-list d'Hondt in a single national
+% constituency with a 5% threshold of valid votes; seven lists pass the
+% threshold and the article reports all other lists with 0 seats.
+jefferson_dhondt_2024_french_european_parliament_case() ->
+    Votes     = [ {rn, 7765936}, {ensemble, 3614646}, {socialist, 3424216},
+                  {lfi, 2448703}, {republicans, 1794171}, {ecologists, 1361883},
+                  {reconquete, 1353127}, {communists, 584067},
+                  {rural_alliance, 582901} ],
+    Rankings  = consensus:jefferson_dhondt_rankings(Votes, 81, 0.05),
+    SeatByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
+    ?assertEqual(81, lists:sum(maps:values(SeatByName))),
+    ?assertEqual(7,  map_size(SeatByName)),
+    ?assertEqual(30, maps:get(rn,         SeatByName)),
+    ?assertEqual(13, maps:get(ensemble,   SeatByName)),
+    ?assertEqual(13, maps:get(socialist,  SeatByName)),
+    ?assertEqual(9,  maps:get(lfi,        SeatByName)),
+    ?assertEqual(6,  maps:get(republicans, SeatByName)),
+    ?assertEqual(5,  maps:get(ecologists, SeatByName)),
+    ?assertEqual(5,  maps:get(reconquete, SeatByName)).
+
+% https://en.wikipedia.org/wiki/2024_European_Parliament_election_in_Spain
+% Spain elects 61 MEPs by closed-list d'Hondt in a single national
+% constituency with no electoral threshold.
+jefferson_dhondt_2024_spanish_european_parliament_case() ->
+    Votes     = [ {pp, 5996627}, {psoe, 5291102}, {vox, 1688255},
+                  {republics_now, 860660}, {sumar, 818015}, {salf, 803545},
+                  {podemos, 578007}, {junts, 442140}, {ceus, 284888} ],
+    Rankings  = consensus:jefferson_dhondt_rankings(Votes, 61),
+    SeatByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
+    ?assertEqual(61, lists:sum(maps:values(SeatByName))),
+    ?assertEqual(22, maps:get(pp,           SeatByName)),
+    ?assertEqual(20, maps:get(psoe,         SeatByName)),
+    ?assertEqual(6,  maps:get(vox,          SeatByName)),
+    ?assertEqual(3,  maps:get(republics_now, SeatByName)),
+    ?assertEqual(3,  maps:get(sumar,        SeatByName)),
+    ?assertEqual(3,  maps:get(salf,         SeatByName)),
+    ?assertEqual(2,  maps:get(podemos,      SeatByName)),
+    ?assertEqual(1,  maps:get(junts,        SeatByName)),
+    ?assertEqual(1,  maps:get(ceus,         SeatByName)).
 
 % https://en.wikipedia.org/wiki/2022_Danish_general_election
 % The two Faroese North Atlantic mandates are allocated by d'Hondt.

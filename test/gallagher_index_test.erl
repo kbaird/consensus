@@ -24,6 +24,7 @@ gallagher_index_test_() ->
                 fun gallagher_index_us2016potus_ec_case/0,
                 fun gallagher_index_us2020potus_case/0,
                 fun gallagher_index_us2020potus_ec_case/0,
+                fun gallagher_index_2024_european_parliament_case/0,
                 fun gallagher_index_even_three_case/0,
                 fun gallagher_index_even_two_case/0,
                 fun gallagher_index_extreme_skew_case/0,
@@ -87,6 +88,14 @@ gallagher_index_even_two_case() ->
 gallagher_index_no_skew_case() ->
     GIdx = consensus:gallagher_index(no_skew()),
     ?assertEqual(GIdx, 0.0).
+
+% https://en.wikipedia.org/wiki/2024_European_Parliament_election
+% Seat totals and popular-vote % per EP group. The article folds the
+% Non-Inscrits voters into its "Others" vote row, so they are paired here.
+gallagher_index_2024_european_parliament_case() ->
+    GIdx = consensus:gallagher_index(ep2024_groups()),
+    ?assert(GIdx > 0.062),
+    ?assert(GIdx < 0.063).
 
 %%% PRIVATE FUNCTIONS
 
@@ -163,4 +172,17 @@ us2020potus_ec() -> [
     consensus_party:make(dem, 306, 51.0),
     consensus_party:make(gop, 232, 47.2)
     % counting "faithless" electors as if they were not
+].
+
+ep2024_groups() -> [
+    % party_name, seats won (of 720), vote_pc
+    consensus_party:make(epp,         188, 19.65),
+    consensus_party:make(sd,          136, 15.63),
+    consensus_party:make(patriots,     84, 10.54),
+    consensus_party:make(ecr,          78,  8.93),
+    consensus_party:make(renew,        77,  9.15),
+    consensus_party:make(greens_efa,   53,  6.59),
+    consensus_party:make(the_left,     46,  6.77),
+    consensus_party:make(esn,          25,  4.94),
+    consensus_party:make(non_inscrits, 33,  8.64)
 ].
