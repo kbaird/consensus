@@ -11,7 +11,10 @@ jefferson_dhondt_test_() ->
     {setup, fun jefferson_dhondt_setup/0,
             fun jefferson_dhondt_teardown/1,
             [
-                fun jefferson_dhondt_basic_case/0
+                fun jefferson_dhondt_basic_case/0,
+                fun jefferson_dhondt_2026_faroe_islands_case/0,
+                fun jefferson_dhondt_2026_greenland_case/0,
+                fun jefferson_dhondt_2026_danish_general_election_case/0
             ]
     }.
 
@@ -20,6 +23,55 @@ jefferson_dhondt_basic_case() ->
     Rankings = consensus:jefferson_dhondt_rankings(Votes, 8),
     Rankings = consensus:jefferson_dhondt_rankings(Votes, 8, 0.0),
     ?assertEqual([{a, 4, 3.47}, {b, 3, 2.78}, {c, 1, 1.04}, {d, 0, 0.69}], Rankings).
+
+% https://en.wikipedia.org/wiki/Faroe_Islands_(Folketing_constituency)
+% The two Faroese North Atlantic mandates are allocated by d'Hondt.
+jefferson_dhondt_2026_faroe_islands_case() ->
+    Votes    = [ {soc_dem, 13088}, {union, 7342}, {people, 4383},
+                 {republic, 3891}, {centre, 437} ],
+    Rankings = consensus:jefferson_dhondt_rankings(Votes, 2),
+    Rankings = consensus:jefferson_dhondt_rankings(Votes, 2, 0.0),
+    Expected = [ {soc_dem, 1, 0.89}, {union, 1, 0.50}, {people, 0, 0.30},
+                 {republic, 0, 0.26}, {centre, 0, 0.02} ],
+    ?assertEqual(lists:sort(Expected), lists:sort(Rankings)).
+
+% https://en.wikipedia.org/wiki/Greenland_(Folketing_constituency)
+% The two Greenlandic North Atlantic mandates are allocated by d'Hondt.
+jefferson_dhondt_2026_greenland_case() ->
+    Votes    = [ {ia, 6133}, {naleraq, 5268}, {democrats, 3767},
+                 {siumut, 3515}, {atassut, 2290} ],
+    Rankings = consensus:jefferson_dhondt_rankings(Votes, 2),
+    Rankings = consensus:jefferson_dhondt_rankings(Votes, 2, 0.0),
+    Expected = [ {ia, 1, 0.58}, {naleraq, 1, 0.50}, {democrats, 0, 0.35},
+                 {siumut, 0, 0.33}, {atassut, 0, 0.21} ],
+    ?assertEqual(lists:sort(Expected), lists:sort(Rankings)).
+
+% https://en.wikipedia.org/wiki/2026_Danish_general_election
+% Denmark proper elects 135 constituency seats by d'Hondt plus 40 Sainte-Lague
+% levelling seats; this article gives only nationwide totals, and the levelling
+% tier is not d'Hondt. A single nationwide d'Hondt run still matches every
+% party's official 175-seat total within one seat.
+jefferson_dhondt_2026_danish_general_election_case() ->
+    Votes    = [ {sd, 779252}, {gl, 413306}, {v, 361689}, {la, 334421},
+                 {dpp, 324518}, {mod, 274775}, {con, 270749}, {rga, 226037},
+                 {sl, 207442}, {dd, 205302}, {alt, 91770}, {cp, 75928} ],
+    Rankings  = consensus:jefferson_dhondt_rankings(Votes, 175, 0.02),
+    SeatByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
+    ?assertEqual(175, lists:sum(maps:values(SeatByName))),
+    % Official totals, matched exactly by the nationwide run
+    ?assertEqual(18, maps:get(v,   SeatByName)),
+    ?assertEqual(16, maps:get(dpp, SeatByName)),
+    ?assertEqual(13, maps:get(con, SeatByName)),
+    ?assertEqual(11, maps:get(rga, SeatByName)),
+    ?assertEqual(10, maps:get(sl,  SeatByName)),
+    ?assertEqual(10, maps:get(dd,  SeatByName)),
+    % Official totals, within one seat of the nationwide run
+    ?assert(maps:get(sd,  SeatByName) > 37 andalso maps:get(sd,  SeatByName) < 40),
+    ?assert(maps:get(gl,  SeatByName) > 19 andalso maps:get(gl,  SeatByName) < 22),
+    ?assert(maps:get(la,  SeatByName) > 15 andalso maps:get(la,  SeatByName) < 18),
+    ?assert(maps:get(mod, SeatByName) > 12 andalso maps:get(mod, SeatByName) < 15),
+    ?assert(maps:get(alt, SeatByName) > 3  andalso maps:get(alt, SeatByName) < 6),
+    ?assert(maps:get(cp,  SeatByName) > 2  andalso maps:get(cp,  SeatByName) < 5).
 
 %%% PRIVATE FUNCTIONS
 
