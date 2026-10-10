@@ -33,12 +33,11 @@ webster_sainte_lague_2016_baden_wuerttemberg_case() ->
                  {spd, 679872}, {fdp, 445430}, {lnk, 156211},
                  {alfa, 54764}, {odp, 38509}, {npd, 23605}, {pp, 21773} ],
     Rankings = consensus:webster_sainte_lague_rankings(Votes, 143, 0.05),
-    %%% TODO not sure why these are off by one
-    % Real CDU = 42
-    % Real FDP = 12
-    [{grn, 47, _}, {cdu, CDU, _}, {afd, 23, _}, {spd, 19, _}, {fdp, FDP, _}] = Rankings,
-    ?assert(CDU > 40 andalso CDU < 43),
-    ?assert(FDP > 11 andalso FDP < 14).
+    % The real Landtag had 143 seats, but 120 are apportioned by Sainte-Lague and the
+    % total grows to 143 via overhang (Ueberhang-) and leveling (Ausgleichs-) seats.
+    % A pure Sainte-Lague apportionment of 143 seats therefore gives FDP the seat that
+    % the real overhang allocation gave to CDU (real: cdu 42, fdp 12).
+    [{grn, 47, _}, {cdu, 41, _}, {afd, 23, _}, {spd, 19, _}, {fdp, 13, _}] = Rankings.
 
 % https://en.wikipedia.org/wiki/2016_Rhineland-Palatinate_state_election
 webster_sainte_lague_2016_rhineland_palatinate_case() ->
@@ -60,14 +59,12 @@ webster_sainte_lague_2021_federal_case() ->
     Votes    = [ {spd, 11949756}, {cdu, 11173806}, {grn, 6848215},
                  {fdp, 5316698}, {afd, 4802097}, {lnk, 2269993} ],
     Rankings = consensus:webster_sainte_lague_rankings(Votes, 735, 0.05),
-    %%% TODO 1 consituency seat won by independent Stefan Seidler.
-    %%% I think that's throwing off the calculations.
-    % Real SPD = 206
-    % Real CDU/CSU = 196
-    % Real Greens = 118
-    [ {spd, SPD, _}, {cdu, CDU, _}, {grn, GRN, _},
-      {fdp, 92, _}, {afd, 83, _}, {lnk, 39, _}] = Rankings,
-    ?assert(SPD > 205 andalso SPD < 209),
-    ?assert(CDU > 193 andalso CDU < 197),
-    ?assert(GRN > 117 andalso GRN < 120).
+    % The real Bundestag had 736 seats (735 after the 2024 Berlin repeat). Working purely
+    % from the parties above the threshold, a nationwide Sainte-Lague apportionment of 735
+    % seats gives one or two seats to SPD/Greens that the real state-level, overhang-
+    % compensated allocation gave elsewhere. The SSW's single seat (Stefan Seidler) is a
+    % party-list seat won under the recognised-minority exemption from the 5% threshold,
+    % not a constituency win, and is excluded here. Real CDU/CSU = 197.
+    [ {spd, 208, _}, {cdu, 194, _}, {grn, 119, _},
+      {fdp, 92, _}, {afd, 83, _}, {lnk, 39, _}] = Rankings.
 
