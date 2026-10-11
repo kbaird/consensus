@@ -35,14 +35,14 @@ tabulate(Label, Ballots) ->
     L = maps:to_list(Map),
     {ok, lists:sort(fun by_votes/2, L)}.
 
--spec add_votes(label(), [candidate(), ...], map()) -> map().
-add_votes(Label, [C | Cs], Acc) when is_map(Acc) -> add_votes(Label, [C | Cs], Acc, 1).
+-spec add_votes([candidate(), ...], map()) -> map().
+add_votes([C | Cs], Acc) when is_map(Acc) -> add_votes([C | Cs], Acc, 1).
 
-add_votes(_,     [],       Acc, _) -> Acc;
-add_votes(Label, [C | Cs], Acc, Position) ->
+add_votes([],       Acc, _) -> Acc;
+add_votes([C | Cs], Acc, Position) ->
     CN = candidate:name(C),
     Acc2 = add_votes_at_position(CN, Position, Acc),
-    add_votes(Label, Cs, Acc2, Position + 1).
+    add_votes(Cs, Acc2, Position + 1).
 
 -spec add_votes_at_position(candidate_name(), pos_integer(), map()) -> map().
 add_votes_at_position(CN, Position, Acc) ->
@@ -66,7 +66,7 @@ by_votes({_, V1}, {_, V2}) -> V1 > V2.
 
 rankings(Label, [],       CandCount, Acc) -> borda_values(Label, CandCount, Acc);
 rankings(Label, [B | Bs], CandCount, Acc) when is_map(Acc) ->
-    Acc2 = add_votes(Label, ballot:candidates(B), Acc),
+    Acc2 = add_votes(ballot:candidates(B), Acc),
     rankings(Label, Bs, CandCount, Acc2).
 
 -spec value(label(), pos_integer(), pos_integer()) -> number().
