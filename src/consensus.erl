@@ -12,6 +12,7 @@
     gallagher_index/1,
     jefferson_dhondt_rankings/2,
     jefferson_dhondt_rankings/3,
+    jefferson_dhondt_rankings/4,
     webster_sainte_lague_rankings/2,
     webster_sainte_lague_rankings/3
 ]).
@@ -60,6 +61,9 @@ jefferson_dhondt_rankings(Votes, NumberOfSeats) ->
 
 jefferson_dhondt_rankings(Votes, NumberOfSeats, Threshold) ->
     party_list_election:jefferson_dhondt_rankings(Votes, NumberOfSeats, Threshold).
+
+jefferson_dhondt_rankings(Votes, NumberOfSeats, Threshold, MaxSeatsByName) ->
+    party_list_election:jefferson_dhondt_rankings(Votes, NumberOfSeats, Threshold, MaxSeatsByName).
 
 webster_sainte_lague_rankings(Votes, NumberOfSeats) ->
     webster_sainte_lague_rankings(Votes, NumberOfSeats, 0.0).
