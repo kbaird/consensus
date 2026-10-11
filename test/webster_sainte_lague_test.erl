@@ -38,7 +38,10 @@ webster_sainte_lague_2016_baden_wuerttemberg_case() ->
     % The real Landtag had 143 seats, but 120 are apportioned by Sainte-Lague and the
     % total grows to 143 via overhang (Ueberhang-) and leveling (Ausgleichs-) seats.
     % A pure Sainte-Lague apportionment of 143 seats therefore gives FDP the seat that
-    % the real overhang allocation gave to CDU (real: cdu 42, fdp 12).
+    % the real overhang allocation gave to CDU (real: cdu 42, fdp 12). This compensated
+    % (levelling) allocation is out of scope for webster_sainte_lague_mmp_rankings/4,
+    % which models only the overhang a party keeps for winning more electorates than
+    % its entitlement.
     [{grn, 47, _}, {cdu, 41, _}, {afd, 23, _}, {spd, 19, _}, {fdp, 13, _}] = Rankings.
 
 % https://en.wikipedia.org/wiki/2016_Rhineland-Palatinate_state_election
@@ -66,7 +69,10 @@ webster_sainte_lague_2021_federal_case() ->
     % seats gives one or two seats to SPD/Greens that the real state-level, overhang-
     % compensated allocation gave elsewhere. The SSW's single seat (Stefan Seidler) is a
     % party-list seat won under the recognised-minority exemption from the 5% threshold,
-    % not a constituency win, and is excluded here. Real CDU/CSU = 197.
+    % not a constituency win, and is excluded here. Real CDU/CSU = 197. This state-level,
+    % overhang-compensated allocation is out of scope for
+    % webster_sainte_lague_mmp_rankings/4, which models only the overhang a party keeps
+    % for winning more electorates than its entitlement.
     [ {spd, 208, _}, {cdu, 194, _}, {grn, 119, _},
       {fdp, 92, _}, {afd, 83, _}, {lnk, 39, _}] = Rankings.
 
@@ -107,7 +113,9 @@ webster_sainte_lague_2024_german_european_parliament_case() ->
 % not. A pure Sainte-Lague apportionment of the 120 seats reproduces the
 % official totals of the five regular parties exactly; Te Pati Maori is
 % apportioned 4 and keeps 6, the two overhang seats that grow the 54th
-% Parliament to 122.
+% Parliament to 122. The overhang model reproduces the official electorate
+% and list seats: National 43/5, Labour 17/17, Green 3/12, ACT 2/9, NZ First
+% 0/8, Te Pati Maori 6/0.
 webster_sainte_lague_2023_new_zealand_case() ->
     Votes        = [ {national, 1085851}, {labour, 767540}, {green, 330907},
                      {act, 246473}, {nz_first, 173553}, {te_pati_maori, 87844} ],
@@ -120,5 +128,19 @@ webster_sainte_lague_2023_new_zealand_case() ->
     ?assertEqual(15, maps:get(green,         SeatsByName)),
     ?assertEqual(11, maps:get(act,           SeatsByName)),
     ?assertEqual(8,  maps:get(nz_first,      SeatsByName)),
-    ?assertEqual(4,  maps:get(te_pati_maori, SeatsByName)).
+    ?assertEqual(4,  maps:get(te_pati_maori, SeatsByName)),
+
+    ElectorateSeats = #{ national => 43, labour => 17, green => 3,
+                         act => 2, nz_first => 0, te_pati_maori => 6 },
+    {MmpRankings, ChamberSize} =
+        consensus:webster_sainte_lague_mmp_rankings(Votes, 120, 0.0, ElectorateSeats),
+    TotalAndListByName = maps:from_list([{Party, {Total, List}} ||
+                                         {Party, Total, List} <- MmpRankings]),
+    ?assertEqual(122, ChamberSize),
+    ?assertEqual({48, 5},  maps:get(national,       TotalAndListByName)),
+    ?assertEqual({34, 17}, maps:get(labour,         TotalAndListByName)),
+    ?assertEqual({15, 12}, maps:get(green,          TotalAndListByName)),
+    ?assertEqual({11, 9},  maps:get(act,            TotalAndListByName)),
+    ?assertEqual({8,  8},  maps:get(nz_first,       TotalAndListByName)),
+    ?assertEqual({6,  0},  maps:get(te_pati_maori,  TotalAndListByName)).
 

@@ -131,7 +131,9 @@ jefferson_dhondt_2022_greenland_case() ->
 % Denmark proper elects 135 constituency seats by d'Hondt plus 40 Sainte-Lague
 % levelling seats; this article gives only nationwide totals, and the levelling
 % tier is not d'Hondt. A single nationwide d'Hondt run still matches every
-% party's official 175-seat total within one seat.
+% party's official 175-seat total within one seat. This two-tier, levelling
+% allocation is out of scope for the d'Hondt functions, which model a single
+% nationwide run.
 jefferson_dhondt_2022_danish_general_election_case() ->
     Votes    = [ {sd, 971995}, {v, 470546}, {mod, 327699}, {gl, 293186},
                  {dd, 286796}, {la, 278656}, {con, 194820}, {rga, 181452},
@@ -180,7 +182,9 @@ jefferson_dhondt_2026_greenland_case() ->
 % Denmark proper elects 135 constituency seats by d'Hondt plus 40 Sainte-Lague
 % levelling seats; this article gives only nationwide totals, and the levelling
 % tier is not d'Hondt. A single nationwide d'Hondt run still matches every
-% party's official 175-seat total within one seat.
+% party's official 175-seat total within one seat. This two-tier, levelling
+% allocation is out of scope for the d'Hondt functions, which model a single
+% nationwide run.
 jefferson_dhondt_2026_danish_general_election_case() ->
     Votes    = [ {sd, 779252}, {gl, 413306}, {v, 361689}, {la, 334421},
                  {dpp, 324518}, {mod, 274775}, {con, 270749}, {rga, 226037},

@@ -4,7 +4,8 @@
 -export([
     jefferson_dhondt_rankings/3,
     jefferson_dhondt_rankings/4,
-    webster_sainte_lague_rankings/3
+    webster_sainte_lague_rankings/3,
+    webster_sainte_lague_mmp_rankings/4
 ]).
 
 -include("include/elections.hrl").
@@ -40,6 +41,23 @@ webster_sainte_lague_rankings(Votes, NumberOfSeats, Threshold) ->
     % https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method#Description_of_the_method
     rankings(webster_sainte_lague, Votes, NumberOfSeats, Threshold, #{}).
 
+% Models the overhang that grows an MMP chamber beyond NumberOfSeats when a
+% party wins more electorate seats than its proportional entitlement. Each
+% party's total is its Sainte-Lague entitlement or its electorate wins,
+% whichever is greater, and list seats make up the difference; a party with no
+% entry in ElectorateSeatsByName is treated as having won none.
+% Returns {[{PartyName, TotalSeats, ListSeats}, ...], ChamberSize}.
+-spec webster_sainte_lague_mmp_rankings([{party_name(), pos_integer()}, ...], pos_integer(),
+                                        float(), #{party_name() => non_neg_integer()}) ->
+    {[{party_name(), non_neg_integer(), non_neg_integer()}, ...], non_neg_integer()}.
+webster_sainte_lague_mmp_rankings(Votes, NumberOfSeats, Threshold, ElectorateSeatsByName) ->
+    Entitlements = webster_sainte_lague_rankings(Votes, NumberOfSeats, Threshold),
+    Overhang     = [ overhang_row(PartyName, Seats, ElectorateSeatsByName) ||
+                     {PartyName, Seats, _ExactSeats} <- Entitlements ],
+    Rankings     = lists:sort(fun by_total_seats/2, Overhang),
+    ChamberSize  = lists:sum([ TotalSeats || {_PartyName, TotalSeats, _ListSeats} <- Rankings ]),
+    {Rankings, ChamberSize}.
+
 %%====================================================================
 %% Internal functions
 %%====================================================================
@@ -53,9 +71,16 @@ by_highest_quotient({_, _, _, Q1}, {_, _, _, Q2}) -> Q1 > Q2.
 
 by_seats_won({_, S1, _}, {_, S2, _}) -> S1 > S2.
 
+by_total_seats({_, T1, _}, {_, T2, _}) -> T1 > T2.
+
 counters_for_parties_with_enough_votes(Votes, MinVoteCnt) ->
     [ {PartyName, ?STARTING_SEATS, VoteCount} ||
       {PartyName, VoteCount} <- Votes, VoteCount >= MinVoteCnt ].
+
+overhang_row(PartyName, Entitlement, ElectorateSeatsByName) ->
+    ElectorateSeats = maps:get(PartyName, ElectorateSeatsByName, 0),
+    TotalSeats      = max(Entitlement, ElectorateSeats),
+    {PartyName, TotalSeats, TotalSeats - ElectorateSeats}.
 
 quotient(jefferson_dhondt, SeatsSoFar, VoteCount) ->
     Denominator = SeatsSoFar + 1,

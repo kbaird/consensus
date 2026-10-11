@@ -14,7 +14,8 @@
     jefferson_dhondt_rankings/3,
     jefferson_dhondt_rankings/4,
     webster_sainte_lague_rankings/2,
-    webster_sainte_lague_rankings/3
+    webster_sainte_lague_rankings/3,
+    webster_sainte_lague_mmp_rankings/4
 ]).
 
 %%====================================================================
@@ -70,3 +71,7 @@ webster_sainte_lague_rankings(Votes, NumberOfSeats) ->
 
 webster_sainte_lague_rankings(Votes, NumberOfSeats, Threshold) ->
     party_list_election:webster_sainte_lague_rankings(Votes, NumberOfSeats, Threshold).
+
+webster_sainte_lague_mmp_rankings(Votes, NumberOfSeats, Threshold, ElectorateSeatsByName) ->
+    party_list_election:webster_sainte_lague_mmp_rankings(
+        Votes, NumberOfSeats, Threshold, ElectorateSeatsByName).
