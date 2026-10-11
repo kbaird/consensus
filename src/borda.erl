@@ -68,7 +68,7 @@ rankings(Label, [B | Bs], CandCount, Acc) when is_map(Acc) ->
     Acc2 = add_votes(Label, ballot:candidates(B), Acc),
     rankings(Label, Bs, CandCount, Acc2).
 
--spec value(label(), pos_integer(), pos_integer()) -> non_neg_integer().
+-spec value(label(), pos_integer(), pos_integer()) -> number().
 value(base0, Position, CandCount) -> CandCount - Position;
 
 value(base1, Position, CandCount) -> value(base0, Position, CandCount) + 1;
@@ -79,7 +79,7 @@ value(dowdell, Position,  CandCount) -> value(nauru, Position, CandCount);
 value(nauru, 1,        _CandCount) -> 1;
 value(nauru, Position, _CandCount) -> 1.0 / Position.
 
--spec value_of_votes(label(), pos_integer(), map()) -> non_neg_integer().
+-spec value_of_votes(label(), pos_integer(), map()) -> number().
 value_of_votes(Label, CandCount, Votes) when is_map(Votes) ->
     Values = lists:map(fun(Idx) ->
                             EachValue = value(Label, Idx, CandCount),

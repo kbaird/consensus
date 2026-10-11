@@ -13,3 +13,4 @@
     vote_share  :: vote_share()
 }).
 -type party_result() :: #party_result{}.
+-type coalition()    :: [party_result()].

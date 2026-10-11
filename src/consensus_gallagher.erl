@@ -40,13 +40,13 @@ results_to_percentages(ElectionResults) ->
     [ express_seat_share_as_percentage(PartyResult, TotalSeats) ||
       PartyResult <- ElectionResults ].
 
--spec sum_diff_squares(party_result(), pos_integer()) -> pos_integer().
+-spec sum_diff_squares(party_result(), number()) -> number().
 sum_diff_squares(PartyResult, Acc) ->
     SeatPC = consensus_party:seat_share(PartyResult),
     VotePC = consensus_party:vote_share(PartyResult),
     ((VotePC - SeatPC) * (VotePC - SeatPC)) + Acc.
 
--spec sum_seats(party_result(), pos_integer()) -> pos_integer().
+-spec sum_seats(party_result(), number()) -> number().
 sum_seats(PartyResult, Acc) ->
     Seats = consensus_party:seat_share(PartyResult),
     Seats + Acc.
