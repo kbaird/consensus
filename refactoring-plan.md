@@ -134,6 +134,23 @@ with `./full_check.sh` (122 tests, Dialyzer, Elvis all pass).
 - The embedded Floyd-Warshall (`src/candidate.erl:67-92`) is a generic algorithm
   in a domain module and could be extracted.
 
+Fixed
+
+Resolution: `rank/1` now uses `maps:size/1` for the single-candidate fast path,
+which returns `maps:keys/1` directly. Both Floyd-Warshall stages were extracted
+verbatim into a new `src/floyd_warshall.erl` with a single `widest_paths/1`
+entry point that builds the one-hop and triple lists internally;
+`candidate:schulze_rank/1` now calls `widest_paths/1` and keeps only listing and
+sorting. The recursion structure and `maps:put` order are unchanged, so the
+strength map is byte-identical and tie ordering is preserved (`schulze_test.erl`
+still passes). The misleading original `IOverJ`/`JOverI` variable names (which
+swapped directions) became `Forward`/`Backward`. Added
+`test/floyd_warshall_test.erl` pinning widest paths on a three-vertex graph and
+empty/single-vertex cases, plus a single-candidate `rank/1` case in
+`test/candidate_test.erl`. Verification: `widest_paths/1` was checked equal to a
+verbatim copy of the old stages on random matrices (2-6 vertices) and
+`./full_check.sh` passes.
+
 ### 2.4 Other minor cleanups
 
 - `src/consensus_utils.erl:25` `uniqueify/1` has no `-spec`.
