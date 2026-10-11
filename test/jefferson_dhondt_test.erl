@@ -12,14 +12,38 @@ jefferson_dhondt_test_() ->
             fun jefferson_dhondt_teardown/1,
             [
                 fun jefferson_dhondt_basic_case/0,
-                fun jefferson_dhondt_2024_french_european_parliament_case/0,
-                fun jefferson_dhondt_2024_spanish_european_parliament_case/0,
+                fun jefferson_dhondt_2022_danish_general_election_case/0,
                 fun jefferson_dhondt_2022_faroe_islands_case/0,
                 fun jefferson_dhondt_2022_greenland_case/0,
-                fun jefferson_dhondt_2022_danish_general_election_case/0,
+                fun jefferson_dhondt_2023_argentine_buenos_aires_case/0,
+                fun jefferson_dhondt_2023_argentine_buenos_aires_city_case/0,
+                fun jefferson_dhondt_2023_argentine_catamarca_case/0,
+                fun jefferson_dhondt_2023_argentine_chaco_case/0,
+                fun jefferson_dhondt_2023_argentine_chubut_case/0,
+                fun jefferson_dhondt_2023_argentine_cordoba_case/0,
+                fun jefferson_dhondt_2023_argentine_corrientes_case/0,
+                fun jefferson_dhondt_2023_argentine_entre_rios_case/0,
+                fun jefferson_dhondt_2023_argentine_formosa_case/0,
+                fun jefferson_dhondt_2023_argentine_jujuy_case/0,
+                fun jefferson_dhondt_2023_argentine_la_pampa_case/0,
+                fun jefferson_dhondt_2023_argentine_la_rioja_case/0,
+                fun jefferson_dhondt_2023_argentine_mendoza_case/0,
+                fun jefferson_dhondt_2023_argentine_misiones_case/0,
+                fun jefferson_dhondt_2023_argentine_neuquen_case/0,
+                fun jefferson_dhondt_2023_argentine_rio_negro_case/0,
+                fun jefferson_dhondt_2023_argentine_salta_case/0,
+                fun jefferson_dhondt_2023_argentine_san_juan_case/0,
+                fun jefferson_dhondt_2023_argentine_san_luis_case/0,
+                fun jefferson_dhondt_2023_argentine_santa_cruz_case/0,
+                fun jefferson_dhondt_2023_argentine_santa_fe_case/0,
+                fun jefferson_dhondt_2023_argentine_santiago_del_estero_case/0,
+                fun jefferson_dhondt_2023_argentine_tierra_del_fuego_case/0,
+                fun jefferson_dhondt_2023_argentine_tucuman_case/0,
+                fun jefferson_dhondt_2024_french_european_parliament_case/0,
+                fun jefferson_dhondt_2024_spanish_european_parliament_case/0,
+                fun jefferson_dhondt_2026_danish_general_election_case/0,
                 fun jefferson_dhondt_2026_faroe_islands_case/0,
-                fun jefferson_dhondt_2026_greenland_case/0,
-                fun jefferson_dhondt_2026_danish_general_election_case/0
+                fun jefferson_dhondt_2026_greenland_case/0
             ]
     }.
 
@@ -168,5 +192,176 @@ jefferson_dhondt_2026_danish_general_election_case() ->
     ?assert(maps:get(alt, SeatByName) > 3  andalso maps:get(alt, SeatByName) < 6),
     ?assert(maps:get(cp,  SeatByName) > 2  andalso maps:get(cp,  SeatByName) < 5).
 
+% https://en.wikipedia.org/wiki/2023_Argentine_general_election
+% The Chamber of Deputies elects 130 of its 257 members by d'Hondt in the 24
+% electoral districts (the 23 provinces plus Buenos Aires City), each with a 3%
+% electoral threshold. The article's "Results by province" table gives vote
+% totals per district for up, lla, jxc and hxnp and amalgamates every other
+% list under "Others"; merging that residual still reproduces the article's
+% seat cells in every district except Rio Negro, whose residual is split here
+% into the named Juntos Somos Rio Negro party and the remainder. The article's
+% province-table total row sums to 131 seats while its own main table totals
+% 130; the per-district cells are d'Hondt-consistent, so each case asserts the
+% per-district cells it reports.
+jefferson_dhondt_2023_argentine_buenos_aires_case() ->
+    assert_district_seats(
+        [ {up, 4094665}, {lla, 2382198}, {jxc, 2484593}, {others, 405973} ],
+        35,
+        #{up => 16, lla => 9, jxc => 9, others => 1}).
+
+jefferson_dhondt_2023_argentine_buenos_aires_city_case() ->
+    assert_district_seats(
+        [ {up, 577225}, {lla, 377451}, {jxc, 782984}, {others, 99947} ],
+        12,
+        #{up => 4, lla => 2, jxc => 6}).
+
+jefferson_dhondt_2023_argentine_catamarca_case() ->
+    assert_district_seats(
+        [ {up, 102943}, {lla, 50657}, {jxc, 42415} ],
+        2,
+        #{up => 2}).
+
+jefferson_dhondt_2023_argentine_chaco_case() ->
+    assert_district_seats(
+        [ {up, 305229}, {lla, 192284}, {jxc, 172929} ],
+        3,
+        #{up => 1, lla => 1, jxc => 1}).
+
+jefferson_dhondt_2023_argentine_chubut_case() ->
+    assert_district_seats(
+        [ {up, 101885}, {lla, 118246}, {jxc, 71333}, {others, 18698} ],
+        3,
+        #{up => 1, lla => 1, jxc => 1}).
+
+jefferson_dhondt_2023_argentine_cordoba_case() ->
+    assert_district_seats(
+        [ {up, 286615}, {lla, 751428}, {jxc, 509837}, {hxnp, 679603},
+          {others, 48057} ],
+        9,
+        #{up => 1, lla => 3, jxc => 2, hxnp => 3}).
+
+jefferson_dhondt_2023_argentine_corrientes_case() ->
+    assert_district_seats(
+        [ {up, 253334}, {lla, 178855}, {jxc, 222006} ],
+        4,
+        #{up => 2, lla => 1, jxc => 1}).
+
+jefferson_dhondt_2023_argentine_entre_rios_case() ->
+    assert_district_seats(
+        [ {up, 293605}, {lla, 174787}, {jxc, 269189} ],
+        4,
+        #{up => 2, lla => 1, jxc => 1}).
+
+jefferson_dhondt_2023_argentine_formosa_case() ->
+    assert_district_seats(
+        [ {up, 184028}, {lla, 101637}, {jxc, 53155} ],
+        3,
+        #{up => 2, lla => 1}).
+
+jefferson_dhondt_2023_argentine_jujuy_case() ->
+    assert_district_seats(
+        [ {up, 123971}, {lla, 152853}, {jxc, 96158}, {others, 28027} ],
+        3,
+        #{up => 1, lla => 1, jxc => 1}).
+
+jefferson_dhondt_2023_argentine_la_pampa_case() ->
+    assert_district_seats(
+        [ {up, 81094}, {jxc, 52574}, {others, 5796} ],
+        2,
+        #{up => 1, jxc => 1}).
+
+jefferson_dhondt_2023_argentine_la_rioja_case() ->
+    assert_district_seats(
+        [ {up, 93668}, {lla, 85794}, {jxc, 28656}, {hxnp, 17603} ],
+        3,
+        #{up => 2, lla => 1}).
+
+jefferson_dhondt_2023_argentine_mendoza_case() ->
+    assert_district_seats(
+        [ {up, 259263}, {lla, 462657}, {jxc, 287020}, {others, 62566} ],
+        5,
+        #{up => 1, lla => 3, jxc => 1}).
+
+jefferson_dhondt_2023_argentine_misiones_case() ->
+    assert_district_seats(
+        [ {up, 252335}, {jxc, 109856}, {others, 26776} ],
+        4,
+        #{up => 3, jxc => 1}).
+
+jefferson_dhondt_2023_argentine_neuquen_case() ->
+    assert_district_seats(
+        [ {up, 111828}, {lla, 136290}, {jxc, 79773}, {others, 56507} ],
+        3,
+        #{up => 1, lla => 1, jxc => 1}).
+
+jefferson_dhondt_2023_argentine_rio_negro_case() ->
+    assert_district_seats(
+        [ {up, 134429}, {lla, 126879}, {jxc, 67986}, {jsrn, 60259},
+          {others, 19800} ],
+        3,
+        #{up => 1, lla => 1, jxc => 1}).
+
+jefferson_dhondt_2023_argentine_salta_case() ->
+    assert_district_seats(
+        [ {up, 280111}, {lla, 305397}, {jxc, 101188}, {hxnp, 40723},
+          {others, 40487} ],
+        4,
+        #{up => 2, lla => 2}).
+
+jefferson_dhondt_2023_argentine_san_juan_case() ->
+    assert_district_seats(
+        [ {up, 154715}, {lla, 153576}, {jxc, 113662} ],
+        3,
+        #{up => 1, lla => 1, jxc => 1}).
+
+jefferson_dhondt_2023_argentine_san_luis_case() ->
+    assert_district_seats(
+        [ {up, 83178}, {lla, 125123}, {jxc, 71718}, {hxnp, 16323},
+          {others, 8256} ],
+        2,
+        #{up => 1, lla => 1}).
+
+jefferson_dhondt_2023_argentine_santa_cruz_case() ->
+    assert_district_seats(
+        [ {up, 45182}, {jxc, 18595}, {others, 59391} ],
+        2,
+        #{up => 1, others => 1}).
+
+jefferson_dhondt_2023_argentine_santa_fe_case() ->
+    assert_district_seats(
+        [ {up, 584589}, {lla, 649809}, {jxc, 541534}, {hxnp, 184680},
+          {others, 48469} ],
+        10,
+        #{up => 3, lla => 3, jxc => 3, hxnp => 1}).
+
+jefferson_dhondt_2023_argentine_santiago_del_estero_case() ->
+    assert_district_seats(
+        [ {up, 417016}, {jxc, 50115} ],
+        4,
+        #{up => 4}).
+
+jefferson_dhondt_2023_argentine_tierra_del_fuego_case() ->
+    assert_district_seats(
+        [ {up, 34206}, {lla, 30534}, {jxc, 13254}, {hxnp, 7908},
+          {others, 14337} ],
+        3,
+        #{up => 2, lla => 1}).
+
+jefferson_dhondt_2023_argentine_tucuman_case() ->
+    assert_district_seats(
+        [ {up, 443377}, {lla, 286594}, {jxc, 171603}, {others, 43002} ],
+        5,
+        #{up => 3, lla => 1, jxc => 1}).
+
 %%% PRIVATE FUNCTIONS
+
+assert_district_seats(Votes, SeatsRenewed, ExpectedSeatsByName) ->
+    Rankings   = consensus:jefferson_dhondt_rankings(Votes, SeatsRenewed, 0.03),
+    SeatByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
+    ?assertEqual(SeatsRenewed, lists:sum(maps:values(SeatByName))),
+    lists:foreach(
+        fun({Party, ExpectedSeats}) ->
+            ?assertEqual(ExpectedSeats, maps:get(Party, SeatByName))
+        end,
+        maps:to_list(ExpectedSeatsByName)).
 
