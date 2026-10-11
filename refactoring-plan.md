@@ -114,6 +114,20 @@ unknown labels pass through `normalize/1` unchanged. Added `test/label_test.erl`
 remove the double sort. `share/3` at `:100` truncates via `trunc(...*100)/100`
 with an unclear name; rename to something like `seat_share_percent`.
 
+Fixed
+
+Resolution: `tabulate/6` now sorts `CountersWithQ` once per seat and filters
+`EligibleWithQ` from that sorted list, so the winner is its head and the
+increment reuses the same ordering; the second `lists:sort/2` is gone. The
+originally proposed O(n) max pass was implemented first and abandoned: it broke
+`webster_sainte_lague_test:webster_sainte_lague_basic_case/0`, because
+`lists:sort/2` with the strict `>` comparator is not stable and the removed
+ordering sort fed the final seat-tie order. Filtering the single sorted list
+preserves that order exactly. Renamed `share/3` to `exact_seats/3` because it
+returns the party's exact seat entitlement truncated to two decimals, not a
+percentage; the plan's suggested `seat_share_percent` was a misnomer. Verified
+with `./full_check.sh` (122 tests, Dialyzer, Elvis all pass).
+
 ### 2.3 `candidate` minor cleanups
 
 - `src/candidate.erl:35` uses `length(maps:to_list(Prefs))`; use `maps:size/1`.
