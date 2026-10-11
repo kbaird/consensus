@@ -5,6 +5,7 @@
     effective_number/1,
     make/2,
     make/3,
+    make_percent/3,
     name/1,
     seat_share/1,
     vote_share/1
@@ -23,15 +24,17 @@ effective_number(PartyShares) -> 1 / sum_for(PartyShares).
 -spec make(party_name(), seat_share()) -> party_result().
 make(Name, SeatShare) -> make(Name, SeatShare, 0.0).
 
+% VoteShare is a fraction in [0.0, 1.0].
 -spec make(party_name(), seat_share(), vote_share()) -> party_result().
-make(Name, SeatShare, VoteShare) when VoteShare > 1.0 ->
-    % VoteShare coming in as a percentage, convert to regular units
-    make(Name, SeatShare, VoteShare / 100.0);
-
-make(Name, SeatShare, VoteShare) when VoteShare =< 1.0 ->
+make(Name, SeatShare, VoteShare) when is_number(VoteShare) ->
     #party_result{name       = Name,
                   seat_share = SeatShare,
                   vote_share = VoteShare}.
+
+% VoteSharePercent is a percentage in [0.0, 100.0].
+-spec make_percent(party_name(), seat_share(), number()) -> party_result().
+make_percent(Name, SeatShare, VoteSharePercent) when is_number(VoteSharePercent) ->
+    make(Name, SeatShare, VoteSharePercent / 100.0).
 
 -spec name(party_result()) -> party_name().
 name(#party_result{name = Name}) -> Name.

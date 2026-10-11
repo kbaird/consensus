@@ -104,7 +104,8 @@ gallagher_index_2024_european_parliament_case() ->
 % "Independent" row is an electorate-vote figure and is excluded. Seats are
 % the 122 of the 54th Parliament (120 proportional seats plus two Te Pati
 % Maori overhang seats). Vote shares below one percent must be supplied as
-% fractions: consensus_party:make/3 only divides by 100 above 1.0.
+% fractions to consensus_party:make/3; consensus_party:make_percent/3 takes
+% percentages instead.
 % G = 2.63, matching the value tabulated at
 % https://en.wikipedia.org/wiki/Gallagher_index
 gallagher_index_2023_new_zealand_case() ->
@@ -136,89 +137,89 @@ nz2023() -> [
 ].
 
 even(3) -> [
-    consensus_party:make(jack_johnson, 1, 33.33),
-    consensus_party:make(john_jackson, 1, 33.33),
-    consensus_party:make(jenn_jackson, 1, 33.33)
+    consensus_party:make_percent(jack_johnson, 1, 33.33),
+    consensus_party:make_percent(john_jackson, 1, 33.33),
+    consensus_party:make_percent(jenn_jackson, 1, 33.33)
 ];
 even(2) -> [
-    consensus_party:make(jack_johnson, 1, 50.00),
-    consensus_party:make(john_jackson, 1, 50.00)
+    consensus_party:make_percent(jack_johnson, 1, 50.00),
+    consensus_party:make_percent(john_jackson, 1, 50.00)
 ].
 
 extreme_skew() -> [
-    consensus_party:make(usurper, 1, 10.00),
-    consensus_party:make(cheated, 0, 90.00)
+    consensus_party:make_percent(usurper, 1, 10.00),
+    consensus_party:make_percent(cheated, 0, 90.00)
 ].
 
 no_skew() -> [
-    consensus_party:make(popular, 1, 100.00),
-    consensus_party:make(pariah,  0,   0.00)
+    consensus_party:make_percent(popular, 1, 100.00),
+    consensus_party:make_percent(pariah,  0,   0.00)
 ].
 
 uk2015parl()  -> [
     % party_name, seat_share, vote_pc
     % 650 total seats in play
-    consensus_party:make(con, 330, 36.9),
-    consensus_party:make(lab, 232, 30.4),
-    consensus_party:make(snp,  56,  4.7),
-    consensus_party:make(lib,   8,  7.9),
-    consensus_party:make(ukip,  1, 12.3),
-    consensus_party:make(grn,   1,  3.8)
+    consensus_party:make_percent(con, 330, 36.9),
+    consensus_party:make_percent(lab, 232, 30.4),
+    consensus_party:make_percent(snp,  56,  4.7),
+    consensus_party:make_percent(lib,   8,  7.9),
+    consensus_party:make_percent(ukip,  1, 12.3),
+    consensus_party:make_percent(grn,   1,  3.8)
 ].
 
 us2008potus() -> [
     % party_name, electoral_votes, vote_pc
     % 1 Presidential "seat" in play
-    consensus_party:make(obama,  1, 52.9),
-    consensus_party:make(mccain, 0, 45.6)
+    consensus_party:make_percent(obama,  1, 52.9),
+    consensus_party:make_percent(mccain, 0, 45.6)
 ].
 
 us2008potus_ec() -> [
     % party_name, electoral_votes, vote_pc
     % 538 Electoral College "seats" in play
-    consensus_party:make(dem, 365, 52.9),
-    consensus_party:make(gop, 173, 45.7)
+    consensus_party:make_percent(dem, 365, 52.9),
+    consensus_party:make_percent(gop, 173, 45.7)
 ].
 
 us2016potus() -> [
     % party_name, electoral_votes, vote_pc
     % 1 Presidential "seat" in play
-    consensus_party:make(trump,   1, 46.72),
-    consensus_party:make(clinton, 0, 47.73)
+    consensus_party:make_percent(trump,   1, 46.72),
+    consensus_party:make_percent(clinton, 0, 47.73)
 ].
 
 us2020potus() -> [
     % party_name, electoral_votes, vote_pc
     % 1 Presidential "seat" in play
-    consensus_party:make(biden, 1, 51.0),
-    consensus_party:make(trump, 0, 47.2)
+    consensus_party:make_percent(biden, 1, 51.0),
+    consensus_party:make_percent(trump, 0, 47.2)
 ].
 
 us2016potus_ec() -> [
     % party_name, electoral_votes, vote_pc
     % 538 Electoral College "seats" in play
-    consensus_party:make(gop, 306, 46.72),
-    consensus_party:make(dem, 232, 47.73)
+    consensus_party:make_percent(gop, 306, 46.72),
+    consensus_party:make_percent(dem, 232, 47.73)
     % counting "faithless" electors as if they were not
 ].
 
 us2020potus_ec() -> [
     % party_name, electoral_votes, vote_pc
     % 538 Electoral College "seats" in play
-    consensus_party:make(dem, 306, 51.0),
-    consensus_party:make(gop, 232, 47.2)
+    consensus_party:make_percent(dem, 306, 51.0),
+    consensus_party:make_percent(gop, 232, 47.2)
     % counting "faithless" electors as if they were not
 ].
 
 ep2024_groups() -> [
     % party_name, seats won (of 720), vote_pc
-    consensus_party:make(epp,         188, 19.65),
-    consensus_party:make(sd,          136, 15.63),
-    consensus_party:make(patriots,     84, 10.54),
-    consensus_party:make(ecr,          78,  8.93),
-    consensus_party:make(renew,        77,  9.15),
-    consensus_party:make(greens_efa,   53,  6.59),
-    consensus_party:make(the_left,     46,  6.77),
-    consensus_party:make(esn,          25,  4.94),
-    consensus_party:make(non_inscrits, 33,  8.64)
+    consensus_party:make_percent(epp,         188, 19.65),
+    consensus_party:make_percent(sd,          136, 15.63),
+    consensus_party:make_percent(patriots,     84, 10.54),
+    consensus_party:make_percent(ecr,          78,  8.93),
+    consensus_party:make_percent(renew,        77,  9.15),
+    consensus_party:make_percent(greens_efa,   53,  6.59),
+    consensus_party:make_percent(the_left,     46,  6.77),
+    consensus_party:make_percent(esn,          25,  4.94),
+    consensus_party:make_percent(non_inscrits, 33,  8.64)
 ].
