@@ -12,7 +12,7 @@
 %%====================================================================
 
 -spec winners(pos_integer(), [ballot(), ...]) -> [{candidate_name(), pos_integer()}, ...].
-winners(SeatsCount, Ballots) -> droop_winners(SeatsCount, Ballots, []).
+winners(SeatsCount, Ballots) -> winners(SeatsCount, Ballots, []).
 
 %%====================================================================
 %% Internal functions
@@ -20,16 +20,16 @@ winners(SeatsCount, Ballots) -> droop_winners(SeatsCount, Ballots, []).
 
 by_votes({_, V1}, {_, V2}) -> V1 > V2.
 
-droop_winners(SeatsCount, _Bs, Winners) when length(Winners) =:= SeatsCount ->
+winners(SeatsCount, _Bs, Winners) when length(Winners) =:= SeatsCount ->
     lists:reverse(Winners);
 
-droop_winners(SeatsCount, Ballots, Winners) ->
+winners(SeatsCount, Ballots, Winners) ->
     Quota       = length(Ballots) div (SeatsCount+1) + 1,
     NestedCands = [ ballot:candidates(B) || B <- Ballots ],
     CNamesWithVotes = candidate_names_with_top_votes(NestedCands),
     [ Winner | _ ]  = lists:sort(fun by_votes/2, CNamesWithVotes),
     Ballots2 = ballots_without(Ballots, Winner, Quota, CNamesWithVotes),
-    droop_winners(SeatsCount, Ballots2, [ Winner | Winners ]).
+    winners(SeatsCount, Ballots2, [ Winner | Winners ]).
 
 ballots_without(Ballots, {WinnerName, WinnerVotes}, Quota, [ _, _NextCandidate | _ ]) ->
     Raw   = ballots_without(Ballots, {WinnerName, WinnerVotes}, Quota, []),

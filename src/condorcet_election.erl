@@ -55,15 +55,13 @@ preferences([Ballot | Bs], AccIn) ->
     preferences(Bs, Acc).
 
 with_zero_counts(Ballots) ->
-    AllCandidates = [C || B <- Ballots, C <- ballot:candidates(B)],
-    UniqueCandidates = lists:usort(AllCandidates),
+    UniqueCandidates = lists:usort([ C || B <- Ballots, C <- ballot:candidates(B) ]),
     lists:foldl(fun(Cand, Acc) ->
                     Others = lists:delete(Cand, UniqueCandidates),
-                    ZC = zero_counts(Others, Acc),
-                    maps:put(Cand, ZC, Acc)
+                    maps:put(Cand, zero_counts(Others, Acc), Acc)
                 end,
-    maps:new(),
-    UniqueCandidates).
+                maps:new(),
+                UniqueCandidates).
 
 zero_counts([],            Acc) -> Acc;
 zero_counts([Next | Rest], Acc) -> zero_counts(Rest, maps:put(Next, 0, Acc)).
