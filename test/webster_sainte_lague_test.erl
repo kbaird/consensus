@@ -38,7 +38,10 @@ webster_sainte_lague_2016_baden_wuerttemberg_case() ->
     % The real Landtag had 143 seats, but 120 are apportioned by Sainte-Lague and the
     % total grows to 143 via overhang (Ueberhang-) and leveling (Ausgleichs-) seats.
     % A pure Sainte-Lague apportionment of 143 seats therefore gives FDP the seat that
-    % the real overhang allocation gave to CDU (real: cdu 42, fdp 12).
+    % the real overhang allocation gave to CDU (real: cdu 42, fdp 12). This compensated
+    % (levelling) allocation is out of scope for webster_sainte_lague_mmp_rankings/4,
+    % which models only the overhang a party keeps for winning more electorates than
+    % its entitlement.
     [{grn, 47, _}, {cdu, 41, _}, {afd, 23, _}, {spd, 19, _}, {fdp, 13, _}] = Rankings.
 
 % https://en.wikipedia.org/wiki/2016_Rhineland-Palatinate_state_election
@@ -66,7 +69,10 @@ webster_sainte_lague_2021_federal_case() ->
     % seats gives one or two seats to SPD/Greens that the real state-level, overhang-
     % compensated allocation gave elsewhere. The SSW's single seat (Stefan Seidler) is a
     % party-list seat won under the recognised-minority exemption from the 5% threshold,
-    % not a constituency win, and is excluded here. Real CDU/CSU = 197.
+    % not a constituency win, and is excluded here. Real CDU/CSU = 197. This state-level,
+    % overhang-compensated allocation is out of scope for
+    % webster_sainte_lague_mmp_rankings/4, which models only the overhang a party keeps
+    % for winning more electorates than its entitlement.
     [ {spd, 208, _}, {cdu, 194, _}, {grn, 119, _},
       {fdp, 92, _}, {afd, 83, _}, {lnk, 39, _}] = Rankings.
 
