@@ -9,31 +9,32 @@
 -include("include/elections.hrl").
 
 %%====================================================================
-%% Guard Macros
-%%====================================================================
-
--define(IS_VALID_LABEL(Label), Label =:= base0 orelse
-                               Label =:= base1 orelse
-                               Label =:= dowdell orelse
-                               Label =:= nauru).
-
-%%====================================================================
 %% API functions
 %%====================================================================
 
 % https://en.wikipedia.org/wiki/Borda_count#Example
 -spec rankings(label(), [ballot(), ...]) ->
     {ok, [{candidate_name(), number()}, ...]} | {error, badarg}.
-rankings(Label, Ballots) when ?IS_VALID_LABEL(Label) ->
-    Candidates = ballot:candidates(hd(Ballots)),
-    Map = rankings(Label, Ballots, length(Candidates), #{}),
-    L = maps:to_list(Map),
-    {ok, lists:sort(fun by_votes/2, L)};
-rankings(_, _) -> {error, badarg}.
+rankings(Label, Ballots) ->
+    rankings_normalized(label:normalize(Label), Ballots).
 
 %%====================================================================
 %% Internal functions
 %%====================================================================
+
+-spec rankings_normalized(label(), [ballot(), ...]) ->
+    {ok, [{candidate_name(), number()}, ...]} | {error, badarg}.
+rankings_normalized(base0, Ballots) -> tabulate(base0, Ballots);
+rankings_normalized(base1, Ballots) -> tabulate(base1, Ballots);
+rankings_normalized(nauru, Ballots) -> tabulate(nauru, Ballots);
+rankings_normalized(_, _)           -> {error, badarg}.
+
+tabulate(Label, Ballots) ->
+    Candidates = ballot:candidates(hd(Ballots)),
+    Map = rankings(Label, Ballots, length(Candidates), #{}),
+    L = maps:to_list(Map),
+    {ok, lists:sort(fun by_votes/2, L)}.
+
 -spec add_votes(label(), [candidate(), ...], map()) -> map().
 add_votes(Label, [C | Cs], Acc) when is_map(Acc) -> add_votes(Label, [C | Cs], Acc, 1).
 
@@ -74,8 +75,6 @@ value(base0, Position, CandCount) -> CandCount - Position;
 value(base1, Position, CandCount) -> value(base0, Position, CandCount) + 1;
 
 % Cf. https://en.wikipedia.org/wiki/Borda_count#Dowdall_system_(Nauru)
-value(dowdell, Position,  CandCount) -> value(nauru, Position, CandCount);
-
 value(nauru, 1,        _CandCount) -> 1;
 value(nauru, Position, _CandCount) -> 1.0 / Position.
 

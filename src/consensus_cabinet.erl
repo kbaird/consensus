@@ -10,66 +10,44 @@
 -include("include/parties.hrl").
 
 %%====================================================================
-%% Guard Macros
-%%====================================================================
-
-% smallest of the MWCs
--define(IS_BP(Label), Label =:= bp orelse
-                      Label =:= bargaining_proposition).
-
-% MRs that don't skip, possibly adding superfluous middle parties
--define(IS_MCW(Label), Label =:= mcw orelse
-                       Label =:= minimal_connected_winning orelse
-                       Label =:= minimum_connected_winning).
-
-% ideologically similar parties more likely to form a coalition
--define(IS_MR(Label), Label =:= mr orelse
-                      Label =:= minimal_range orelse
-                      Label =:= minimum_range).
-
-% favors a small # of seats to form a seat majority
--define(IS_MS(Label), Label =:= ms orelse
-                      Label =:= minimal_size orelse
-                      Label =:= minimum_size).
-
-% favors a small # of parties to form a seat majority
--define(IS_MWC(Label), Label =:= mwc orelse
-                       Label =:= minimal_winning_coalition orelse
-                       Label =:= minimum_winning_coalition).
-
-% favors "moderate" parties near the ideological center of the parliament
--define(IS_PVC(Label), Label =:= pvc orelse
-                       Label =:= policy_viable_coalition).
-
-%%====================================================================
 %% API functions
 %%====================================================================
 
 % Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg93.
 -spec compose(label(), [party_result()]) -> [cabinet()].
-compose(Label, SeatShares) when ?IS_BP(Label) ->
+compose(Label, SeatShares) ->
+    compose_normalized(label:normalize(Label), SeatShares).
+
+% This case requires knowledge of all party names
+-spec compose(label(), [party_result()], [party_name()]) -> [cabinet()].
+compose(Label, SeatShares, AllPartyNames) ->
+    compose_normalized(label:normalize(Label), SeatShares, AllPartyNames).
+
+%%====================================================================
+%% Internal functions
+%%====================================================================
+
+compose_normalized(bp, SeatShares) ->
     party_names_min_by(fun length/1, SeatShares);
 
-compose(Label, SeatShares) when ?IS_MR(Label) ->
+compose_normalized(mr, SeatShares) ->
     party_names_min_by(fun range/1, SeatShares);
 
-compose(Label, SeatShares) when ?IS_MS(Label) ->
+compose_normalized(ms, SeatShares) ->
     party_names_min_by(fun seat_share/1, SeatShares);
 
-compose(Label, SeatShares) when ?IS_MWC(Label) ->
+compose_normalized(mwc, SeatShares) ->
     WithSeats   = mwc_with_seats(SeatShares),
     just_party_names(WithSeats);
 
-compose(Label, SeatShares) when ?IS_PVC(Label) ->
+compose_normalized(pvc, SeatShares) ->
     Cabinets    = mwc_with_seats(SeatShares),
     CenterPty   = centrist_party(party_names(SeatShares)),
     WithCtrPty  = [ Cab ||  Cab <- Cabinets,
                             lists:member(CenterPty, party_names(Cab)) ],
     just_party_names(WithCtrPty).
 
-% This case requires knowledge of all party names
--spec compose(label(), [party_result()], [party_name()]) -> [cabinet()].
-compose(Label, SeatShares, AllPartyNames) when ?IS_MCW(Label) ->
+compose_normalized(mcw, SeatShares, AllPartyNames) ->
     WithSeats     = winning_coalitions(SeatShares),
     IsContiguous  = fun(Coalition) -> is_contiguous(Coalition, AllPartyNames) end,
     Contiguous    = lists:filter(IsContiguous, WithSeats),
@@ -77,9 +55,6 @@ compose(Label, SeatShares, AllPartyNames) when ?IS_MCW(Label) ->
     InRange       = lists:filter(IsSmallEnough, Contiguous),
     just_party_names(InRange).
 
-%%====================================================================
-%% Internal functions
-%%====================================================================
 -spec all_in(coalition(), coalition()) -> boolean().
 all_in(ContainsEachItem, ItemsToCheck) ->
     IsPresent = fun(Elem) -> lists:member(Elem, ContainsEachItem) end,
