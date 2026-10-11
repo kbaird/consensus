@@ -43,7 +43,18 @@ jefferson_dhondt_test_() ->
                 fun jefferson_dhondt_2024_spanish_european_parliament_case/0,
                 fun jefferson_dhondt_2026_danish_general_election_case/0,
                 fun jefferson_dhondt_2026_faroe_islands_case/0,
-                fun jefferson_dhondt_2026_greenland_case/0
+                fun jefferson_dhondt_2026_greenland_case/0,
+                fun jefferson_dhondt_2026_japanese_chugoku_case/0,
+                fun jefferson_dhondt_2026_japanese_hokkaido_case/0,
+                fun jefferson_dhondt_2026_japanese_hokuriku_shinetsu_case/0,
+                fun jefferson_dhondt_2026_japanese_kinki_case/0,
+                fun jefferson_dhondt_2026_japanese_kyushu_case/0,
+                fun jefferson_dhondt_2026_japanese_northern_kanto_case/0,
+                fun jefferson_dhondt_2026_japanese_shikoku_case/0,
+                fun jefferson_dhondt_2026_japanese_southern_kanto_case/0,
+                fun jefferson_dhondt_2026_japanese_tohoku_case/0,
+                fun jefferson_dhondt_2026_japanese_tokai_case/0,
+                fun jefferson_dhondt_2026_japanese_tokyo_case/0
             ]
     }.
 
@@ -353,10 +364,128 @@ jefferson_dhondt_2023_argentine_tucuman_case() ->
         5,
         #{up => 3, lla => 1, jxc => 1}).
 
+% https://en.wikipedia.org/wiki/Results_of_the_2026_Japanese_general_election
+% The House of Representatives apportions its 176 proportional seats by
+% d'Hondt separately in each of 11 PR blocks, with no per-block threshold.
+% Each block table lists only the seat-relevant parties (any omitted minor
+% list never reaches the last winning quotient) and gives exact vote totals
+% alongside the published seat count. Where a published row shows a
+% forfeiture (x -> y), the left value x is the pure d'Hondt result: the LDP
+% had too few list candidates and forfeited 14 seats overall, and Team Mirai
+% forfeited 2 Kinki seats under the 10% dual-candidate rule. This library has
+% no overhang/forfeiture model, so the five affected cases assert the pure
+% d'Hondt result and document the published change in a comment.
+jefferson_dhondt_2026_japanese_chugoku_case() ->
+    % Pure d'Hondt gives the LDP 6 and Ishin 0; the published article shows
+    % the LDP 6 -> 5 and Ishin 0 -> 1 after the LDP's candidate shortage.
+    assert_pr_block_seats(
+        [ {ldp, 1297078}, {cra, 620211}, {dpfp, 273263}, {sansei, 252036},
+          {ishin, 213428} ],
+        10,
+        #{ldp => 6, cra => 2, dpfp => 1, sansei => 1, ishin => 0}).
+
+jefferson_dhondt_2026_japanese_hokkaido_case() ->
+    assert_pr_block_seats(
+        [ {ldp, 911742}, {cra, 605889}, {dpfp, 218850} ],
+        8,
+        #{ldp => 4, cra => 3, dpfp => 1}).
+
+jefferson_dhondt_2026_japanese_hokuriku_shinetsu_case() ->
+    % Pure d'Hondt gives the LDP 5 and CRA 2; the published article shows
+    % the LDP 5 -> 3 and CRA 2 -> 4 after the LDP's candidate shortage.
+    assert_pr_block_seats(
+        [ {ldp, 1387716}, {cra, 651331}, {dpfp, 322739}, {sansei, 285897},
+          {ishin, 231686} ],
+        10,
+        #{ldp => 5, cra => 2, dpfp => 1, sansei => 1, ishin => 1}).
+
+jefferson_dhondt_2026_japanese_kinki_case() ->
+    % Pure d'Hondt gives Ishin 7, CRA 4, Mirai 2; the published article
+    % shows Ishin 7 -> 8, CRA 4 -> 5, Mirai 2 -> 0 after Team Mirai's
+    % forfeiture of two seats under the 10% dual-candidate rule.
+    assert_pr_block_seats(
+        [ {ldp, 2842876}, {ishin, 2168635}, {cra, 1332752}, {dpfp, 651785},
+          {sansei, 631179}, {mirai, 553496}, {jcp, 480188} ],
+        28,
+        #{ldp => 10, ishin => 7, cra => 4, dpfp => 2, sansei => 2,
+          mirai => 2, jcp => 1}).
+
+jefferson_dhondt_2026_japanese_kyushu_case() ->
+    assert_pr_block_seats(
+        [ {ldp, 2516334}, {cra, 1181744}, {sansei, 519904}, {dpfp, 505129},
+          {mirai, 375396}, {ishin, 374428} ],
+        20,
+        #{ldp => 10, cra => 4, sansei => 2, dpfp => 2, mirai => 1,
+          ishin => 1}).
+
+jefferson_dhondt_2026_japanese_northern_kanto_case() ->
+    assert_pr_block_seats(
+        [ {ldp, 2256845}, {cra, 1174717}, {dpfp, 626695}, {sansei, 506071},
+          {mirai, 467561}, {ishin, 326128}, {jcp, 254497} ],
+        19,
+        #{ldp => 8, cra => 4, dpfp => 2, sansei => 2, mirai => 1,
+          ishin => 1, jcp => 1}).
+
+jefferson_dhondt_2026_japanese_shikoku_case() ->
+    assert_pr_block_seats(
+        [ {ldp, 691402}, {cra, 299777}, {dpfp, 213661} ],
+        6,
+        #{ldp => 4, cra => 1, dpfp => 1}).
+
+jefferson_dhondt_2026_japanese_southern_kanto_case() ->
+    % Pure d'Hondt gives the LDP 10, CRA 5, DPFP 2, Mirai 2, Ishin 1 and
+    % Reiwa 0; the published article shows the LDP 10 -> 4 with CRA 5 -> 7,
+    % DPFP 2 -> 3, Mirai 2 -> 3, Ishin 1 -> 2 and Reiwa 0 -> 1 after the
+    % LDP's candidate shortage.
+    assert_pr_block_seats(
+        [ {ldp, 2637938}, {cra, 1424763}, {dpfp, 788564}, {mirai, 682469},
+          {sansei, 531288}, {ishin, 463287}, {jcp, 314224},
+          {reiwa, 202655} ],
+        23,
+        #{ldp => 10, cra => 5, dpfp => 2, mirai => 2, sansei => 2,
+          ishin => 1, jcp => 1, reiwa => 0}).
+
+jefferson_dhondt_2026_japanese_tohoku_case() ->
+    assert_pr_block_seats(
+        [ {ldp, 1612576}, {cra, 828883}, {dpfp, 389503}, {sansei, 278410},
+          {mirai, 234050} ],
+        12,
+        #{ldp => 6, cra => 3, dpfp => 1, sansei => 1, mirai => 1}).
+
+jefferson_dhondt_2026_japanese_tokai_case() ->
+    assert_pr_block_seats(
+        [ {ldp, 2628008}, {cra, 1199580}, {dpfp, 836102}, {sansei, 527291},
+          {mirai, 478316}, {ishin, 400964} ],
+        21,
+        #{ldp => 10, cra => 4, dpfp => 3, sansei => 2, mirai => 1,
+          ishin => 1}).
+
+jefferson_dhondt_2026_japanese_tokyo_case() ->
+    % Pure d'Hondt gives the LDP 8, CRA 3, Mirai 3, DPFP 2 and Sansei 1;
+    % the published article shows the LDP 8 -> 3 with CRA 3 -> 5,
+    % Mirai 3 -> 4, DPFP 2 -> 3 and Sansei 1 -> 2 after the LDP's candidate
+    % shortage.
+    assert_pr_block_seats(
+        [ {ldp, 2243625}, {cra, 1119155}, {mirai, 887849}, {dpfp, 746660},
+          {sansei, 427028}, {jcp, 407146}, {ishin, 384487} ],
+        19,
+        #{ldp => 8, cra => 3, mirai => 3, dpfp => 2, sansei => 1, jcp => 1,
+          ishin => 1}).
+
 %%% PRIVATE FUNCTIONS
 
 assert_district_seats(Votes, SeatsRenewed, ExpectedSeatsByName) ->
     Rankings   = consensus:jefferson_dhondt_rankings(Votes, SeatsRenewed, 0.03),
+    SeatsByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
+    ?assertEqual(SeatsRenewed, lists:sum(maps:values(SeatsByName))),
+    lists:foreach(
+        fun({Party, ExpectedSeats}) ->
+            ?assertEqual(ExpectedSeats, maps:get(Party, SeatsByName))
+        end,
+        maps:to_list(ExpectedSeatsByName)).
+
+assert_pr_block_seats(Votes, SeatsRenewed, ExpectedSeatsByName) ->
+    Rankings    = consensus:jefferson_dhondt_rankings(Votes, SeatsRenewed, 0.0),
     SeatsByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
     ?assertEqual(SeatsRenewed, lists:sum(maps:values(SeatsByName))),
     lists:foreach(
