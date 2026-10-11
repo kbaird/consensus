@@ -46,12 +46,12 @@ vote_share(#party_result{vote_share = Votes}) -> Votes.
 %% Internal functions
 %%====================================================================
 
--spec sum_for([party_result()]) -> pos_integer().
+-spec sum_for([party_result()]) -> number().
 sum_for(PartyShares) ->
     lists:foldl(fun sum_seat_share_squares/2, 0, PartyShares).
 
 -spec sum_seat_share_squares(party_result(),
-                             pos_integer()) -> pos_integer().
+                             number()) -> number().
 sum_seat_share_squares(PartyResult, Acc) ->
     Seats = consensus_party:seat_share(PartyResult),
     (Seats * Seats) + Acc.
