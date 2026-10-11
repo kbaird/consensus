@@ -22,13 +22,14 @@
 %%====================================================================
 
 % https://en.wikipedia.org/wiki/Borda_count#Example
--spec rankings(label(), [ballot(), ...]) -> [{candidate_name(), number()}, ...] | binary().
+-spec rankings(label(), [ballot(), ...]) ->
+    {ok, [{candidate_name(), number()}, ...]} | {error, badarg}.
 rankings(Label, Ballots) when ?IS_VALID_LABEL(Label) ->
     Candidates = ballot:candidates(hd(Ballots)),
     Map = rankings(Label, Ballots, length(Candidates), #{}),
     L = maps:to_list(Map),
-    lists:sort(fun by_votes/2, L);
-rankings(_, _) -> <<"Please restrict the first argument to base0, base1, dowdell, or nauru.">>.
+    {ok, lists:sort(fun by_votes/2, L)};
+rankings(_, _) -> {error, badarg}.
 
 %%====================================================================
 %% Internal functions

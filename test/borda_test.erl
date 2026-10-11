@@ -15,12 +15,13 @@ borda_test_() ->
                 fun borda_base1_case/0,
                 fun borda_dowdell_case/0,
                 fun borda_nauru_case/0,
-                fun borda_nauru_us2016_case/0
+                fun borda_nauru_us2016_case/0,
+                fun borda_invalid_label_case/0
             ]
     }.
 
 borda_base0_case() ->
-    Rankings = consensus:borda_rankings(base0, ballots()),
+    {ok, Rankings} = consensus:borda_rankings(base0, ballots()),
     ?assertEqual([
                   {catherine, 205},
                   {andrew, 153},
@@ -29,7 +30,7 @@ borda_base0_case() ->
                  ], Rankings).
 
 borda_base1_case() ->
-    Rankings = consensus:borda_rankings(base1, ballots()),
+    {ok, Rankings} = consensus:borda_rankings(base1, ballots()),
     ?assertEqual([
                   {catherine, 305},
                   {andrew, 253},
@@ -38,7 +39,7 @@ borda_base1_case() ->
                  ], Rankings).
 
 borda_dowdell_case() ->
-    Rankings = consensus:borda_rankings(dowdell, ballots()),
+    {ok, Rankings} = consensus:borda_rankings(dowdell, ballots()),
     ?assertEqual([
                   {andrew, 63.25},
                   {catherine, 52.5},
@@ -47,7 +48,7 @@ borda_dowdell_case() ->
                  ], Rankings).
 
 borda_nauru_case() ->
-    Rankings = consensus:borda_rankings(nauru, ballots()),
+    {ok, Rankings} = consensus:borda_rankings(nauru, ballots()),
     ?assertEqual([
                   {andrew, 63.25},
                   {catherine, 52.5},
@@ -56,12 +57,15 @@ borda_nauru_case() ->
                  ], Rankings).
 
 borda_nauru_us2016_case() ->
-    Rankings = consensus:borda_rankings(nauru, ballots(us2016)),
+    {ok, Rankings} = consensus:borda_rankings(nauru, ballots(us2016)),
     [ {clinton, 62.0}, {trump, 60.5}, {johnson, GJ}, {stein, JS} ] = Rankings,
     ?assert(GJ > 52.16),
     ?assert(GJ < 52.17),
     ?assert(JS > 33.66),
     ?assert(JS < 33.67).
+
+borda_invalid_label_case() ->
+    ?assertEqual({error, badarg}, consensus:borda_rankings(bogus, ballots())).
 
 %%% PRIVATE FUNCTIONS
 
