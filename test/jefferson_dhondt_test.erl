@@ -63,16 +63,16 @@ jefferson_dhondt_2024_french_european_parliament_case() ->
                   {reconquete, 1353127}, {communists, 584067},
                   {rural_alliance, 582901} ],
     Rankings  = consensus:jefferson_dhondt_rankings(Votes, 81, 0.05),
-    SeatByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
-    ?assertEqual(81, lists:sum(maps:values(SeatByName))),
-    ?assertEqual(7,  map_size(SeatByName)),
-    ?assertEqual(30, maps:get(rn,         SeatByName)),
-    ?assertEqual(13, maps:get(ensemble,   SeatByName)),
-    ?assertEqual(13, maps:get(socialist,  SeatByName)),
-    ?assertEqual(9,  maps:get(lfi,        SeatByName)),
-    ?assertEqual(6,  maps:get(republicans, SeatByName)),
-    ?assertEqual(5,  maps:get(ecologists, SeatByName)),
-    ?assertEqual(5,  maps:get(reconquete, SeatByName)).
+    SeatsByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
+    ?assertEqual(81, lists:sum(maps:values(SeatsByName))),
+    ?assertEqual(7,  map_size(SeatsByName)),
+    ?assertEqual(30, maps:get(rn,         SeatsByName)),
+    ?assertEqual(13, maps:get(ensemble,   SeatsByName)),
+    ?assertEqual(13, maps:get(socialist,  SeatsByName)),
+    ?assertEqual(9,  maps:get(lfi,        SeatsByName)),
+    ?assertEqual(6,  maps:get(republicans, SeatsByName)),
+    ?assertEqual(5,  maps:get(ecologists, SeatsByName)),
+    ?assertEqual(5,  maps:get(reconquete, SeatsByName)).
 
 % https://en.wikipedia.org/wiki/2024_European_Parliament_election_in_Spain
 % Spain elects 61 MEPs by closed-list d'Hondt in a single national
@@ -82,17 +82,17 @@ jefferson_dhondt_2024_spanish_european_parliament_case() ->
                   {republics_now, 860660}, {sumar, 818015}, {salf, 803545},
                   {podemos, 578007}, {junts, 442140}, {ceus, 284888} ],
     Rankings  = consensus:jefferson_dhondt_rankings(Votes, 61),
-    SeatByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
-    ?assertEqual(61, lists:sum(maps:values(SeatByName))),
-    ?assertEqual(22, maps:get(pp,           SeatByName)),
-    ?assertEqual(20, maps:get(psoe,         SeatByName)),
-    ?assertEqual(6,  maps:get(vox,          SeatByName)),
-    ?assertEqual(3,  maps:get(republics_now, SeatByName)),
-    ?assertEqual(3,  maps:get(sumar,        SeatByName)),
-    ?assertEqual(3,  maps:get(salf,         SeatByName)),
-    ?assertEqual(2,  maps:get(podemos,      SeatByName)),
-    ?assertEqual(1,  maps:get(junts,        SeatByName)),
-    ?assertEqual(1,  maps:get(ceus,         SeatByName)).
+    SeatsByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
+    ?assertEqual(61, lists:sum(maps:values(SeatsByName))),
+    ?assertEqual(22, maps:get(pp,           SeatsByName)),
+    ?assertEqual(20, maps:get(psoe,         SeatsByName)),
+    ?assertEqual(6,  maps:get(vox,          SeatsByName)),
+    ?assertEqual(3,  maps:get(republics_now, SeatsByName)),
+    ?assertEqual(3,  maps:get(sumar,        SeatsByName)),
+    ?assertEqual(3,  maps:get(salf,         SeatsByName)),
+    ?assertEqual(2,  maps:get(podemos,      SeatsByName)),
+    ?assertEqual(1,  maps:get(junts,        SeatsByName)),
+    ?assertEqual(1,  maps:get(ceus,         SeatsByName)).
 
 % https://en.wikipedia.org/wiki/2022_Danish_general_election
 % The two Faroese North Atlantic mandates are allocated by d'Hondt.
@@ -126,22 +126,22 @@ jefferson_dhondt_2022_danish_general_election_case() ->
                  {dd, 286796}, {la, 278656}, {con, 194820}, {rga, 181452},
                  {sl, 133931}, {nr, 129524}, {alt, 117567}, {dpp, 93428} ],
     Rankings  = consensus:jefferson_dhondt_rankings(Votes, 175, 0.02),
-    SeatByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
-    ?assertEqual(175, lists:sum(maps:values(SeatByName))),
+    SeatsByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
+    ?assertEqual(175, lists:sum(maps:values(SeatsByName))),
     % Official totals, matched exactly by the nationwide run
-    ?assertEqual(50, maps:get(sd,  SeatByName)),
-    ?assertEqual(15, maps:get(gl,  SeatByName)),
-    ?assertEqual(14, maps:get(la,  SeatByName)),
-    ?assertEqual(14, maps:get(dd,  SeatByName)),
-    ?assertEqual(10, maps:get(con, SeatByName)),
-    ?assertEqual(9,  maps:get(rga, SeatByName)),
-    ?assertEqual(6,  maps:get(alt, SeatByName)),
-    ?assertEqual(6,  maps:get(nr,  SeatByName)),
+    ?assertEqual(50, maps:get(sd,  SeatsByName)),
+    ?assertEqual(15, maps:get(gl,  SeatsByName)),
+    ?assertEqual(14, maps:get(la,  SeatsByName)),
+    ?assertEqual(14, maps:get(dd,  SeatsByName)),
+    ?assertEqual(10, maps:get(con, SeatsByName)),
+    ?assertEqual(9,  maps:get(rga, SeatsByName)),
+    ?assertEqual(6,  maps:get(alt, SeatsByName)),
+    ?assertEqual(6,  maps:get(nr,  SeatsByName)),
     % Official totals, within one seat of the nationwide run
-    ?assert(maps:get(v,   SeatByName) > 22 andalso maps:get(v,   SeatByName) < 25),
-    ?assert(maps:get(mod, SeatByName) > 15 andalso maps:get(mod, SeatByName) < 18),
-    ?assert(maps:get(sl,  SeatByName) > 5  andalso maps:get(sl,  SeatByName) < 8),
-    ?assert(maps:get(dpp, SeatByName) > 3  andalso maps:get(dpp, SeatByName) < 6).
+    ?assert(maps:get(v,   SeatsByName) > 22 andalso maps:get(v,   SeatsByName) < 25),
+    ?assert(maps:get(mod, SeatsByName) > 15 andalso maps:get(mod, SeatsByName) < 18),
+    ?assert(maps:get(sl,  SeatsByName) > 5  andalso maps:get(sl,  SeatsByName) < 8),
+    ?assert(maps:get(dpp, SeatsByName) > 3  andalso maps:get(dpp, SeatsByName) < 6).
 
 % https://en.wikipedia.org/wiki/Faroe_Islands_(Folketing_constituency)
 % The two Faroese North Atlantic mandates are allocated by d'Hondt.
@@ -175,22 +175,22 @@ jefferson_dhondt_2026_danish_general_election_case() ->
                  {dpp, 324518}, {mod, 274775}, {con, 270749}, {rga, 226037},
                  {sl, 207442}, {dd, 205302}, {alt, 91770}, {cp, 75928} ],
     Rankings  = consensus:jefferson_dhondt_rankings(Votes, 175, 0.02),
-    SeatByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
-    ?assertEqual(175, lists:sum(maps:values(SeatByName))),
+    SeatsByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
+    ?assertEqual(175, lists:sum(maps:values(SeatsByName))),
     % Official totals, matched exactly by the nationwide run
-    ?assertEqual(18, maps:get(v,   SeatByName)),
-    ?assertEqual(16, maps:get(dpp, SeatByName)),
-    ?assertEqual(13, maps:get(con, SeatByName)),
-    ?assertEqual(11, maps:get(rga, SeatByName)),
-    ?assertEqual(10, maps:get(sl,  SeatByName)),
-    ?assertEqual(10, maps:get(dd,  SeatByName)),
+    ?assertEqual(18, maps:get(v,   SeatsByName)),
+    ?assertEqual(16, maps:get(dpp, SeatsByName)),
+    ?assertEqual(13, maps:get(con, SeatsByName)),
+    ?assertEqual(11, maps:get(rga, SeatsByName)),
+    ?assertEqual(10, maps:get(sl,  SeatsByName)),
+    ?assertEqual(10, maps:get(dd,  SeatsByName)),
     % Official totals, within one seat of the nationwide run
-    ?assert(maps:get(sd,  SeatByName) > 37 andalso maps:get(sd,  SeatByName) < 40),
-    ?assert(maps:get(gl,  SeatByName) > 19 andalso maps:get(gl,  SeatByName) < 22),
-    ?assert(maps:get(la,  SeatByName) > 15 andalso maps:get(la,  SeatByName) < 18),
-    ?assert(maps:get(mod, SeatByName) > 12 andalso maps:get(mod, SeatByName) < 15),
-    ?assert(maps:get(alt, SeatByName) > 3  andalso maps:get(alt, SeatByName) < 6),
-    ?assert(maps:get(cp,  SeatByName) > 2  andalso maps:get(cp,  SeatByName) < 5).
+    ?assert(maps:get(sd,  SeatsByName) > 37 andalso maps:get(sd,  SeatsByName) < 40),
+    ?assert(maps:get(gl,  SeatsByName) > 19 andalso maps:get(gl,  SeatsByName) < 22),
+    ?assert(maps:get(la,  SeatsByName) > 15 andalso maps:get(la,  SeatsByName) < 18),
+    ?assert(maps:get(mod, SeatsByName) > 12 andalso maps:get(mod, SeatsByName) < 15),
+    ?assert(maps:get(alt, SeatsByName) > 3  andalso maps:get(alt, SeatsByName) < 6),
+    ?assert(maps:get(cp,  SeatsByName) > 2  andalso maps:get(cp,  SeatsByName) < 5).
 
 % https://en.wikipedia.org/wiki/2023_Argentine_general_election
 % The Chamber of Deputies elects 130 of its 257 members by d'Hondt in the 24
@@ -357,11 +357,11 @@ jefferson_dhondt_2023_argentine_tucuman_case() ->
 
 assert_district_seats(Votes, SeatsRenewed, ExpectedSeatsByName) ->
     Rankings   = consensus:jefferson_dhondt_rankings(Votes, SeatsRenewed, 0.03),
-    SeatByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
-    ?assertEqual(SeatsRenewed, lists:sum(maps:values(SeatByName))),
+    SeatsByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
+    ?assertEqual(SeatsRenewed, lists:sum(maps:values(SeatsByName))),
     lists:foreach(
         fun({Party, ExpectedSeats}) ->
-            ?assertEqual(ExpectedSeats, maps:get(Party, SeatByName))
+            ?assertEqual(ExpectedSeats, maps:get(Party, SeatsByName))
         end,
         maps:to_list(ExpectedSeatsByName)).
 

@@ -16,6 +16,7 @@ webster_sainte_lague_test_() ->
                 fun webster_sainte_lague_2016_rhineland_palatinate_case/0,
                 fun webster_sainte_lague_2016_saxony_anhalt_case/0,
                 fun webster_sainte_lague_2021_federal_case/0,
+                fun webster_sainte_lague_2023_new_zealand_case/0,
                 fun webster_sainte_lague_2024_german_european_parliament_case/0
             ]
     }.
@@ -80,21 +81,44 @@ webster_sainte_lague_2024_german_european_parliament_case() ->
                   {volt, 1023161}, {partei, 775392}, {animal_protection, 570498},
                   {oedp, 257968}, {family, 243975}, {progress, 227631} ],
     Rankings  = consensus:webster_sainte_lague_rankings(Votes, 96),
-    SeatByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
-    ?assertEqual(96, lists:sum(maps:values(SeatByName))),
-    ?assertEqual(23, maps:get(cdu,       SeatByName)),
-    ?assertEqual(15, maps:get(afd,       SeatByName)),
-    ?assertEqual(14, maps:get(spd,       SeatByName)),
-    ?assertEqual(12, maps:get(greens,    SeatByName)),
-    ?assertEqual(6,  maps:get(csu,       SeatByName)),
-    ?assertEqual(6,  maps:get(bsw,       SeatByName)),
-    ?assertEqual(5,  maps:get(fdp,       SeatByName)),
-    ?assertEqual(3,  maps:get(linke,     SeatByName)),
-    ?assertEqual(3,  maps:get(free_voters, SeatByName)),
-    ?assertEqual(3,  maps:get(volt,      SeatByName)),
-    ?assertEqual(2,  maps:get(partei,    SeatByName)),
-    ?assertEqual(1,  maps:get(animal_protection, SeatByName)),
-    ?assertEqual(1,  maps:get(oedp,      SeatByName)),
-    ?assertEqual(1,  maps:get(family,    SeatByName)),
-    ?assertEqual(1,  maps:get(progress,  SeatByName)).
+    SeatsByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
+    ?assertEqual(96, lists:sum(maps:values(SeatsByName))),
+    ?assertEqual(23, maps:get(cdu,       SeatsByName)),
+    ?assertEqual(15, maps:get(afd,       SeatsByName)),
+    ?assertEqual(14, maps:get(spd,       SeatsByName)),
+    ?assertEqual(12, maps:get(greens,    SeatsByName)),
+    ?assertEqual(6,  maps:get(csu,       SeatsByName)),
+    ?assertEqual(6,  maps:get(bsw,       SeatsByName)),
+    ?assertEqual(5,  maps:get(fdp,       SeatsByName)),
+    ?assertEqual(3,  maps:get(linke,     SeatsByName)),
+    ?assertEqual(3,  maps:get(free_voters, SeatsByName)),
+    ?assertEqual(3,  maps:get(volt,      SeatsByName)),
+    ?assertEqual(2,  maps:get(partei,    SeatsByName)),
+    ?assertEqual(1,  maps:get(animal_protection, SeatsByName)),
+    ?assertEqual(1,  maps:get(oedp,      SeatsByName)),
+    ?assertEqual(1,  maps:get(family,    SeatsByName)),
+    ?assertEqual(1,  maps:get(progress,  SeatsByName)).
+
+% https://en.wikipedia.org/wiki/2023_New_Zealand_general_election
+% New Zealand fills 120 seats proportionally by Sainte-Lague (48 party-list
+% seats plus 72 electorate seats); a party qualifies by winning 5% of the
+% party vote or an electorate seat, so Te Pati Maori (3.08% but six
+% electorates) is included and TOP and the other sub-threshold parties are
+% not. A pure Sainte-Lague apportionment of the 120 seats reproduces the
+% official totals of the five regular parties exactly; Te Pati Maori is
+% apportioned 4 and keeps 6, the two overhang seats that grow the 54th
+% Parliament to 122.
+webster_sainte_lague_2023_new_zealand_case() ->
+    Votes        = [ {national, 1085851}, {labour, 767540}, {green, 330907},
+                     {act, 246473}, {nz_first, 173553}, {te_pati_maori, 87844} ],
+    Rankings     = consensus:webster_sainte_lague_rankings(Votes, 120),
+    Rankings     = consensus:webster_sainte_lague_rankings(Votes, 120, 0.0),
+    SeatsByName   = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
+    ?assertEqual(120, lists:sum(maps:values(SeatsByName))),
+    ?assertEqual(48, maps:get(national,      SeatsByName)),
+    ?assertEqual(34, maps:get(labour,        SeatsByName)),
+    ?assertEqual(15, maps:get(green,         SeatsByName)),
+    ?assertEqual(11, maps:get(act,           SeatsByName)),
+    ?assertEqual(8,  maps:get(nz_first,      SeatsByName)),
+    ?assertEqual(4,  maps:get(te_pati_maori, SeatsByName)).
 
