@@ -96,8 +96,8 @@ rankings(Method, Votes, NumberOfSeatsToFill, Threshold, MaxSeatsByName) ->
     Counters     = counters_for_parties_with_enough_votes(Votes, MinVoteCnt),
     tabulate(Method, Counters, TotalVoteCnt, NumberOfSeatsToFill, ?STARTING_SEATS, MaxSeatsByName).
 
-% Theoretical number of seats before rounding
-share(Votes, TotalVotes, SeatsFilled) ->
+% Exact seats before rounding, truncated to two decimal places
+exact_seats(Votes, TotalVotes, SeatsFilled) ->
     trunc(Votes * SeatsFilled * 100.0 / TotalVotes) / 100.0.
 
 seats_cap(PartyName, TotalSeats, MaxSeatsByName) ->
@@ -110,20 +110,19 @@ increment_counter(_OtherPartyName, Counter) ->
 
 tabulate(_Method, Counters, TotalVoteCnt, TotalSeats, TotalSeats, _MaxSeatsByName) ->
     Sorted = lists:sort(fun by_seats_won/2, Counters),
-    [ {PtyName, PtySeats, share(VoteCount, TotalVoteCnt, TotalSeats)} ||
+    [ {PtyName, PtySeats, exact_seats(VoteCount, TotalVoteCnt, TotalSeats)} ||
       {PtyName, PtySeats, VoteCount} <- Sorted ];
 
 tabulate(Method, Counters, TotalVoteCnt, TotalSeats, SeatsFilled, MaxSeatsByName)
         when SeatsFilled < TotalSeats ->
     CountersWithQ = append_quotients(Method, Counters),
-    EligibleWithQ = [ Counter || Counter = {PtyName, SeatsSoFar, _, _} <- CountersWithQ,
+    SortedWithQ   = lists:sort(fun by_highest_quotient/2, CountersWithQ),
+    EligibleWithQ = [ Counter || Counter = {PtyName, SeatsSoFar, _, _} <- SortedWithQ,
                                  SeatsSoFar < seats_cap(PtyName, TotalSeats, MaxSeatsByName) ],
     case EligibleWithQ of
         [] ->
             tabulate(Method, Counters, TotalVoteCnt, TotalSeats, TotalSeats, MaxSeatsByName);
-        _  ->
-            [ {WinPN, _, _, _} | _ ] = lists:sort(fun by_highest_quotient/2, EligibleWithQ),
-            SortedWithQ         = lists:sort(fun by_highest_quotient/2, CountersWithQ),
+        [ {WinPN, _, _, _} | _ ] ->
             IncrementedCounters = [ increment_counter(WinPN, Counter) || Counter <- SortedWithQ ],
             CountersWithoutQ    = [ {PN, S, VC} || {PN, S, VC, _Q} <- IncrementedCounters ],
             tabulate(Method, CountersWithoutQ, TotalVoteCnt, TotalSeats,
