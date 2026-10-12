@@ -3,18 +3,12 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
-candidate_setup()     -> ok.
-candidate_teardown(_) -> ok.
-
 candidate_test_() ->
-    {setup, fun candidate_setup/0,
-            fun candidate_teardown/1,
-            [
-                fun make_case/0,
-                fun make_partisan_case/0,
-                fun rank_single_candidate_case/0
-            ]
-    }.
+    [
+        fun make_case/0,
+        fun make_partisan_case/0,
+        fun rank_single_candidate_case/0
+    ].
 
 make_case() ->
     Cs = [candidate:make(I) || I <- [a, b, c]],

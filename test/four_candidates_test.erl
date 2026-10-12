@@ -3,16 +3,10 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
-four_candidates_setup()     -> ok.
-four_candidates_teardown(_) -> ok.
-
 four_candidates_test_() ->
-    {setup, fun four_candidates_setup/0,
-            fun four_candidates_teardown/1,
-            [
-                fun four_candidates_divergent_case/0
-            ]
-    }.
+    [
+        fun four_candidates_divergent_case/0
+    ].
 
 four_candidates_divergent_case() ->
     Ballot1  = ballot:make([a, b, c]),

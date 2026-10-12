@@ -3,22 +3,16 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
-borda_setup()     -> ok.
-borda_teardown(_) -> ok.
-
 % https://en.wikipedia.org/wiki/Borda_count#Example
 borda_test_() ->
-    {setup, fun borda_setup/0,
-            fun borda_teardown/1,
-            [
-                fun borda_base0_case/0,
-                fun borda_base1_case/0,
-                fun borda_dowdell_case/0,
-                fun borda_nauru_case/0,
-                fun borda_nauru_us2016_case/0,
-                fun borda_invalid_label_case/0
-            ]
-    }.
+    [
+        fun borda_base0_case/0,
+        fun borda_base1_case/0,
+        fun borda_dowdell_case/0,
+        fun borda_nauru_case/0,
+        fun borda_nauru_us2016_case/0,
+        fun borda_invalid_label_case/0
+    ].
 
 borda_base0_case() ->
     {ok, Rankings} = consensus:borda_rankings(base0, ballots()),

@@ -3,22 +3,16 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
-ballot_setup()     -> ok.
-ballot_teardown(_) -> ok.
-
 ballot_test_() ->
-    {setup, fun ballot_setup/0,
-            fun ballot_teardown/1,
-            [
-                fun get_2nd_choice_name_case/0,
-                fun get_tail_names_case/0,
-                fun has_top_choice_case/0,
-                fun make_and_candidates_case/0,
-                fun make_from_candidates_case/0,
-                fun make_partisan_case/0,
-                fun only_multis_case/0
-            ]
-    }.
+    [
+        fun get_2nd_choice_name_case/0,
+        fun get_tail_names_case/0,
+        fun has_top_choice_case/0,
+        fun make_and_candidates_case/0,
+        fun make_from_candidates_case/0,
+        fun make_partisan_case/0,
+        fun only_multis_case/0
+    ].
 
 get_2nd_choice_name_case() ->
     B = ballot:make([a, b, c]),

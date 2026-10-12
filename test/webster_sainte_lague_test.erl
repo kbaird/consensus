@@ -3,23 +3,17 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
-webster_sainte_lague_setup()     -> ok.
-webster_sainte_lague_teardown(_) -> ok.
-
 % https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method#Description_of_the_method
 webster_sainte_lague_test_() ->
-    {setup, fun webster_sainte_lague_setup/0,
-            fun webster_sainte_lague_teardown/1,
-            [
-                fun webster_sainte_lague_basic_case/0,
-                fun webster_sainte_lague_2016_baden_wuerttemberg_case/0,
-                fun webster_sainte_lague_2016_rhineland_palatinate_case/0,
-                fun webster_sainte_lague_2016_saxony_anhalt_case/0,
-                fun webster_sainte_lague_2021_federal_case/0,
-                fun webster_sainte_lague_2023_new_zealand_case/0,
-                fun webster_sainte_lague_2024_german_european_parliament_case/0
-            ]
-    }.
+    [
+        fun webster_sainte_lague_basic_case/0,
+        fun webster_sainte_lague_2016_baden_wuerttemberg_case/0,
+        fun webster_sainte_lague_2016_rhineland_palatinate_case/0,
+        fun webster_sainte_lague_2016_saxony_anhalt_case/0,
+        fun webster_sainte_lague_2021_federal_case/0,
+        fun webster_sainte_lague_2023_new_zealand_case/0,
+        fun webster_sainte_lague_2024_german_european_parliament_case/0
+    ].
 
 % Not checking percentages, because I think they removed smaller totals from the reported results
 
