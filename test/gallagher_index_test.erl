@@ -5,33 +5,27 @@
 
 % Gallagher Index
 
-gallagher_index_setup()     -> ok.
-gallagher_index_teardown(_) -> ok.
-
 gallagher_index_test_() ->
     % Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg158.
     % measure of disproportionality:
     %   G = √(1/2 * Σ(Vi - Si)^2)
     %       where Vi is vote % at index i
     %       and Si is seat % at index i
-    {setup, fun gallagher_index_setup/0,
-            fun gallagher_index_teardown/1,
-            [
-                fun gallagher_index_2023_new_zealand_case/0,
-                fun gallagher_index_2024_european_parliament_case/0,
-                fun gallagher_index_even_three_case/0,
-                fun gallagher_index_even_two_case/0,
-                fun gallagher_index_extreme_skew_case/0,
-                fun gallagher_index_no_skew_case/0,
-                fun gallagher_index_uk2015parl_case/0,
-                fun gallagher_index_us2008potus_case/0,
-                fun gallagher_index_us2008potus_ec_case/0,
-                fun gallagher_index_us2016potus_case/0,
-                fun gallagher_index_us2016potus_ec_case/0,
-                fun gallagher_index_us2020potus_case/0,
-                fun gallagher_index_us2020potus_ec_case/0
-            ]
-    }.
+    [
+        fun gallagher_index_2023_new_zealand_case/0,
+        fun gallagher_index_2024_european_parliament_case/0,
+        fun gallagher_index_even_three_case/0,
+        fun gallagher_index_even_two_case/0,
+        fun gallagher_index_extreme_skew_case/0,
+        fun gallagher_index_no_skew_case/0,
+        fun gallagher_index_uk2015parl_case/0,
+        fun gallagher_index_us2008potus_case/0,
+        fun gallagher_index_us2008potus_ec_case/0,
+        fun gallagher_index_us2016potus_case/0,
+        fun gallagher_index_us2016potus_ec_case/0,
+        fun gallagher_index_us2020potus_case/0,
+        fun gallagher_index_us2020potus_ec_case/0
+    ].
 
 % In descending order of Gallagher Index / disproportionality / "skew".
 gallagher_index_extreme_skew_case() ->

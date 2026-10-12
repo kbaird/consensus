@@ -5,18 +5,12 @@
 
 % tn_capital
 
-tn_capital_setup()     -> ok.
-tn_capital_teardown(_) -> ok.
-
 tn_capital_test_() ->
-    {setup, fun tn_capital_setup/0,
-            fun tn_capital_teardown/1,
-            [
-                fun tn_capital_winner_case/0,
-                fun tn_capital_rankings_case/0,
-                fun tn_capital_rankings_modified_case/0
-            ]
-    }.
+    [
+        fun tn_capital_winner_case/0,
+        fun tn_capital_rankings_case/0,
+        fun tn_capital_rankings_modified_case/0
+    ].
 
 tn_capital_winner_case() ->
     Winner = consensus:condorcet_winner(tn_ballots()),

@@ -3,21 +3,15 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
-three_candidates_setup()     -> ok.
-three_candidates_teardown(_) -> ok.
-
 three_candidates_test_() ->
-    {setup, fun three_candidates_setup/0,
-            fun three_candidates_teardown/1,
-            [
-                fun three_candidates_one_voter_case/0,
-                fun three_candidates_majority_case/0,
-                fun three_candidates_unanimous_case/0,
-                fun three_candidates_divergent_case/0,
-                fun three_candidates_condorcet_over_borda_case/0,
-                fun three_candidates_condorcet_over_irv_case/0
-            ]
-    }.
+    [
+        fun three_candidates_one_voter_case/0,
+        fun three_candidates_majority_case/0,
+        fun three_candidates_unanimous_case/0,
+        fun three_candidates_divergent_case/0,
+        fun three_candidates_condorcet_over_borda_case/0,
+        fun three_candidates_condorcet_over_irv_case/0
+    ].
 
 three_candidates_one_voter_case() ->
     Ballot = ballot:make([a, b, c]),

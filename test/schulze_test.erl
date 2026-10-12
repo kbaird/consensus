@@ -6,19 +6,13 @@
 % Schulze
 % Taken from http://wiki.electorama.com/wiki/Schulze_method
 
-schulze_setup()     -> ok.
-schulze_teardown(_) -> ok.
-
 schulze_test_() ->
-    {setup, fun schulze_setup/0,
-            fun schulze_teardown/1,
-            [
-                fun schulze_ex1_winner_case/0,
-                fun schulze_ex1_rankings_case/0,
-                fun schulze_ex2_winner_case/0,
-                fun schulze_ex2_rankings_case/0
-            ]
-    }.
+    [
+        fun schulze_ex1_winner_case/0,
+        fun schulze_ex1_rankings_case/0,
+        fun schulze_ex2_winner_case/0,
+        fun schulze_ex2_rankings_case/0
+    ].
 
 schulze_ex1_winner_case() ->
     Winner = consensus:condorcet_winner(schulze_ex1_ballots()),

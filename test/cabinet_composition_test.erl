@@ -5,22 +5,16 @@
 
 % cabinet_composition
 
-cabinet_composition_setup()     -> ok.
-cabinet_composition_teardown(_) -> ok.
-
 cabinet_composition_test_() ->
     % Cf. Lijphart, Arend, _Patterns of Democracy_, 1999. pg93.
-    {setup, fun cabinet_composition_setup/0,
-            fun cabinet_composition_teardown/1,
-            [
-                fun cabinet_composition_mwc_case/0,
-                fun cabinet_composition_ms_case/0,
-                fun cabinet_composition_bp_case/0,
-                fun cabinet_composition_mr_case/0,
-                fun cabinet_composition_mcw_case/0,
-                fun cabinet_composition_pvc_case/0
-            ]
-    }.
+    [
+        fun cabinet_composition_mwc_case/0,
+        fun cabinet_composition_ms_case/0,
+        fun cabinet_composition_bp_case/0,
+        fun cabinet_composition_mr_case/0,
+        fun cabinet_composition_mcw_case/0,
+        fun cabinet_composition_pvc_case/0
+    ].
 
 cabinet_composition_mwc_case() ->
     Cabinet = consensus:cabinet_composition(minimal_winning_coalition, parliament()),

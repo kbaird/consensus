@@ -3,23 +3,17 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
-effective_num_parties_setup()     -> ok.
-effective_num_parties_teardown(_) -> ok.
-
 effective_num_parties_test_() ->
-    {setup, fun effective_num_parties_setup/0,
-            fun effective_num_parties_teardown/1,
-            [
-                fun effective_num_parties_dictatorship_case/0,
-                fun effective_num_parties_even_two_case/0,
-                fun effective_num_parties_even_ten_case/0,
-                fun effective_num_parties_near_even_two_case/0,
-                fun effective_num_parties_skewed_two_case/0,
-                fun effective_num_parties_skewed_three_case/0,
-                fun effective_num_parties_2023_new_zealand_case/0,
-                fun effective_num_parties_2024_european_parliament_case/0
-            ]
-    }.
+    [
+        fun effective_num_parties_dictatorship_case/0,
+        fun effective_num_parties_even_two_case/0,
+        fun effective_num_parties_even_ten_case/0,
+        fun effective_num_parties_near_even_two_case/0,
+        fun effective_num_parties_skewed_two_case/0,
+        fun effective_num_parties_skewed_three_case/0,
+        fun effective_num_parties_2023_new_zealand_case/0,
+        fun effective_num_parties_2024_european_parliament_case/0
+    ].
 
 effective_num_parties_dictatorship_case() ->
     Count = consensus:effective_num_parties(single_party_state()),
