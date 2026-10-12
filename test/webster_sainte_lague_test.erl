@@ -20,7 +20,9 @@ webster_sainte_lague_test_() ->
 webster_sainte_lague_basic_case() ->
     Votes    = [ {a, 53000}, {b, 24000}, {c, 23000} ],
     Rankings = consensus:webster_sainte_lague_rankings(Votes, 7),
-    Rankings = consensus:webster_sainte_lague_rankings(Votes, 7, 0.0),
+    rankings_test_helpers:assert_default_threshold_matches(
+        Votes, 7, fun consensus:webster_sainte_lague_rankings/2,
+        fun consensus:webster_sainte_lague_rankings/3),
     ?assertEqual([{a, 3, 3.71}, {b, 2, 1.68}, {c, 2, 1.61}], Rankings).
 
 % https://en.wikipedia.org/wiki/2016_Baden-W%C3%BCrttemberg_state_election
@@ -81,23 +83,11 @@ webster_sainte_lague_2024_german_european_parliament_case() ->
                   {volt, 1023161}, {partei, 775392}, {animal_protection, 570498},
                   {oedp, 257968}, {family, 243975}, {progress, 227631} ],
     Rankings  = consensus:webster_sainte_lague_rankings(Votes, 96),
-    SeatsByName = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
-    ?assertEqual(96, lists:sum(maps:values(SeatsByName))),
-    ?assertEqual(23, maps:get(cdu,       SeatsByName)),
-    ?assertEqual(15, maps:get(afd,       SeatsByName)),
-    ?assertEqual(14, maps:get(spd,       SeatsByName)),
-    ?assertEqual(12, maps:get(greens,    SeatsByName)),
-    ?assertEqual(6,  maps:get(csu,       SeatsByName)),
-    ?assertEqual(6,  maps:get(bsw,       SeatsByName)),
-    ?assertEqual(5,  maps:get(fdp,       SeatsByName)),
-    ?assertEqual(3,  maps:get(linke,     SeatsByName)),
-    ?assertEqual(3,  maps:get(free_voters, SeatsByName)),
-    ?assertEqual(3,  maps:get(volt,      SeatsByName)),
-    ?assertEqual(2,  maps:get(partei,    SeatsByName)),
-    ?assertEqual(1,  maps:get(animal_protection, SeatsByName)),
-    ?assertEqual(1,  maps:get(oedp,      SeatsByName)),
-    ?assertEqual(1,  maps:get(family,    SeatsByName)),
-    ?assertEqual(1,  maps:get(progress,  SeatsByName)).
+    rankings_test_helpers:assert_seats(
+        Rankings, 96,
+        #{cdu => 23, afd => 15, spd => 14, greens => 12, csu => 6, bsw => 6,
+          fdp => 5, linke => 3, free_voters => 3, volt => 3, partei => 2,
+          animal_protection => 1, oedp => 1, family => 1, progress => 1}).
 
 % https://en.wikipedia.org/wiki/2023_New_Zealand_general_election
 % New Zealand fills 120 seats proportionally by Sainte-Lague (48 party-list
@@ -114,15 +104,13 @@ webster_sainte_lague_2023_new_zealand_case() ->
     Votes        = [ {national, 1085851}, {labour, 767540}, {green, 330907},
                      {act, 246473}, {nz_first, 173553}, {te_pati_maori, 87844} ],
     Rankings     = consensus:webster_sainte_lague_rankings(Votes, 120),
-    Rankings     = consensus:webster_sainte_lague_rankings(Votes, 120, 0.0),
-    SeatsByName   = maps:from_list([{Party, Seats} || {Party, Seats, _} <- Rankings]),
-    ?assertEqual(120, lists:sum(maps:values(SeatsByName))),
-    ?assertEqual(48, maps:get(national,      SeatsByName)),
-    ?assertEqual(34, maps:get(labour,        SeatsByName)),
-    ?assertEqual(15, maps:get(green,         SeatsByName)),
-    ?assertEqual(11, maps:get(act,           SeatsByName)),
-    ?assertEqual(8,  maps:get(nz_first,      SeatsByName)),
-    ?assertEqual(4,  maps:get(te_pati_maori, SeatsByName)),
+    rankings_test_helpers:assert_default_threshold_matches(
+        Votes, 120, fun consensus:webster_sainte_lague_rankings/2,
+        fun consensus:webster_sainte_lague_rankings/3),
+    rankings_test_helpers:assert_seats(
+        Rankings, 120,
+        #{national => 48, labour => 34, green => 15, act => 11, nz_first => 8,
+          te_pati_maori => 4}),
 
     ElectorateSeats = #{ national => 43, labour => 17, green => 3,
                          act => 2, nz_first => 0, te_pati_maori => 6 },
