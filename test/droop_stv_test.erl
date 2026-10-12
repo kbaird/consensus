@@ -6,7 +6,7 @@
 droop_stv_test_() ->
     [
         fun droop_two_winners_three_candidates_stv_case/0,
-        %fun droop_five_winners_six_candidates_stv_case/0,
+        fun droop_five_winners_six_candidates_stv_case/0,
         fun droop_three_winners_five_candidates_stv_case/0
     ].
 
@@ -28,12 +28,10 @@ droop_five_winners_six_candidates_stv_case() ->
     Ballot5s = [ballot:make([scott, delilah, jennifer]) || _ <- lists:seq(1, 20)],
     Ballot6s = [ballot:make([jennifer, delilah, scott]) || _ <- lists:seq(1, 17)],
     Ballots = Ballot1s ++ Ballot2s ++ Ballot3s ++ Ballot4s ++ Ballot5s ++ Ballot6s,
-    [ Andrea, Carter, Brad, Delilah, Scott ] = consensus:droop_winners(5, Ballots),
-    {andrea, _} = Andrea,
-    {carter, _} = Carter,
-    {brad, _} = Brad,
-    {delilah, _} = Delilah,
-    {scott, _} = Scott.
+    Winners = consensus:droop_winners(5, Ballots),
+    ?assertEqual(
+        [{andrea, 31}, {carter, 40}, {brad, 25}, {delilah, 20}, {scott, 30}],
+        Winners).
 
 % https://en.wikipedia.org/wiki/Comparison_of_the_Hare_and_Droop_quotas#Scenario_2
 droop_three_winners_five_candidates_stv_case() ->
