@@ -285,7 +285,8 @@ japanese_pr_block_cases() ->
          [ {ldp, 1297078}, {cra, 620211}, {dpfp, 273263}, {sansei, 252036},
            {ishin, 213428} ],
          10, [ {pure, #{}, #{ldp => 6, cra => 2, dpfp => 1, sansei => 1, ishin => 0}},
-               {forfeiture, #{ldp => 5}, #{ldp => 5, cra => 2, dpfp => 1, sansei => 1, ishin => 1}} ]},
+               {forfeiture, #{ldp => 5},
+                #{ldp => 5, cra => 2, dpfp => 1, sansei => 1, ishin => 1}} ]},
         {hokkaido,
          [ {ldp, 911742}, {cra, 605889}, {dpfp, 218850} ],
          8, [ {pure, #{}, #{ldp => 4, cra => 3, dpfp => 1}} ]},
@@ -294,7 +295,8 @@ japanese_pr_block_cases() ->
          [ {ldp, 1387716}, {cra, 651331}, {dpfp, 322739}, {sansei, 285897},
            {ishin, 231686} ],
          10, [ {pure, #{}, #{ldp => 5, cra => 2, dpfp => 1, sansei => 1, ishin => 1}},
-               {forfeiture, #{ldp => 3}, #{ldp => 3, cra => 4, dpfp => 1, sansei => 1, ishin => 1}} ]},
+               {forfeiture, #{ldp => 3},
+                #{ldp => 3, cra => 4, dpfp => 1, sansei => 1, ishin => 1}} ]},
         % Team Mirai could fill no Kinki list seat (10% rule), so its two seats
         % go to Ishin and CRA.
         {kinki,

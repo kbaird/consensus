@@ -7,7 +7,8 @@
 
 % Asserts that the two-argument form of an allocation function agrees with the
 % three-argument form at the explicit 0.0 default threshold.
-assert_default_threshold_matches(Votes, NumberOfSeats, DefaultThresholdRankings, ExplicitThresholdRankings) ->
+assert_default_threshold_matches(
+    Votes, NumberOfSeats, DefaultThresholdRankings, ExplicitThresholdRankings) ->
     ?assertEqual(
         ExplicitThresholdRankings(Votes, NumberOfSeats, 0.0),
         DefaultThresholdRankings(Votes, NumberOfSeats)).

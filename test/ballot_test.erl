@@ -15,44 +15,54 @@ ballot_test_() ->
     ].
 
 get_2nd_choice_name_case() ->
-    B = ballot:make([a, b, c]),
+    B = abc_ballot(),
     ?assertEqual(b, ballot:get_2nd_choice_name(B)).
 
 get_tail_names_case() ->
-    B = ballot:make([a, b, c]),
+    B = abc_ballot(),
     ?assertEqual([b, c], ballot:get_tail_names(B)).
 
 has_top_choice_case() ->
-    B = ballot:make([a, b, c]),
+    B = abc_ballot(),
     ?assert(ballot:has_top_choice(a, B)),
     ?assertNot(ballot:has_top_choice(b, B)),
     ?assertNot(ballot:has_top_choice(c, B)).
 
 make_and_candidates_case() ->
-    B = ballot:make([a, b, c]),
-    Cs = ballot:candidates(B),
-    ?assertEqual([a, b, c], lists:map(fun candidate:name/1, Cs)).
+    Cs = ballot:candidates(abc_ballot()),
+    assert_abc_names(Cs).
 
 make_from_candidates_case() ->
-    Input = [{a, <<"lib">>}, {b, <<"con">>}, {c, <<"lab">>}],
-    B = ballot:make(Input),
-    Cs = ballot:candidates(B),
-    B2 = ballot:make(Cs),
-    Cs2 = ballot:candidates(B2),
-    ?assertEqual([a, b, c], lists:map(fun candidate:name/1, Cs2)),
-    ?assertEqual([<<"lib">>, <<"con">>, <<"lab">>], lists:map(fun candidate:party/1, Cs2)).
+    Input = partisan_input(),
+    Cs2 = candidates_round_trip(Input),
+    assert_abc_names(Cs2),
+    ?assertEqual(partisan_parties(), parties(Cs2)).
 
 make_partisan_case() ->
-    Input = [{a, <<"lib">>}, {b, <<"con">>}, {c, <<"lab">>}],
-    B = ballot:make(Input),
-    Cs = ballot:candidates(B),
-    ?assertEqual([a, b, c], lists:map(fun candidate:name/1, Cs)),
-    ?assertEqual([<<"lib">>, <<"con">>, <<"lab">>], lists:map(fun candidate:party/1, Cs)).
+    Cs = ballot:candidates(ballot:make(partisan_input())),
+    assert_abc_names(Cs),
+    ?assertEqual(partisan_parties(), parties(Cs)).
 
 only_multis_case() ->
-    B1 = ballot:make([a, b, c]),
+    B1 = abc_ballot(),
     B2 = ballot:make([a]),
     ?assertEqual([B1], ballot:only_multis([B1, B2])).
 
 %%% PRIVATE FUNCTIONS
+
+abc_ballot() -> ballot:make([a, b, c]).
+
+assert_abc_names(Cs) -> ?assertEqual([a, b, c], names(Cs)).
+
+partisan_input() -> [{a, <<"lib">>}, {b, <<"con">>}, {c, <<"lab">>}].
+
+partisan_parties() -> [<<"lib">>, <<"con">>, <<"lab">>].
+
+candidates_round_trip(Input) ->
+    Cs = ballot:candidates(ballot:make(Input)),
+    ballot:candidates(ballot:make(Cs)).
+
+names(Cs) -> lists:map(fun candidate:name/1, Cs).
+
+parties(Cs) -> lists:map(fun candidate:party/1, Cs).
 
