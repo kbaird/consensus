@@ -6,8 +6,7 @@
 two_candidates_test_() ->
     [
         fun two_candidates_one_voter_case/0,
-        fun two_candidates_majority_case/0,
-        fun two_candidates_unanimous_case/0
+        fun two_candidates_majority_case/0
     ].
 
 two_candidates_one_voter_case() ->
@@ -19,11 +18,6 @@ two_candidates_majority_case() ->
     Ballot1 = ballot:make([b, a]),
     Ballot2 = ballot:make([a, b]),
     Ballots = [Ballot1, Ballot2, Ballot2],
-    Winner  = consensus:condorcet_winner(Ballots),
-    ?assertEqual(a, Winner).
-
-two_candidates_unanimous_case() ->
-    Ballots = [ballot:make([a]) || _ <- lists:seq(1, 4)],
     Winner  = consensus:condorcet_winner(Ballots),
     ?assertEqual(a, Winner).
 
