@@ -20,7 +20,7 @@ nz2023_party_results() -> [
     {top,              0.0222,  0},
     {nz_loyal,         0.0121,  0},
     {newzeal,          0.0057,  0},
-    {legalise_cannabis,0.0046,  0},
+    {legalise_cannabis, 0.0046,  0},
     {freedoms_nz,      0.0034,  0},
     {democracy_nz,     0.0024,  0},
     {animal_justice,   0.0018,  0},

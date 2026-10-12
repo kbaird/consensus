@@ -32,40 +32,27 @@ three_candidates_majority_case() ->
     ?assertEqual([a, c, b], Rankings).
 
 three_candidates_divergent_case() ->
-    Ballot1 = ballot:make([a, b, c]),
-    Ballot2 = ballot:make([b, c, a]),
-    Ballot3 = ballot:make([c, b, a]),
-    Ballots = lists:flatten([
-        lists:duplicate(499, Ballot1),
-        lists:duplicate(3,   Ballot2),
-        lists:duplicate(498, Ballot3)
-    ]),
-    Winner  = consensus:condorcet_winner(Ballots),
-    ?assertEqual(b, Winner).
+    Ballots = weighted([{499, abc_ballot()}, {3, bca_ballot()}, {498, cba_ballot()}]),
+    ?assertEqual(b, consensus:condorcet_winner(Ballots)).
 
 three_candidates_condorcet_over_borda_case() ->
     % https://en.wikipedia.org/wiki/Condorcet_criterion#Borda_count
-    Ballot1 = ballot:make([a, b, c]),
-    Ballot2 = ballot:make([b, c, a]),
-    Ballots = lists:flatten([
-        lists:duplicate(3, Ballot1),
-        lists:duplicate(2, Ballot2)
-    ]),
-    Winner  = consensus:condorcet_winner(Ballots),
-    ?assertEqual(a, Winner).
+    Ballots = weighted([{3, abc_ballot()}, {2, bca_ballot()}]),
+    ?assertEqual(a, consensus:condorcet_winner(Ballots)).
 
 three_candidates_condorcet_over_irv_case() ->
     % https://en.wikipedia.org/wiki/Condorcet_criterion#Instant-runoff_voting
-    Ballot1 = ballot:make([a, b, c]),
-    Ballot2 = ballot:make([c, b, a]),
-    Ballot3 = ballot:make([b, c, a]),
-    Ballots = lists:flatten([
-        lists:duplicate(35, Ballot1),
-        lists:duplicate(34, Ballot2),
-        lists:duplicate(31, Ballot3)
-    ]),
-    Winner  = consensus:condorcet_winner(Ballots),
-    ?assertEqual(b, Winner).
+    Ballots = weighted([{35, abc_ballot()}, {34, cba_ballot()}, {31, bca_ballot()}]),
+    ?assertEqual(b, consensus:condorcet_winner(Ballots)).
 
 %%% PRIVATE FUNCTIONS
+
+abc_ballot() -> ballot:make([a, b, c]).
+
+bca_ballot() -> ballot:make([b, c, a]).
+
+cba_ballot() -> ballot:make([c, b, a]).
+
+weighted(BallotCounts) ->
+    lists:flatten([lists:duplicate(Count, Ballot) || {Count, Ballot} <- BallotCounts]).
 

@@ -34,21 +34,11 @@ borda_base1_case() ->
 
 borda_dowdell_case() ->
     {ok, Rankings} = consensus:borda_rankings(dowdell, ballots()),
-    ?assertEqual([
-                  {andrew, 63.25},
-                  {catherine, 52.5},
-                  {brian, 49.5},
-                  {david, 43.08333333333333}
-                 ], Rankings).
+    ?assertEqual(nauru_expected_rankings(), Rankings).
 
 borda_nauru_case() ->
     {ok, Rankings} = consensus:borda_rankings(nauru, ballots()),
-    ?assertEqual([
-                  {andrew, 63.25},
-                  {catherine, 52.5},
-                  {brian, 49.5},
-                  {david, 43.08333333333333}
-                 ], Rankings).
+    ?assertEqual(nauru_expected_rankings(), Rankings).
 
 borda_nauru_us2016_case() ->
     {ok, Rankings} = consensus:borda_rankings(nauru, ballots(us2016)),
@@ -62,6 +52,12 @@ borda_invalid_label_case() ->
     ?assertEqual({error, badarg}, consensus:borda_rankings(bogus, ballots())).
 
 %%% PRIVATE FUNCTIONS
+
+nauru_expected_rankings() ->
+    [{andrew, 63.25},
+     {catherine, 52.5},
+     {brian, 49.5},
+     {david, 43.08333333333333}].
 
 ballots() ->
     Ballot1  = ballot:make([andrew, catherine, brian, david]),

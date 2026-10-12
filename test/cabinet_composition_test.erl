@@ -20,52 +20,52 @@ cabinet_composition_mwc_case() ->
     Cabinet = consensus:cabinet_composition(minimal_winning_coalition, parliament()),
     Cabinet = consensus:cabinet_composition(minimum_winning_coalition, parliament()),
     Cabinet = consensus:cabinet_composition(mwc, parliament()),
-    ?assertEqual([[<<"a">>, <<"b">>, <<"c">>],
-                  [<<"a">>, <<"d">>, <<"e">>],
-                  [<<"b">>, <<"c">>, <<"d">>],
-                  [<<"b">>, <<"e">>],
-                  [<<"c">>, <<"e">>]
-                 ], Cabinet).
+    ?assertEqual([abc(), ade(), bcd(), be(), ce()], Cabinet).
 
 cabinet_composition_ms_case() ->
     Cabinet = consensus:cabinet_composition(minimal_size, parliament()),
     Cabinet = consensus:cabinet_composition(minimum_size, parliament()),
     Cabinet = consensus:cabinet_composition(ms, parliament()),
-    ?assertEqual([[<<"a">>, <<"d">>, <<"e">>]], Cabinet).
+    ?assertEqual([ade()], Cabinet).
 
 cabinet_composition_bp_case() ->
     Cabinet = consensus:cabinet_composition(bargaining_proposition, parliament()),
     Cabinet = consensus:cabinet_composition(bp, parliament()),
-    ?assertEqual([[<<"b">>, <<"e">>], [<<"c">>, <<"e">>]], Cabinet).
+    ?assertEqual([be(), ce()], Cabinet).
 
 cabinet_composition_mr_case() ->
     Cabinet = consensus:cabinet_composition(minimal_range, parliament()),
     Cabinet = consensus:cabinet_composition(minimum_range, parliament()),
     Cabinet = consensus:cabinet_composition(mr, parliament()),
-    ?assertEqual([[<<"a">>, <<"b">>, <<"c">>],
-                  [<<"b">>, <<"c">>, <<"d">>],
-                  [<<"c">>, <<"e">>]
-                 ], Cabinet).
+    ?assertEqual(mr_pvc_cabinet(), Cabinet).
 
 cabinet_composition_mcw_case() ->
     AllPartyNames = all_party_names(),
     Cabinet = consensus:cabinet_composition(minimal_connected_winning, parliament(), AllPartyNames),
     Cabinet = consensus:cabinet_composition(minimum_connected_winning, parliament(), AllPartyNames),
     Cabinet = consensus:cabinet_composition(mcw, parliament(), AllPartyNames),
-    ?assertEqual([[<<"a">>, <<"b">>, <<"c">>],
-                  [<<"b">>, <<"c">>, <<"d">>],
-                  [<<"c">>, <<"d">>, <<"e">>]
-                 ], Cabinet).
+    ?assertEqual([abc(), bcd(), cde()], Cabinet).
 
 cabinet_composition_pvc_case() ->
     Cabinet = consensus:cabinet_composition(policy_viable_coalition, parliament()),
     Cabinet = consensus:cabinet_composition(pvc, parliament()),
-    ?assertEqual([[<<"a">>, <<"b">>, <<"c">>],
-                  [<<"b">>, <<"c">>, <<"d">>],
-                  [<<"c">>, <<"e">>]
-                 ], Cabinet).
+    ?assertEqual(mr_pvc_cabinet(), Cabinet).
 
 %%% PRIVATE FUNCTIONS
+
+abc() -> [<<"a">>, <<"b">>, <<"c">>].
+
+ade() -> [<<"a">>, <<"d">>, <<"e">>].
+
+bcd() -> [<<"b">>, <<"c">>, <<"d">>].
+
+be() -> [<<"b">>, <<"e">>].
+
+ce() -> [<<"c">>, <<"e">>].
+
+cde() -> [<<"c">>, <<"d">>, <<"e">>].
+
+mr_pvc_cabinet() -> [abc(), bcd(), ce()].
 
 all_party_names() -> [<<"a">>, <<"b">>, <<"c">>, <<"d">>, <<"e">>].
 
