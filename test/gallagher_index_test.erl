@@ -109,26 +109,9 @@ gallagher_index_2023_new_zealand_case() ->
 
 %%% PRIVATE FUNCTIONS
 
-nz2023() -> [
-    % party_name, seats, party vote share (fraction)
-    consensus_party:make(national,          48, 0.3808),
-    consensus_party:make(labour,            34, 0.2692),
-    consensus_party:make(green,             15, 0.1161),
-    consensus_party:make(act,               11, 0.0864),
-    consensus_party:make(nz_first,           8, 0.0609),
-    consensus_party:make(te_pati_maori,      6, 0.0308),
-    consensus_party:make(top,                0, 0.0222),
-    consensus_party:make(nz_loyal,           0, 0.0121),
-    consensus_party:make(newzeal,            0, 0.0057),
-    consensus_party:make(legalise_cannabis,  0, 0.0046),
-    consensus_party:make(freedoms_nz,        0, 0.0034),
-    consensus_party:make(democracy_nz,       0, 0.0024),
-    consensus_party:make(animal_justice,     0, 0.0018),
-    consensus_party:make(new_conservative,   0, 0.0016),
-    consensus_party:make(womens_rights,      0, 0.0009),
-    consensus_party:make(leighton_baker,     0, 0.0007),
-    consensus_party:make(new_nation,         0, 0.0005)
-].
+nz2023() ->
+    [ consensus_party:make(Name, Seats, VoteShare) ||
+      {Name, VoteShare, Seats} <- index_fixtures:nz2023_party_results() ].
 
 even(3) -> [
     consensus_party:make_percent(jack_johnson, 1, 33.33),
@@ -205,15 +188,6 @@ us2020potus_ec() -> [
     % counting "faithless" electors as if they were not
 ].
 
-ep2024_groups() -> [
-    % party_name, seats won (of 720), vote_pc
-    consensus_party:make_percent(epp,         188, 19.65),
-    consensus_party:make_percent(sd,          136, 15.63),
-    consensus_party:make_percent(patriots,     84, 10.54),
-    consensus_party:make_percent(ecr,          78,  8.93),
-    consensus_party:make_percent(renew,        77,  9.15),
-    consensus_party:make_percent(greens_efa,   53,  6.59),
-    consensus_party:make_percent(the_left,     46,  6.77),
-    consensus_party:make_percent(esn,          25,  4.94),
-    consensus_party:make_percent(non_inscrits, 33,  8.64)
-].
+ep2024_groups() ->
+    [ consensus_party:make_percent(Group, Seats, VotePercent) ||
+      {Group, Seats, VotePercent} <- index_fixtures:ep2024_group_results() ].
