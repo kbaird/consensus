@@ -12,7 +12,7 @@ jefferson_dhondt_test_() ->
         fun jefferson_dhondt_2022_danish_general_election_case/0,
         fun jefferson_dhondt_2022_faroe_islands_case/0,
         fun jefferson_dhondt_2022_greenland_case/0,
-        % TODO: https://en.wikipedia.org/wiki/2024_San_Marino_general_election
+        fun jefferson_dhondt_2024_san_marino_case/0,
         fun jefferson_dhondt_2026_danish_general_election_case/0,
         fun jefferson_dhondt_2026_faroe_islands_case/0,
         fun jefferson_dhondt_2026_greenland_case/0
@@ -54,6 +54,22 @@ jefferson_dhondt_2024_spanish_european_parliament_case() ->
         Rankings, 61,
         #{pp => 22, psoe => 20, vox => 6, republics_now => 3, sumar => 3,
           salf => 3, podemos => 2, junts => 1, ceus => 1}).
+
+% https://en.wikipedia.org/wiki/2024_San_Marino_general_election
+% San Marino elects all 60 members of the Grand and General Council by
+% d'Hondt in a single national constituency. The electoral threshold is
+% 0.4% per party running, here at its 5% maximum, which excludes Solidary
+% Democracy (4.69%) while RETE (5.07%) qualifies; the seven qualifying
+% lists' seats are reproduced exactly.
+jefferson_dhondt_2024_san_marino_case() ->
+    Votes    = [ {pdcs, 6206}, {libera_ps, 2862}, {psd, 2216}, {rf, 2178},
+                 {dml, 1540}, {ar, 1268}, {rete, 922}, {demos, 852} ],
+    Rankings = consensus:jefferson_dhondt_rankings(Votes, 60, 0.05),
+    rankings_test_helpers:assert_seats(
+        Rankings, 60,
+        #{pdcs => 22, libera_ps => 10, psd => 8, rf => 8, dml => 5, ar => 4,
+          rete => 3}),
+    ?assertEqual(7, map_size(rankings_test_helpers:seats_by_name(Rankings))).
 
 % https://en.wikipedia.org/wiki/2022_Danish_general_election
 % The two Faroese North Atlantic mandates are allocated by d'Hondt.
