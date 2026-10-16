@@ -10,10 +10,11 @@ webster_sainte_lague_test_() ->
         fun webster_sainte_lague_2016_baden_wuerttemberg_case/0,
         fun webster_sainte_lague_2016_rhineland_palatinate_case/0,
         fun webster_sainte_lague_2016_saxony_anhalt_case/0,
-        fun webster_sainte_lague_2021_federal_case/0,
+        fun webster_sainte_lague_2021_german_federal_case/0,
         fun webster_sainte_lague_2023_new_zealand_case/0,
         fun webster_sainte_lague_2024_german_european_parliament_case/0,
-        fun webster_sainte_lague_2025_ecuador_national_assembly_case/0
+        fun webster_sainte_lague_2025_ecuador_national_assembly_case/0,
+        fun webster_sainte_lague_2025_german_federal_case/0
     ].
 
 % Not checking percentages, because I think they removed smaller totals from the reported results
@@ -57,7 +58,7 @@ webster_sainte_lague_2016_saxony_anhalt_case() ->
     [ {cdu, 30, _}, {afd, 25, _}, {lnk, 16, _}, {spd, 11, _}, {grn, 5, _}] = Rankings.
 
 % https://en.wikipedia.org/wiki/2021_German_federal_election
-webster_sainte_lague_2021_federal_case() ->
+webster_sainte_lague_2021_german_federal_case() ->
     Votes    = [ {spd, 11949756}, {cdu, 11173806}, {grn, 6848215},
                  {fdp, 5316698}, {afd, 4802097}, {lnk, 2269993} ],
     Rankings = consensus:webster_sainte_lague_rankings(Votes, 735, 0.05),
@@ -103,6 +104,15 @@ webster_sainte_lague_2025_ecuador_national_assembly_case() ->
     rankings_test_helpers:assert_seats(
         Rankings, 15,
         #{adn => 7, rc => 7, psc => 1}).
+
+% https://en.wikipedia.org/wiki/2025_German_federal_election
+% Proportional allocation with 5% threshold (exemptions omitted as in the
+% 2021 test case).
+webster_sainte_lague_2025_german_federal_case() ->
+    Votes = [ {cdu, 14160402}, {afd, 10328780}, {spd, 8149124}, {grn, 5762380},
+              {lnk, 4356532} ],
+    Rankings = consensus:webster_sainte_lague_rankings(Votes, 630, 0.05),
+    [ {cdu, 209, _}, {afd, 152, _}, {spd, 120, _}, {grn, 85, _}, {lnk, 64, _}] = Rankings.
 
 % https://en.wikipedia.org/wiki/2023_New_Zealand_general_election
 % New Zealand fills 120 seats proportionally by Sainte-Lague (48 party-list
