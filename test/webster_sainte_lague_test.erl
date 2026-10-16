@@ -12,7 +12,8 @@ webster_sainte_lague_test_() ->
         fun webster_sainte_lague_2016_saxony_anhalt_case/0,
         fun webster_sainte_lague_2021_federal_case/0,
         fun webster_sainte_lague_2023_new_zealand_case/0,
-        fun webster_sainte_lague_2024_german_european_parliament_case/0
+        fun webster_sainte_lague_2024_german_european_parliament_case/0,
+        fun webster_sainte_lague_2025_ecuador_national_assembly_case/0
     ].
 
 % Not checking percentages, because I think they removed smaller totals from the reported results
@@ -88,6 +89,20 @@ webster_sainte_lague_2024_german_european_parliament_case() ->
         #{cdu => 23, afd => 15, spd => 14, greens => 12, csu => 6, bsw => 6,
           fdp => 5, linke => 3, free_voters => 3, volt => 3, partei => 2,
           animal_protection => 1, oedp => 1, family => 1, progress => 1}).
+
+% https://en.wikipedia.org/wiki/2025_Ecuadorian_general_election
+% National Assembly: 15 of 151 seats are filled in a single nationwide
+% constituency by Webster; the remaining 136 are apportioned by Webster in
+% separate provincial/overseas constituencies, so a single nationwide
+% apportionment reproduces only the national-list seats.
+webster_sainte_lague_2025_ecuador_national_assembly_case() ->
+    Votes = [ {adn, 3948532}, {rc, 3764230}, {psc, 288545}, {psp, 210083},
+              {amigo, 162721}, {up, 156802}, {suma, 149404}, {creo, 119480},
+              {pse, 91778}, {id, 90383}, {ped, 67367}, {cd, 61559} ],
+    Rankings = consensus:webster_sainte_lague_rankings(Votes, 15),
+    rankings_test_helpers:assert_seats(
+        Rankings, 15,
+        #{adn => 7, rc => 7, psc => 1}).
 
 % https://en.wikipedia.org/wiki/2023_New_Zealand_general_election
 % New Zealand fills 120 seats proportionally by Sainte-Lague (48 party-list
