@@ -24,7 +24,8 @@ gallagher_index_test_() ->
         fun gallagher_index_us2016potus_case/0,
         fun gallagher_index_us2016potus_ec_case/0,
         fun gallagher_index_us2020potus_case/0,
-        fun gallagher_index_us2020potus_ec_case/0
+        fun gallagher_index_us2020potus_ec_case/0,
+        fun gallagher_index_us2026_house_case/0
     ].
 
 % In descending order of Gallagher Index / disproportionality / "skew".
@@ -70,6 +71,11 @@ gallagher_index_us2020potus_ec_case() ->
     GIdx = consensus:gallagher_index(us2020potus_ec()),
     ?assert(GIdx > 0.050),
     ?assert(GIdx < 0.051).
+
+gallagher_index_us2026_house_case() ->
+    GIdx = consensus:gallagher_index(us2026_house()),
+    ?assert(GIdx > 0.0499),
+    ?assert(GIdx < 0.05).
 
 gallagher_index_even_three_case() ->
     GIdx = consensus:gallagher_index(even(3)),
@@ -185,6 +191,13 @@ us2020potus_ec() -> [
     % 538 Electoral College "seats" in play
     consensus_party:make_percent(dem, 306, 51.0),
     consensus_party:make_percent(gop, 232, 47.2)
+    % counting "faithless" electors as if they were not
+].
+
+us2026_house() -> [
+    % party_name, seat_share, vote_pc
+    consensus_party:make_percent(dem, 253, 55.43),
+    consensus_party:make_percent(gop, 161, 43.09)
     % counting "faithless" electors as if they were not
 ].
 
